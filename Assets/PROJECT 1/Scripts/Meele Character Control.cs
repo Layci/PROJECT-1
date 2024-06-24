@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,6 +9,8 @@ namespace ProJect1
 {
     public class MeeleCharacterControl : MonoBehaviour
     {
+        public static MeeleCharacterControl instance;
+
         Animator animator;
         public GameObject targetPosition;
         public GameObject resetPosition;
@@ -15,25 +18,43 @@ namespace ProJect1
         public float moveSpeed = 0f;
         public bool attackMove = false;
         public bool attacking = false;
+
+        private bool isAttackExecuted = false;
+
         private void Awake()
         {
             animator = GetComponentInChildren<Animator>();
-            //Vector3 playerPos = transform.position;
+            instance = this;
+            gameObject.GetComponent<CapsuleCollider>().enabled = false;
         }
 
         private void Update()
         {
+            // Q를 눌렀을때 공격중이 아니라면
             if (Input.GetKeyDown(KeyCode.Q) && !attacking)
             {
                 attackMove = true;
                 attacking = true;
                 animator.SetFloat("Speed", 1);
+                isAttackExecuted = false;
             }
+
+            // 공격하러 이동중이라면
             if (attackMove)
             {
-                transform.position = Vector3.MoveTowards(gameObject.transform.position, targetPosition.transform.position, moveSpeed * Time.deltaTime);
+                // 공격이 안끝났으면 타겟의 위치로 이동
+                if (!isAttackExecuted)
+                {
+                    transform.position = Vector3.MoveTowards(gameObject.transform.position, targetPosition.transform.position, moveSpeed * Time.deltaTime);
+                }
+                // 공격이 끝났으면 원래있던 위치로 이동
+                else
+                {
+                    transform.position = Vector3.MoveTowards(gameObject.transform.position, resetPosition.transform.position, moveSpeed * Time.deltaTime);
+                }
 
-                if(transform.position == targetPosition.transform.position)
+                // 공격하러 이동하는 중에, 목표 지점에 도착을 했는지 검사해서 => 도착했다면 애니메이션 Speed:0, 공격 액션 수행
+                if (transform.position == targetPosition.transform.position)
                 {
                     animator.SetFloat("Speed", 0);
                     attackMove = false;
@@ -42,11 +63,33 @@ namespace ProJect1
                     attacking = false;
                 }
             }
+
+            // 플레이어가 원래있던 위치로 이동했으면 캐릭터의 로테이션값 정방향으로 변경하고 애니메이션 Speed:0
+            if (transform.position == resetPosition.transform.position)
+            {
+                animator.SetFloat("Speed", 0);
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
         }
 
-        public void ResetPos()
+        // 공격 애니메이터가 끝나고 나가면 실행
+        public void OnNotifiedAttackFinish()
         {
-            transform.position = Vector3.MoveTowards(gameObject.transform.position, resetPosition.transform.position, moveSpeed * Time.deltaTime);
+            // To do : 여기에 들어왔다는 뜻은 애니메이터에서 공격 모션이 끝났음을 알려주었다는 것.
+            isAttackExecuted = true;
+            attackMove = true;
+            animator.SetFloat("Speed", 1);
+            transform.LookAt(resetPosition.transform);
+
+            
+            //Vector3 dir = (transform.position - resetPosition.transform.position).nor;
+            //transform.forward = dir;
+        }
+
+        private void Attack()
+        {
+            gameObject.GetComponent<CapsuleCollider>().enabled = true;
+            gameObject.GetComponent<CapsuleCollider>().enabled = false;
         }
     }
 }

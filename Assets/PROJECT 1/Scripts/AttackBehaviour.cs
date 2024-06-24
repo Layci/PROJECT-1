@@ -4,9 +4,8 @@ using UnityEngine;
 
 namespace ProJect1
 {
-    public class LocomotionBehaviour : StateMachineBehaviour
+    public class AttackBehaviour : StateMachineBehaviour
     {
-        public GameObject resetPosition;
 
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
@@ -15,7 +14,8 @@ namespace ProJect1
 
         public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            
+            MeeleCharacterControl characterControl = animator.transform.root.GetComponent<MeeleCharacterControl>();
+            characterControl.OnNotifiedAttackFinish();
         }
     }
 }
