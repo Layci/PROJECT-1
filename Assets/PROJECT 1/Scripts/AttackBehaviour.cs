@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace ProJect1
@@ -16,6 +17,7 @@ namespace ProJect1
         {
             MeeleCharacterControl characterControl = animator.transform.root.GetComponent<MeeleCharacterControl>();
             characterControl.OnNotifiedAttackFinish();
+            characterControl.OnNotifiedSkillAttackFinish();
         }
     }
 }

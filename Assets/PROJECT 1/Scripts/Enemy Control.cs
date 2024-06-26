@@ -18,8 +18,6 @@ namespace ProJect1
             if (other.gameObject.tag == "Weapon")
             {
                 animator.SetTrigger("Trigger Hit");
-                gameObject.GetComponent<CapsuleCollider>().enabled = false;
-
             }
         }
     }
