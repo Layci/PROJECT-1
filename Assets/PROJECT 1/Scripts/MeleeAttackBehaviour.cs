@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ProJect1
 {
-    public class AttackBehaviour : StateMachineBehaviour
+    public class MeleeAttackBehaviour : StateMachineBehaviour
     {
 
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -15,7 +15,7 @@ namespace ProJect1
 
         public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            MeeleCharacterControl characterControl = animator.transform.root.GetComponent<MeeleCharacterControl>();
+            MeleeCharacterControl characterControl = animator.transform.root.GetComponent<MeleeCharacterControl>();
             characterControl.OnNotifiedAttackFinish();
             characterControl.OnNotifiedSkillAttackFinish();
         }

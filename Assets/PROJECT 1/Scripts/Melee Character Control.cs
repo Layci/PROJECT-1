@@ -7,15 +7,16 @@ using UnityEngine;
 
 namespace ProJect1
 {
-    public class MeeleCharacterControl : MonoBehaviour
+    public class MeleeCharacterControl : MonoBehaviour
     {
-        public static MeeleCharacterControl instance;
+        public static MeleeCharacterControl instance;
 
         Animator animator;
         public GameObject targetPosition;
         public GameObject resetPosition;
 
         public float moveSpeed = 0f;
+        public float attackPower = 30f;
         public bool attackMove = false;
         public bool attacking = false;
         public bool skillAttackMove = false;
@@ -27,7 +28,6 @@ namespace ProJect1
         {
             animator = GetComponentInChildren<Animator>();
             instance = this;
-            gameObject.GetComponent<CapsuleCollider>().enabled = false;
         }
 
         private void Update()
@@ -39,6 +39,7 @@ namespace ProJect1
                 attacking = true;
                 animator.SetFloat("Speed", 1);
                 isAttackExecuted = false;
+                attackPower = 30f;
             }
 
             // E를 눌렀을때 공격중이 아니라면
@@ -48,6 +49,7 @@ namespace ProJect1
                 skillAttacking = true;
                 animator.SetFloat("Speed", 1);
                 isAttackExecuted = false;
+                attackPower = 15f;
             }
             
             // 공격하러 이동중이라면 (기본공격)
@@ -137,10 +139,5 @@ namespace ProJect1
             }
         }
 
-        private void Attack()
-        {
-            gameObject.GetComponent<CapsuleCollider>().enabled = true;
-            gameObject.GetComponent<CapsuleCollider>().enabled = false;
-        }
     }
 }

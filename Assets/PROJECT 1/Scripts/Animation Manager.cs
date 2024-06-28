@@ -8,12 +8,14 @@ namespace ProJect1
     {
         public void MeeleAttackStart()
         {
-            MeeleCharacterControl.instance.gameObject.GetComponentInChildren<BoxCollider>().enabled = true;
+            MeleeCharacterControl.instance.gameObject.GetComponentInChildren<BoxCollider>().enabled = true;
+            EnemyControl.instance.gameObject.GetComponentInChildren<BoxCollider>().enabled = true;
         }
 
         public void MeeleAttackEnd()
         {
-            MeeleCharacterControl.instance.gameObject.GetComponentInChildren<BoxCollider>().enabled = false;
+            MeleeCharacterControl.instance.gameObject.GetComponentInChildren<BoxCollider>().enabled = false;
+            EnemyControl.instance.gameObject.GetComponentInChildren<BoxCollider>().enabled = false;
         }
     }
 }

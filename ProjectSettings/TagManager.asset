@@ -4,7 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Weapon
+  - MeleeWeapon
   layers:
   - Default
   - TransparentFX
@@ -24,10 +24,10 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
+  - Minimap Icon
+  - Ground
+  - Player
+  - Well
   - 
   - 
   - 
