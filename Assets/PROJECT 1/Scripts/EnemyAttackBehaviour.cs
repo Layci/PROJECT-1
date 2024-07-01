@@ -15,6 +15,7 @@ namespace ProJect1
         {
             EnemyControl enemyControl = animator.transform.root.GetComponent<EnemyControl>();
             enemyControl.OnNotifiedAttackFinish();
+            enemyControl.OnNotifiedSkillAttackFinish();
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ProJect1
 {
@@ -12,11 +13,18 @@ namespace ProJect1
         public static MeleeCharacterControl instance;
 
         Animator animator;
+
+        public Slider hpBarSlider;
         public GameObject targetPosition;
         public GameObject resetPosition;
 
+        [Header("캐릭터 정보")]
+        public float maxHealth; // 최대 체력
+        public float curHealth; // 현재 체력
         public float moveSpeed = 0f;
         public float attackPower = 30f;
+
+        [Header("캐릭터 움직임")]
         public bool attackMove = false;
         public bool attacking = false;
         public bool skillAttackMove = false;
@@ -58,6 +66,7 @@ namespace ProJect1
                 // 공격이 안끝났으면 타겟의 위치로 이동
                 if (!isAttackExecuted)
                 {
+                    transform.LookAt(targetPosition.transform);
                     transform.position = Vector3.MoveTowards(gameObject.transform.position, targetPosition.transform.position, moveSpeed * Time.deltaTime);
                 }
                 // 공격이 끝났으면 원래있던 위치로 이동
@@ -81,6 +90,7 @@ namespace ProJect1
                 // 공격이 안끝났으면 타겟의 위치로 이동
                 if (!isAttackExecuted)
                 {
+                    transform.LookAt(targetPosition.transform);
                     transform.position = Vector3.MoveTowards(gameObject.transform.position, targetPosition.transform.position, moveSpeed * Time.deltaTime);
                 }
                 // 공격이 끝났으면 원래있던 위치로 이동
@@ -139,5 +149,68 @@ namespace ProJect1
             }
         }
 
+        // 상대에게 맞을 경우
+        private void OnTriggerEnter(Collider other)
+        {
+            switch (other.gameObject.tag)
+            {
+                case "EnemyMeleeWeapon":
+                    animator.SetTrigger("Trigger Hit");
+                    TakeDamage(EnemyControl.instance.enemyAttackPower);
+                    break;
+            }
+        }
+
+        // 체력 갱신
+        public void CheckHP()
+        {
+            if (hpBarSlider != null)
+            {
+                hpBarSlider.value = curHealth / maxHealth;
+            }
+        }
+
+        public void TakeDamage(float damage)
+        {
+            if (maxHealth == 0 || curHealth == 0)
+                return;
+
+            curHealth -= damage;
+
+            // 체력 갱신
+            CheckHP();
+
+            // 체력이 0이하라면
+            if (curHealth <= 0)
+            {
+                Debug.Log("죽음");
+            }
+            Debug.Log("hit");
+        }
+
+        public void OnClickAttackBtn()
+        {
+            if (!attacking && !skillAttacking)
+            {
+                attackMove = true;
+                attacking = true;
+                animator.SetFloat("Speed", 1);
+                isAttackExecuted = false;
+                attackPower = 30f;
+            }
+        }
+
+        public void OnClickSkillAttackBtn()
+        {
+            if (!attacking && !skillAttacking)
+            {
+                skillAttackMove = true;
+                skillAttacking = true;
+                animator.SetFloat("Speed", 1);
+                isAttackExecuted = false;
+                attackPower = 15f;
+            }
+        }
+        
     }
 }
