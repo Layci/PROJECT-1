@@ -48,16 +48,22 @@ namespace ProJect1
                 animator.SetFloat("Speed", 1);
                 isAttackExecuted = false;
                 attackPower = 30f;
+                SkillPointManager.instance.SkillPointUp();
             }
 
-            // E를 눌렀을때 공격중이 아니라면
-            if (Input.GetKeyDown(KeyCode.E) && !skillAttacking && !attacking)
+            // 스킬포인트가 남아있을 경우
+            if (SkillPointManager.instance.curSkillPoint > 0)
             {
-                skillAttackMove = true;
-                skillAttacking = true;
-                animator.SetFloat("Speed", 1);
-                isAttackExecuted = false;
-                attackPower = 15f;
+                // E를 눌렀을때 공격중이 아니라면
+                if (Input.GetKeyDown(KeyCode.E) && !skillAttacking && !attacking)
+                {
+                    skillAttackMove = true;
+                    skillAttacking = true;
+                    animator.SetFloat("Speed", 1);
+                    isAttackExecuted = false;
+                    attackPower = 15f;
+                    SkillPointManager.instance.UseSkillPoint();
+                }
             }
             
             // 공격하러 이동중이라면 (기본공격)
