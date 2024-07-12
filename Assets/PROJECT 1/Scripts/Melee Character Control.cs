@@ -23,12 +23,14 @@ namespace ProJect1
         public float curHealth; // 현재 체력
         public float moveSpeed = 0f;
         public float attackPower = 30f;
+        public float unitSpeed = 105;
 
         [Header("캐릭터 움직임")]
         public bool attackMove = false;
         public bool attacking = false;
         public bool skillAttackMove = false;
         public bool skillAttacking = false;
+        public bool myTurn;
 
         private bool isAttackExecuted = false;
 
@@ -203,6 +205,7 @@ namespace ProJect1
                 animator.SetFloat("Speed", 1);
                 isAttackExecuted = false;
                 attackPower = 30f;
+                SkillPointManager.instance.SkillPointUp();
             }
         }
 
@@ -215,6 +218,7 @@ namespace ProJect1
                 animator.SetFloat("Speed", 1);
                 isAttackExecuted = false;
                 attackPower = 15f;
+                SkillPointManager.instance.UseSkillPoint();
             }
         }
         

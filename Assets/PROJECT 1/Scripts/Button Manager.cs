@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,19 +8,15 @@ namespace ProJect1
 {
     public class ButtonManager : MonoBehaviour
     {
-        public Sprite x1;
-        public Sprite x2;
+        public Sprite[] sprites;
+        public Image image;
 
         public bool isPause = false;
         public bool isFastSpeed = false;
 
-        Image image;
-        Button button;
-
         private void Awake()
         {
-            image = GetComponent<Image>();
-            button = GetComponent<Button>();
+            image.sprite = sprites[0];
         }
 
         private void Start()
@@ -41,17 +38,16 @@ namespace ProJect1
         {
             if (!isPause)
             {
-                if(!isFastSpeed)
+                isFastSpeed = !isFastSpeed;
+                if (isFastSpeed)
                 {
-                    isFastSpeed = true;
+                    image.sprite = sprites[1];
                     Time.timeScale = 2.0f;
-                    //button.image = x1;
                 }
                 else
                 {
-                    isFastSpeed = false;
+                    image.sprite = sprites[0];
                     Time.timeScale = 1.0f;
-                    image.sprite = x1;
                 }
             }
         }

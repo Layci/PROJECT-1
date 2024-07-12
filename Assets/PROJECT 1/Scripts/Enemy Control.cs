@@ -20,6 +20,7 @@ namespace ProJect1
         public float curHealth; // 현재 체력
         public float moveSpeed = 0f;
         public float enemyAttackPower = 30f;
+        public float unitSpeed = 95;
 
         [Header("캐릭터 움직임")]
         public bool enemyAttackMove = false;
