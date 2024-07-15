@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,14 +28,22 @@ namespace ProJect1
         public bool enemyAttacking = false;
         public bool enemySkillAttackMove = false;
         public bool enemySkillAttacking = false;
-
+        private bool actionCompleted;
         private bool isAttackExecuted = false;
 
 
         private void Awake()
         {
             animator = GetComponentInChildren<Animator>();
-            instance = this;
+
+            if (instance == null)
+            {
+                instance = this;
+            }
+            else if (instance != this)
+            {
+                Destroy(gameObject);
+            }
         }
 
         private void Update()
@@ -184,6 +193,19 @@ namespace ProJect1
                 Debug.Log("죽음");
             }
             Debug.Log("hit");
+        }
+
+        public IEnumerator ExecuteAction()
+        {
+            actionCompleted = false;
+            Debug.Log("EnemyControl action started.");
+
+            // 여기에 EnemyControl에 대한 실행할 코드를 작성합니다.
+            // 예: 1초 동안 대기
+            yield return new WaitForSeconds(1f);
+
+            Debug.Log("EnemyControl action completed.");
+            actionCompleted = true;
         }
     }
 }

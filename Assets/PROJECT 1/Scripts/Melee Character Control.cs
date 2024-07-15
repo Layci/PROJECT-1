@@ -31,13 +31,22 @@ namespace ProJect1
         public bool skillAttackMove = false;
         public bool skillAttacking = false;
         public bool myTurn;
+        private bool actionCompleted;
 
         private bool isAttackExecuted = false;
 
         private void Awake()
         {
             animator = GetComponentInChildren<Animator>();
-            instance = this;
+
+            if (instance == null)
+            {
+                instance = this;
+            }
+            else if (instance != this)
+            {
+                Destroy(gameObject);
+            }
         }
 
         private void Update()
@@ -221,6 +230,18 @@ namespace ProJect1
                 SkillPointManager.instance.UseSkillPoint();
             }
         }
-        
+
+        public IEnumerator ExecuteAction()
+        {
+            actionCompleted = false;
+            Debug.Log("MeleeCharacterControl action started.");
+
+            // 여기에 MeleeCharacterControl에 대한 실행할 코드를 작성합니다.
+            // 예: 2초 동안 대기
+            yield return new WaitForSeconds(2f);
+
+            Debug.Log("MeleeCharacterControl action completed.");
+            actionCompleted = true;
+        }
     }
 }
