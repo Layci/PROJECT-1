@@ -7,24 +7,16 @@ namespace ProJect1
 {
     public class AnimationManager : MonoBehaviour
     {
-        public void MeeleAttackStart()
+        GameObject hitObject;
+
+        public void MeleeAttack()
         {
-            MeleeCharacterControl.instance.gameObject.GetComponentInChildren<BoxCollider>().enabled = true;
+            OnTriggerTarget.instance.targetObject.SendMessage("TakeDamage", MeleeCharacterControl.instance.attackPower);
         }
 
-        public void EnemyMeeleAttackStart()
+        public void EnemyMeleeAttack()
         {
-            EnemyControl.instance.gameObject.GetComponentInChildren<BoxCollider>().enabled = true;
-        }
-
-        public void MeeleAttackEnd()
-        {
-            MeleeCharacterControl.instance.gameObject.GetComponentInChildren<BoxCollider>().enabled = false;
-        }
-
-        public void EnemyMeeleAttackEnd()
-        {
-            EnemyControl.instance.gameObject.GetComponentInChildren<BoxCollider>().enabled = false;
+            OnTriggerTarget.instance.targetObject.SendMessage("TakeDamage", EnemyControl.instance.enemyAttackPower);
         }
     }
 }

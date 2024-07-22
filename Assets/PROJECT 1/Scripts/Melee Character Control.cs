@@ -15,6 +15,7 @@ namespace ProJect1
         Animator animator;
 
         public Slider hpBarSlider;
+        public GameObject targetResetPosition;
         public GameObject targetPosition;
         public GameObject resetPosition;
 
@@ -83,7 +84,7 @@ namespace ProJect1
                 // 공격이 안끝났으면 타겟의 위치로 이동
                 if (!isAttackExecuted)
                 {
-                    transform.LookAt(targetPosition.transform);
+                    transform.LookAt(targetResetPosition.transform);
                     transform.position = Vector3.MoveTowards(gameObject.transform.position, targetPosition.transform.position, moveSpeed * Time.deltaTime);
                 }
                 // 공격이 끝났으면 원래있던 위치로 이동
@@ -107,7 +108,7 @@ namespace ProJect1
                 // 공격이 안끝났으면 타겟의 위치로 이동
                 if (!isAttackExecuted)
                 {
-                    transform.LookAt(targetPosition.transform);
+                    transform.LookAt(targetResetPosition.transform);
                     transform.position = Vector3.MoveTowards(gameObject.transform.position, targetPosition.transform.position, moveSpeed * Time.deltaTime);
                 }
                 // 공격이 끝났으면 원래있던 위치로 이동
