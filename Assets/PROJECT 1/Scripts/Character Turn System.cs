@@ -1,3 +1,4 @@
+using Project1;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace ProJect1
             {
 
             { MeleeCharacterControl.instance.unitSpeed, () => MeleeCharacterControl.instance.ExecuteAction() },
-            { EnemyControl.instance.unitSpeed, () => EnemyControl.instance.ExecuteAction() }
+            { BaseEnemyControl.instance.unitSpeed, () => BaseEnemyControl.instance.ExecuteAction() }
 
             };
 

@@ -1,3 +1,4 @@
+using Project1;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +14,7 @@ namespace ProJect1
 
         public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            EnemyControl enemyControl = animator.transform.root.GetComponent<EnemyControl>();
+            MeleeEnemyControl enemyControl = animator.transform.root.GetComponent<MeleeEnemyControl>();
             enemyControl.OnNotifiedAttackFinish();
             enemyControl.OnNotifiedSkillAttackFinish();
         }

@@ -8,6 +8,11 @@ TagManager:
   - EnemyMeleeWeapon
   - MeleePlayer
   - MeleeEnemy
+  - Aki Enemy
+  - AI Enemy
+  - FayePlayer
+  - InugamiPlayer
+  - HoshiPlayer
   layers:
   - Default
   - TransparentFX

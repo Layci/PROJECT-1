@@ -19,6 +19,11 @@ namespace ProJect1
 
         public System.Action<float, float> onDamagedAction;
 
+        public virtual void TakeDamage()        
+        {
+
+        }
+
         public void Damage(float damage)
         {
             currentHP -= damage;
