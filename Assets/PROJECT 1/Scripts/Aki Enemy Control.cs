@@ -1,12 +1,10 @@
-using UnityEngine;
-
 namespace Project1
 {
     public class AkiEnemyControl : BaseEnemyControl
     {
-        protected override void Awake()
+        protected override void Update()
         {
-            base.Awake();
+            base.Update();
         }
     }
 }

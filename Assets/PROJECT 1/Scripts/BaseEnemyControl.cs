@@ -1,4 +1,5 @@
 using ProJect1;
+using System.Collections;
 using UnityEngine;
 
 namespace Project1
@@ -26,6 +27,7 @@ namespace Project1
         public float enemyAttackPower;
         public float unitSpeed;
         public float attackRange; // 공격 범위 추가
+        public bool startAttacking;
         public Transform player; // 플레이어 참조 추가
 
         [Header("적 움직임")]
@@ -37,20 +39,19 @@ namespace Project1
             animator = GetComponentInChildren<Animator>();
             initialPosition = transform.position;
             initialRotation = transform.rotation;
+        }
 
-            if (instance == null)
-            {
-                instance = this;
-            }
-            else if (instance != this)
-            {
-                Destroy(gameObject);
-            }
+        protected virtual void Start()
+        {
+            // 적의 체력을 최대 체력으로 초기화
+            curHealth = maxHealth;
+            Debug.Log($"적의 초기 체력: {curHealth}");
         }
 
         protected virtual void Update()
         {
             HandleState();
+            CheckPlayerDistance();
         }
 
         protected void HandleState()
@@ -76,8 +77,9 @@ namespace Project1
         {
             if (!isAttackExecuted)
             {
-                transform.LookAt(MeleeCharacterControl.instance.transform);
-                transform.position = Vector3.MoveTowards(transform.position, MeleeCharacterControl.instance.transform.position, moveSpeed * Time.deltaTime);
+                transform.LookAt(player.position);
+                transform.position = Vector3.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
+                animator.SetFloat("Speed", 1);
             }
             else
             {
@@ -87,21 +89,41 @@ namespace Project1
 
         protected virtual void PerformAttack()
         {
-            // 공격 수행 로직
-            animator.SetFloat("Speed", 0);
-            animator.SetTrigger("Trigger EnemyAttack");
-            currentState = EnemyState.Returning;
+            if (!startAttacking)
+            {
+                if (currentState == EnemyState.Attacking)
+                {
+                    animator.SetFloat("Speed", 0);
+                    animator.SetTrigger("Trigger EnemyAttack");
+                }
+            }
         }
 
         protected virtual void ReturnToInitialPosition()
         {
             transform.position = Vector3.MoveTowards(transform.position, initialPosition, moveSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            animator.SetFloat("Speed", 1);
 
             if (transform.position == initialPosition)
             {
                 animator.SetFloat("Speed", 0);
                 transform.rotation = initialRotation;
                 currentState = EnemyState.Idle;
+                isAttackExecuted = false; // 위치로 돌아오면 공격 수행 상태 초기화
+                startAttacking = false; // 위치로 돌아오면 상태 초기화
+            }
+        }
+
+        protected void CheckPlayerDistance()
+        {
+            if (currentState == EnemyState.MovingToAttack)
+            {
+                float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+                if (distanceToPlayer <= attackRange)
+                {
+                    currentState = EnemyState.Attacking;
+                }
             }
         }
 

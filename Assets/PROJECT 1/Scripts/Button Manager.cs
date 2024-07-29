@@ -1,3 +1,4 @@
+using Project1;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,15 +25,15 @@ namespace ProJect1
             Time.timeScale = 1.0f;
         }
 
-        public void OnClickAttackBtn()
+        /*public void OnClickAttackBtn()
         {
-            MeleeCharacterControl.instance.OnClickAttackBtn();
+            BaseCharacterControl.instance.OnClickAttackBtn();
         }
 
         public void OnClickSkillAttackBtn()
         {
-            MeleeCharacterControl.instance.OnClickSkillAttackBtn();
-        }
+            BaseCharacterControl.instance.OnClickSkillAttackBtn();
+        }*/
 
         public void OnClickHighSpeedBtn()
         {

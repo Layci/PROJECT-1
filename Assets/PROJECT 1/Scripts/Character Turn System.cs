@@ -16,7 +16,7 @@ namespace ProJect1
             Dictionary<float, System.Func<IEnumerator>> speedActions = new Dictionary<float, System.Func<IEnumerator>>
             {
 
-            { MeleeCharacterControl.instance.unitSpeed, () => MeleeCharacterControl.instance.ExecuteAction() },
+            { BaseCharacterControl.instance.unitSpeed, () => BaseCharacterControl.instance.ExecuteAction() },
             { BaseEnemyControl.instance.unitSpeed, () => BaseEnemyControl.instance.ExecuteAction() }
 
             };

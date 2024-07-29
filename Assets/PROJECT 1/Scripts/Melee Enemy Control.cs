@@ -8,27 +8,5 @@ namespace Project1
         {
             base.Update();
         }
-
-        public void OnNotifiedAttackFinish()
-        {
-            if (currentState == EnemyState.Attacking)
-            {
-                isAttackExecuted = true;
-                currentState = EnemyState.Returning;
-                animator.SetFloat("Speed", 1);
-                transform.LookAt(initialPosition);
-            }
-        }
-
-        public void OnNotifiedSkillAttackFinish()
-        {
-            if (currentState == EnemyState.Attacking)
-            {
-                isAttackExecuted = true;
-                currentState = EnemyState.Returning;
-                animator.SetFloat("Speed", 1);
-                transform.LookAt(initialPosition);
-            }
-        }
     }
 }

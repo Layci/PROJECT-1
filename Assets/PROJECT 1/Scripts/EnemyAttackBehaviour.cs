@@ -9,14 +9,22 @@ namespace ProJect1
     {
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-
+            // Animator가 속한 부모 객체에서 BaseEnemyControl 컴포넌트를 가져옵니다.
+            BaseEnemyControl enemy = animator.GetComponentInParent<BaseEnemyControl>();
+            if (enemy != null)
+            {
+                enemy.startAttacking = true;
+            }
         }
 
         public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            MeleeEnemyControl enemyControl = animator.transform.root.GetComponent<MeleeEnemyControl>();
-            enemyControl.OnNotifiedAttackFinish();
-            enemyControl.OnNotifiedSkillAttackFinish();
+            // Animator가 속한 부모 객체에서 BaseEnemyControl 컴포넌트를 가져옵니다.
+            BaseEnemyControl enemy = animator.GetComponentInParent<BaseEnemyControl>();
+            if (enemy != null)
+            {
+                enemy.currentState = EnemyState.Returning;
+            }
         }
     }
 }

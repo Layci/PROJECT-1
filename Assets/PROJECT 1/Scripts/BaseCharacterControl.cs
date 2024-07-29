@@ -4,27 +4,36 @@ using UnityEngine.UI;
 
 namespace Project1
 {
+    public enum PlayerState
+    {
+        Idle,
+        MovingToAttack,
+        Attacking,
+        Returning
+    }
+
     public abstract class BaseCharacterControl : MonoBehaviour
     {
+        public static BaseCharacterControl instance;
+
         protected Animator animator;
         protected Vector3 initialPosition;
         protected Quaternion initialRotation;
 
         public Slider hpBarSlider;
-        public GameObject targetPosition;
+        public Transform target; // 목표 위치
 
         [Header("캐릭터 정보")]
         public float maxHealth;
         public float curHealth;
         public float moveSpeed;
-        public float attackPower;
         public float unitSpeed;
+        public float attackPower;
+        public float attackRange;
+        public bool startAttacking;
 
         [Header("캐릭터 움직임")]
-        public bool attackMove = false;
-        public bool attacking = false;
-        public bool skillAttackMove = false;
-        public bool skillAttacking = false;
+        public PlayerState currentState = PlayerState.Idle; // 현재 상태 추가
         protected bool isAttackExecuted = false;
 
         protected virtual void Awake()
@@ -36,18 +45,74 @@ namespace Project1
 
         protected virtual void Update()
         {
+            HandleState();
             HandleAttackInput();
-            HandleMovement();
+        }
+
+        protected void HandleState()
+        {
+            switch (currentState)
+            {
+                case PlayerState.Idle:
+                    // Idle 상태의 로직
+                    break;
+                case PlayerState.MovingToAttack:
+                    MoveToAttack();
+                    break;
+                case PlayerState.Attacking:
+                    PerformAttack();
+                    break;
+                case PlayerState.Returning:
+                    ReturnToInitialPosition();
+                    break;
+            }
+        }
+
+        protected virtual void MoveToAttack()
+        {
+            if (target != null)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
+                animator.SetFloat("Speed", 1);
+
+                float distanceToTarget = Vector3.Distance(transform.position, target.position);
+                if (distanceToTarget <= attackRange)
+                {
+                    currentState = PlayerState.Attacking;
+                }
+            }
+        }
+
+        protected virtual void PerformAttack()
+        {
+            if (!isAttackExecuted)
+            {
+                // 공격 로직
+                animator.SetFloat("Speed", 0);
+                animator.SetTrigger("Trigger Attack");
+                isAttackExecuted = true;
+            }
+        }
+
+        protected virtual void ReturnToInitialPosition()
+        {
+            transform.position = Vector3.MoveTowards(transform.position, initialPosition, moveSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0f, -180f, 0f);
+            animator.SetFloat("Speed", 1);
+
+            if (Vector3.Distance(transform.position, initialPosition) <= 0.1f)
+            {
+                transform.position = initialPosition; // 위치 보정
+
+                animator.SetFloat("Speed", 0);
+                currentState = PlayerState.Idle;
+                isAttackExecuted = false; // 위치로 돌아오면 공격 수행 상태 초기화
+            }
         }
 
         protected virtual void HandleAttackInput()
         {
-            // Implement in child classes
-        }
-
-        protected virtual void HandleMovement()
-        {
-            // Implement in child classes
+            // 기본적으로 아무것도 하지 않음
         }
 
         public void CheckHP()
@@ -79,6 +144,22 @@ namespace Project1
         public IEnumerator ExecuteAction()
         {
             yield return new WaitForSeconds(2f);
+        }
+
+        public void StartMove(Transform targetTransform)
+        {
+            target = targetTransform;
+            currentState = PlayerState.MovingToAttack;
+        }
+
+        public void StartAttack()
+        {
+            currentState = PlayerState.Attacking;
+        }
+
+        public void StopAction()
+        {
+            currentState = PlayerState.Idle;
         }
     }
 }
