@@ -20,17 +20,19 @@ namespace Project1
         protected Vector3 initialPosition;
         protected Quaternion initialRotation;
 
-        public Slider hpBarSlider;
-        public Transform target; // 목표 위치
 
         [Header("캐릭터 정보")]
         public float maxHealth;
         public float curHealth;
         public float moveSpeed;
         public float unitSpeed;
-        public float attackPower;
-        public float attackRange;
+        public float playerAttackPower;
+        public float playerSKillAttackPower;
+        public float attackRange; // 공격 거리
         public bool startAttacking;
+        public bool skillAttack;
+        public Transform enemy; // 적 위치 참조
+        public Slider hpBarSlider; // HP바
 
         [Header("캐릭터 움직임")]
         public PlayerState currentState = PlayerState.Idle; // 현재 상태 추가
@@ -70,12 +72,12 @@ namespace Project1
 
         protected virtual void MoveToAttack()
         {
-            if (target != null)
+            if (enemy != null)
             {
-                transform.position = Vector3.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, enemy.position, moveSpeed * Time.deltaTime);
                 animator.SetFloat("Speed", 1);
 
-                float distanceToTarget = Vector3.Distance(transform.position, target.position);
+                float distanceToTarget = Vector3.Distance(transform.position, enemy.position);
                 if (distanceToTarget <= attackRange)
                 {
                     currentState = PlayerState.Attacking;
@@ -85,11 +87,18 @@ namespace Project1
 
         protected virtual void PerformAttack()
         {
-            if (!isAttackExecuted)
+            if (!isAttackExecuted && !skillAttack)
             {
                 // 공격 로직
                 animator.SetFloat("Speed", 0);
                 animator.SetTrigger("Trigger Attack");
+                isAttackExecuted = true;
+            }
+            else if (!isAttackExecuted && skillAttack)
+            {
+                // 스킬 공격 로직
+                animator.SetFloat("Speed", 0);
+                animator.SetTrigger("Trigger SkillAttack");
                 isAttackExecuted = true;
             }
         }
@@ -103,7 +112,7 @@ namespace Project1
             if (Vector3.Distance(transform.position, initialPosition) <= 0.1f)
             {
                 transform.position = initialPosition; // 위치 보정
-
+                transform.rotation = initialRotation;
                 animator.SetFloat("Speed", 0);
                 currentState = PlayerState.Idle;
                 isAttackExecuted = false; // 위치로 돌아오면 공격 수행 상태 초기화
@@ -148,7 +157,7 @@ namespace Project1
 
         public void StartMove(Transform targetTransform)
         {
-            target = targetTransform;
+            enemy = targetTransform;
             currentState = PlayerState.MovingToAttack;
         }
 

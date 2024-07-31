@@ -1,6 +1,7 @@
 using ProJect1;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Project1
 {
@@ -24,11 +25,12 @@ namespace Project1
         public float maxHealth;
         public float curHealth;
         public float moveSpeed;
-        public float enemyAttackPower;
         public float unitSpeed;
-        public float attackRange; // 공격 범위 추가
+        public float enemyAttackPower;
+        public float attackRange; // 공격 거리
         public bool startAttacking;
-        public Transform player; // 플레이어 참조 추가
+        public Transform player; // 플레이어 참조
+        public Slider hpBarSlider; // HP바
 
         [Header("적 움직임")]
         public EnemyState currentState = EnemyState.Idle; // 현재 상태 추가
@@ -127,6 +129,14 @@ namespace Project1
             }
         }
 
+        public void CheckHP()
+        {
+            if (hpBarSlider != null)
+            {
+                hpBarSlider.value = curHealth / maxHealth;
+            }
+        }
+
         public void TakeDamage(float damage)
         {
             if (maxHealth == 0 || curHealth == 0)
@@ -135,6 +145,8 @@ namespace Project1
             animator.SetTrigger("Trigger EnemyHit");
 
             curHealth -= damage;
+
+            CheckHP();
 
             if (curHealth <= 0)
             {

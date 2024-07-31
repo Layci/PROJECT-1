@@ -5,27 +5,28 @@ namespace ProJect1
 {
     public class AnimationManager : MonoBehaviour
     {
-        public void OnAttackAnimationFinished()
+        public void PlayerMeleeAttack()
         {
+            // 플레이어의 공격 애니메이션중 이벤트에서 호출되는 메서드
             BaseCharacterControl player = GetComponentInParent<BaseCharacterControl>();
-            if (player != null)
+            if (player != null && player.currentState == PlayerState.Attacking)
             {
-                player.StopAction();
-            }
-        }
-
-        public void OnSkillAnimationFinished()
-        {
-            BaseCharacterControl player = GetComponentInParent<BaseCharacterControl>();
-            if (player != null)
-            {
-                player.StopAction();
+                // 적에게 피해를 입힘
+                BaseEnemyControl enemy = player.enemy.GetComponent<BaseEnemyControl>();
+                if (enemy != null && !player.skillAttack)
+                {
+                    enemy.TakeDamage(player.playerAttackPower);
+                }
+                else
+                {
+                    enemy.TakeDamage(player.playerSKillAttackPower);
+                }
             }
         }
 
         public void EnemyMeleeAttack()
         {
-            // 적의 공격 애니메이션이 완료될 때 호출되는 메서드
+            // 적의 공격 애니메이션중 이벤트에서 호출되는 메서드
             BaseEnemyControl enemy = GetComponentInParent<BaseEnemyControl>();
             if (enemy != null && enemy.currentState == EnemyState.Attacking)
             {
