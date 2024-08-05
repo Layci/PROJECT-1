@@ -29,6 +29,7 @@ namespace Project1
         public float enemyAttackPower;
         public float attackRange; // 공격 거리
         public bool startAttacking;
+        public bool skillAttack;
         public Transform player; // 플레이어 참조
         public Slider hpBarSlider; // HP바
 
@@ -91,12 +92,20 @@ namespace Project1
 
         protected virtual void PerformAttack()
         {
-            if (!startAttacking)
+            if (!startAttacking && !skillAttack)
             {
                 if (currentState == EnemyState.Attacking)
                 {
                     animator.SetFloat("Speed", 0);
                     animator.SetTrigger("Trigger EnemyAttack");
+                }
+            }
+            else if (!startAttacking && skillAttack)
+            {
+                if (currentState == EnemyState.Attacking)
+                {
+                    animator.SetFloat("Speed", 0);
+                    animator.SetTrigger("Trigger EnemySkillAttack");
                 }
             }
         }
@@ -106,6 +115,7 @@ namespace Project1
             transform.position = Vector3.MoveTowards(transform.position, initialPosition, moveSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Euler(0f, 0f, 0f);
             animator.SetFloat("Speed", 1);
+            skillAttack = false;
 
             if (transform.position == initialPosition)
             {
