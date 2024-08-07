@@ -13,6 +13,7 @@ TagManager:
   - FayePlayer
   - InugamiPlayer
   - HoshiPlayer
+  - Sapphi Enemy
   layers:
   - Default
   - TransparentFX
