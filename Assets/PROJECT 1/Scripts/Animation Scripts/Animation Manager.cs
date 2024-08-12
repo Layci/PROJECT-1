@@ -19,7 +19,7 @@ namespace ProJect1
                 }
                 else
                 {
-                    enemy.TakeDamage(player.playerSKillAttackPower);
+                    enemy.TakeDamage(player.playerSkillAttackPower);
                 }
             }
         }

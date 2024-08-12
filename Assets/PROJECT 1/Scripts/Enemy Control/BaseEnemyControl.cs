@@ -1,5 +1,6 @@
 using ProJect1;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +14,7 @@ namespace Project1
         Returning
     }
 
-    public abstract class BaseEnemyControl : MonoBehaviour
+    public abstract class BaseEnemyControl : MonoBehaviour, IUnit
     {
         public static BaseEnemyControl instance;
 
@@ -166,11 +167,6 @@ namespace Project1
             Debug.Log("적 피격");
         }
 
-        public IEnumerator ExecuteAction()
-        {
-            yield return new WaitForSeconds(2f);
-        }
-
         public void StartAttack()
         {
             currentState = EnemyState.MovingToAttack;
@@ -179,6 +175,14 @@ namespace Project1
         public void StopAttack()
         {
             currentState = EnemyState.Idle;
+        }
+
+        public float UnitSpeed => unitSpeed;
+
+        public void TakeTurn()
+        {
+            // 적의 행동을 정의
+            HandleState();
         }
     }
 }

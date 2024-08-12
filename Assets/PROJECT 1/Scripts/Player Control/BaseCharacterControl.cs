@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using ProJect1;
 
 namespace Project1
 {
@@ -12,7 +13,7 @@ namespace Project1
         Returning
     }
 
-    public abstract class BaseCharacterControl : MonoBehaviour
+    public abstract class BaseCharacterControl : MonoBehaviour, IUnit
     {
         public static BaseCharacterControl instance;
 
@@ -27,7 +28,7 @@ namespace Project1
         public float moveSpeed;
         public float unitSpeed;
         public float playerAttackPower;
-        public float playerSKillAttackPower;
+        public float playerSkillAttackPower;
         public float attackRange; // 공격 거리
         public bool startAttacking;
         public bool skillAttack;
@@ -150,11 +151,6 @@ namespace Project1
             Debug.Log("hit");
         }
 
-        public IEnumerator ExecuteAction()
-        {
-            yield return new WaitForSeconds(2f);
-        }
-
         public void StartMove(Transform targetTransform)
         {
             enemy = targetTransform;
@@ -169,6 +165,14 @@ namespace Project1
         public void StopAction()
         {
             currentState = PlayerState.Idle;
+        }
+
+        public float UnitSpeed => unitSpeed;
+
+        public void TakeTurn()
+        {
+            // 유닛의 행동을 정의
+            HandleState();
         }
     }
 }

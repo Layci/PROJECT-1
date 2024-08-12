@@ -1,0 +1,40 @@
+using Project1;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace ProJect1
+{
+    public class HoshiPlayerControl : BaseCharacterControl
+    {
+        public Transform enemyTransform; // 적의 위치
+
+        protected override void HandleAttackInput()
+        {
+            if (currentState == PlayerState.Idle) // 플레이어가 대기 상태일 경우에만 공격 가능
+            {
+                if (Input.GetKeyDown(KeyCode.Q)) // 공격 키
+                {
+                    StartMove(enemyTransform);
+                    skillAttack = false;
+                    SkillPointManager.instance.SkillPointUp();
+                }
+                if (SkillPointManager.instance.curSkillPoint > 0) // 스킬 포인트가 1이상일 경우에만 사용가능 
+                {
+                    if (Input.GetKeyDown(KeyCode.E)) // 스킬 키
+                    {
+                        StartMove(enemyTransform); // 스킬 사용도 이동 후 공격
+                        skillAttack = true;
+                        SkillPointManager.instance.UseSkillPoint();
+                    }
+                }
+            }
+        }
+
+        protected override void MoveToAttack()
+        {
+            base.MoveToAttack();
+            // 필요시 MoveToAttack을 여기서 추가로 수정 가능
+        }
+    }
+}

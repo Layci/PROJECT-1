@@ -8,7 +8,7 @@ namespace ProJect1
 {
     public class CharacterTurnSystem : MonoBehaviour
     {
-        public bool nextTurn = false;
+        /*public bool nextTurn = false;
 
         private void Start()
         {
@@ -28,7 +28,7 @@ namespace ProJect1
             // 정렬된 순서대로 코루틴을 사용해 각 스크립트를 순차적으로 실행
             StartCoroutine(ExecuteActionsInTurn(speedList, speedActions));
 
-            /*// 정렬된 순서대로 해당 스크립트 실행
+            *//*// 정렬된 순서대로 해당 스크립트 실행
             foreach (float speed in speedList)
             {
                 Debug.Log("Executing action for unitSpeed: " + speed);
@@ -53,12 +53,12 @@ namespace ProJect1
             foreach (float speed in speedArr)
             {
                 Debug.Log(speed);
-            }*/
+            }*//*
 
             // 하이러라키 순서 바꾸기
-            /*Transform childItem;
+            *//*Transform childItem;
             transform.childCount;
-            childItem.transform.SetSiblingIndex(0);*/
+            childItem.transform.SetSiblingIndex(0);*//*
         }
 
         private IEnumerator ExecuteActionsInTurn(List<float> speedList, Dictionary<float, System.Func<IEnumerator>> speedActions)
@@ -68,6 +68,6 @@ namespace ProJect1
                 Debug.Log("Executing action for unitSpeed: " + speed);
                 yield return StartCoroutine(speedActions[speed].Invoke()); // 각 속도에 맞는 액션 실행을 기다림
             }
-        }
+        }*/
     }
 }
