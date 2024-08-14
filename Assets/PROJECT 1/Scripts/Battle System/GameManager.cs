@@ -1,40 +1,58 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace Project1
 {
     public class GameManager : MonoBehaviour
     {
-        private List<IUnit> units;
+        public static GameManager instance;
+
+        private IUnit currentUnit;
+        private int currentUnitIndex = 0;
+        private List<IUnit> allUnits = new List<IUnit>(); // 유닛 리스트
+
+        private void Awake()
+        {
+            if (instance == null)
+            {
+                instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
 
         private void Start()
         {
-            // 씬에서 모든 유닛을 찾고 리스트에 추가
-            units = new List<IUnit>(FindObjectsOfType<MonoBehaviour>().OfType<IUnit>());
+            // 모든 유닛(플레이어 및 적)을 리스트에 추가
+            allUnits.AddRange(FindObjectsOfType<BaseCharacterControl>());
+            allUnits.AddRange(FindObjectsOfType<BaseEnemyControl>());
 
-            // 초기 턴 실행
-            StartCoroutine(RunTurns());
+            // 속도 기준으로 정렬
+            allUnits.Sort((a, b) => b.UnitSpeed.CompareTo(a.UnitSpeed));
+
+            // 첫 번째 유닛의 턴 시작
+            StartNextTurn();
         }
 
-        private IEnumerator RunTurns()
+        public void StartNextTurn()
         {
-            while (true)
-            {
-                // unitSpeed에 따라 유닛들을 내림차순으로 정렬
-                units.Sort((x, y) => y.UnitSpeed.CompareTo(x.UnitSpeed));
+            if (allUnits.Count == 0) return;
 
-                // 각 유닛이 순서대로 턴을 수행
-                foreach (var unit in units)
-                {
-                    unit.TakeTurn();
-                    yield return new WaitForSeconds(1.0f); // 턴 사이의 딜레이를 추가
-                }
+            currentUnit = allUnits[currentUnitIndex];
+            currentUnit.TakeTurn();
+        }
 
-                // 다음 턴까지 대기 (원하는 대기 시간 설정)
-                yield return new WaitForSeconds(2.0f);
-            }
+        public void OnUnitTurnCompleted()
+        {
+            currentUnitIndex = (currentUnitIndex + 1) % allUnits.Count;
+            StartNextTurn();
+        }
+
+        public bool IsCurrentUnit(IUnit unit)
+        {
+            return unit == currentUnit;
         }
     }
 }

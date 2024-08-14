@@ -21,7 +21,6 @@ namespace Project1
         protected Vector3 initialPosition;
         protected Quaternion initialRotation;
 
-
         [Header("캐릭터 정보")]
         public float maxHealth;
         public float curHealth;
@@ -169,10 +168,24 @@ namespace Project1
 
         public float UnitSpeed => unitSpeed;
 
-        public void TakeTurn()
+        public virtual void TakeTurn()
         {
-            // 유닛의 행동을 정의
-            HandleState();
+            StartCoroutine(ExecuteTurn());
+        }
+
+        protected IEnumerator ExecuteTurn()
+        {
+            isAttackExecuted = false;
+            currentState = PlayerState.Idle;
+
+            while (currentState != PlayerState.Idle || startAttacking)
+            {
+                HandleState();
+                HandleAttackInput();
+                yield return null;
+            }
+
+            GameManager.instance.OnUnitTurnCompleted();
         }
     }
 }

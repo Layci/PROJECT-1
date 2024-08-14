@@ -181,8 +181,24 @@ namespace Project1
 
         public void TakeTurn()
         {
-            // 적의 행동을 정의
-            HandleState();
+            // 유닛의 행동을 시작
+            StartCoroutine(ExecuteTurn());
+        }
+
+        private IEnumerator ExecuteTurn()
+        {
+            isAttackExecuted = false;
+            currentState = EnemyState.MovingToAttack;
+
+            // 상태 처리 루프
+            while (currentState != EnemyState.Idle)
+            {
+                HandleState();
+                yield return null; // 다음 프레임까지 대기
+            }
+
+            // 유닛의 행동이 완료되면 GameManager에 알림
+            GameManager.instance.OnUnitTurnCompleted();
         }
     }
 }
