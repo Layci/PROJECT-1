@@ -2413,7 +2413,7 @@ MonoBehaviour:
   attackRange: 1
   startAttacking: 0
   skillAttack: 0
-  enemy: {fileID: 0}
+  enemy: {fileID: 1964147780}
   hpBarSlider: {fileID: 167503570}
   currentState: 0
   enemyTransform: {fileID: 1964147780}
@@ -3104,6 +3104,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cbe11bd5b53e6d41968a36548247dde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentUnitIndex: 0
+  gameTurnState: 0
 --- !u!1 &368750919
 GameObject:
   m_ObjectHideFlags: 0
@@ -4256,7 +4258,7 @@ MonoBehaviour:
   attackRange: 1
   startAttacking: 0
   skillAttack: 0
-  enemy: {fileID: 0}
+  enemy: {fileID: 1964147780}
   hpBarSlider: {fileID: 125958548}
   currentState: 0
   enemyTransform: {fileID: 1964147780}
@@ -5796,7 +5798,7 @@ MonoBehaviour:
   attackRange: 1
   startAttacking: 0
   skillAttack: 0
-  enemy: {fileID: 0}
+  enemy: {fileID: 1964147780}
   hpBarSlider: {fileID: 1910444911}
   currentState: 0
   enemyTransform: {fileID: 1964147780}
@@ -6613,7 +6615,7 @@ MonoBehaviour:
   attackRange: 1
   startAttacking: 0
   skillAttack: 0
-  enemy: {fileID: 0}
+  enemy: {fileID: 1964147780}
   hpBarSlider: {fileID: 431315078}
   currentState: 0
   enemyTransform: {fileID: 1964147780}

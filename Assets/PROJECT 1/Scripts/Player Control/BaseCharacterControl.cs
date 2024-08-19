@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-using ProJect1;
 
 namespace Project1
 {
@@ -13,13 +12,14 @@ namespace Project1
         Returning
     }
 
-    public abstract class BaseCharacterControl : MonoBehaviour, IUnit
+    public abstract class BaseCharacterControl : MonoBehaviour
     {
         public static BaseCharacterControl instance;
 
         protected Animator animator;
         protected Vector3 initialPosition;
         protected Quaternion initialRotation;
+
 
         [Header("캐릭터 정보")]
         public float maxHealth;
@@ -164,28 +164,6 @@ namespace Project1
         public void StopAction()
         {
             currentState = PlayerState.Idle;
-        }
-
-        public float UnitSpeed => unitSpeed;
-
-        public virtual void TakeTurn()
-        {
-            StartCoroutine(ExecuteTurn());
-        }
-
-        protected IEnumerator ExecuteTurn()
-        {
-            isAttackExecuted = false;
-            currentState = PlayerState.Idle;
-
-            while (currentState != PlayerState.Idle || startAttacking)
-            {
-                HandleState();
-                HandleAttackInput();
-                yield return null;
-            }
-
-            GameManager.instance.OnUnitTurnCompleted();
         }
     }
 }
