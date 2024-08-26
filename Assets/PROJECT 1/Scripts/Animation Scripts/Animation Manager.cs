@@ -27,14 +27,6 @@ namespace ProJect1
                         float damage = player.skillAttack ? player.playerSkillAttackPower : player.playerAttackPower;
                         enemyControl.TakeDamage(damage);
                     }
-                    else
-                    {
-                        Debug.LogWarning("EnemyControl component not found on enemy.");
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning("Player's enemy reference is null.");
                 }
             }
         }
@@ -51,14 +43,6 @@ namespace ProJect1
                     {
                         playerControl.TakeDamage(enemy.enemyAttackPower);
                     }
-                    else
-                    {
-                        Debug.LogWarning("PlayerControl component not found on player.");
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning("Enemy's player reference is null.");
                 }
             }
         }
