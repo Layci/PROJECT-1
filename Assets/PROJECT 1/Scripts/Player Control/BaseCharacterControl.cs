@@ -20,7 +20,6 @@ namespace Project1
         protected Vector3 initialPosition;
         protected Quaternion initialRotation;
 
-
         [Header("캐릭터 정보")]
         public float maxHealth;
         public float curHealth;
@@ -106,16 +105,21 @@ namespace Project1
         protected virtual void ReturnToInitialPosition()
         {
             transform.position = Vector3.MoveTowards(transform.position, initialPosition, moveSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Euler(0f, -180f, 0f);
+            transform.rotation = Quaternion.Euler(0f, -180f, 0f);  // 캐릭터가 원래 방향을 바라보도록 회전
             animator.SetFloat("Speed", 1);
 
+            // 원래 위치로 돌아왔는지 체크
             if (Vector3.Distance(transform.position, initialPosition) <= 0.1f)
             {
-                transform.position = initialPosition; // 위치 보정
-                transform.rotation = initialRotation;
+                transform.position = initialPosition;  // 위치 보정
+                transform.rotation = initialRotation;  // 회전 보정
                 animator.SetFloat("Speed", 0);
-                currentState = PlayerState.Idle;
-                isAttackExecuted = false; // 위치로 돌아오면 공격 수행 상태 초기화
+
+                currentState = PlayerState.Idle;  // Idle 상태로 전환
+                isAttackExecuted = false;  // 공격 상태 초기화
+
+                // 턴을 넘겨주는 로직 추가
+                GameManager.instance.turnSystem.EndTurn();  // 턴 종료
             }
         }
 
@@ -150,9 +154,9 @@ namespace Project1
             Debug.Log("hit");
         }
 
-        public void StartMove(Transform targetTransform)
+        // StartMoveToAttack 메서드 추가
+        public void StartMoveToAttack()
         {
-            enemy = targetTransform;
             currentState = PlayerState.MovingToAttack;
         }
 
