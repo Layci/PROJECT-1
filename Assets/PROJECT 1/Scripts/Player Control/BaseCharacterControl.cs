@@ -169,5 +169,11 @@ namespace Project1
         {
             currentState = PlayerState.Idle;
         }
+
+        // 기본적인 WaitForInput 메서드, 모든 캐릭터가 이를 가질 수 있도록 정의
+        public virtual void WaitForInput()
+        {
+            // 기본적으로 아무것도 하지 않음 (오버라이드 목적)
+        }
     }
 }

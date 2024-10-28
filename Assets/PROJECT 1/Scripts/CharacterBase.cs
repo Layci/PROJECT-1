@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static ProJect1.CharacterBase;
+using static Project1.CharacterBase;
 
-namespace ProJect1
+namespace Project1
 {
     public class CharacterBase : MonoBehaviour
     {

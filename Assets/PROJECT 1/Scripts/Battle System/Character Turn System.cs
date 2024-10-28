@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace ProJect1
+namespace Project1
 {
     public class CharacterTurnSystem : MonoBehaviour
     {

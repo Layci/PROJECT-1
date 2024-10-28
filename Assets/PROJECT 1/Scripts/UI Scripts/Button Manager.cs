@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ProJect1
+namespace Project1
 {
     public class ButtonManager : MonoBehaviour
     {

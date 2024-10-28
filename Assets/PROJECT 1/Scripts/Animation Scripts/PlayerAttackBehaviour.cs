@@ -1,7 +1,7 @@
 using Project1;
 using UnityEngine;
 
-namespace ProJect1
+namespace Project1
 {
     public class PlayerAttackBehaviour : StateMachineBehaviour
     {

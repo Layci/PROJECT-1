@@ -1,4 +1,4 @@
-using ProJect1;
+using Project1;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
