@@ -25,7 +25,6 @@ namespace Project1
         public float maxHealth;
         public float curHealth;
         public float moveSpeed;
-        public float unitSpeed;
         public float enemyAttackPower;
         public float attackRange; // 공격 거리
         public bool startAttacking;
@@ -34,8 +33,9 @@ namespace Project1
         public Slider hpBarSlider; // HP바
 
         [Header("적 움직임")]
-        public EnemyState currentState = EnemyState.Idle; // 현재 상태 추가
+        public EnemyState currentState = EnemyState.Idle;
         protected bool isAttackExecuted = false;
+        private TurnSystem turnSystem;
 
         protected virtual void Awake()
         {
@@ -46,9 +46,8 @@ namespace Project1
 
         protected virtual void Start()
         {
-            // 적의 체력을 최대 체력으로 초기화
             curHealth = maxHealth;
-            Debug.Log($"적의 초기 체력: {curHealth}");
+            turnSystem = FindObjectOfType<TurnSystem>();
         }
 
         protected virtual void Update()
@@ -62,7 +61,6 @@ namespace Project1
             switch (currentState)
             {
                 case EnemyState.Idle:
-                    // 아무것도 하지 않음
                     break;
                 case EnemyState.MovingToAttack:
                     MoveToAttack();
@@ -98,6 +96,7 @@ namespace Project1
                 {
                     animator.SetFloat("Speed", 0);
                     animator.SetTrigger("Trigger EnemyAttack");
+                    isAttackExecuted = true; // 공격 수행 상태로 설정
                 }
             }
             else if (!startAttacking && skillAttack)
@@ -106,6 +105,7 @@ namespace Project1
                 {
                     animator.SetFloat("Speed", 0);
                     animator.SetTrigger("Trigger EnemySkillAttack");
+                    isAttackExecuted = true;
                 }
             }
         }
@@ -122,8 +122,14 @@ namespace Project1
                 animator.SetFloat("Speed", 0);
                 transform.rotation = initialRotation;
                 currentState = EnemyState.Idle;
-                isAttackExecuted = false; // 위치로 돌아오면 공격 수행 상태 초기화
-                startAttacking = false; // 위치로 돌아오면 상태 초기화
+                isAttackExecuted = false;
+                startAttacking = false;
+
+                // 턴 종료 시 호출
+                if (turnSystem != null)
+                {
+                    turnSystem.EndTurn();
+                }
             }
         }
 
@@ -139,41 +145,29 @@ namespace Project1
             }
         }
 
-        public void CheckHP()
-        {
-            if (hpBarSlider != null)
-            {
-                hpBarSlider.value = curHealth / maxHealth;
-            }
-        }
-
         public void TakeDamage(float damage)
         {
             if (maxHealth == 0 || curHealth == 0)
                 return;
 
             animator.SetTrigger("Trigger EnemyHit");
-
             curHealth -= damage;
 
-            CheckHP();
+            if (hpBarSlider != null)
+            {
+                hpBarSlider.value = curHealth / maxHealth;
+            }
 
             if (curHealth <= 0)
             {
                 Debug.Log("적 사망");
                 Destroy(gameObject);
             }
-            Debug.Log("적 피격");
         }
 
         public void StartAttack()
         {
             currentState = EnemyState.MovingToAttack;
-        }
-
-        public void StopAttack()
-        {
-            currentState = EnemyState.Idle;
         }
     }
 }

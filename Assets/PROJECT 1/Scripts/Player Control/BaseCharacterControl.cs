@@ -46,9 +46,15 @@ namespace Project1
 
         protected virtual void Update()
         {
-            HandleState();
-            HandleAttackInput();
+            // 현재 턴의 캐릭터가 자신인 경우에만 입력을 처리
+            if ((GameManager.instance.turnSystem.CurrentCharacter as BaseCharacterControl) == this)
+            {
+                HandleState();
+                HandleAttackInput();
+            }
         }
+
+
 
         protected void HandleState()
         {
@@ -108,25 +114,30 @@ namespace Project1
             transform.rotation = Quaternion.Euler(0f, -180f, 0f);  // 캐릭터가 원래 방향을 바라보도록 회전
             animator.SetFloat("Speed", 1);
 
-            // 원래 위치로 돌아왔는지 체크
             if (Vector3.Distance(transform.position, initialPosition) <= 0.1f)
             {
                 transform.position = initialPosition;  // 위치 보정
                 transform.rotation = initialRotation;  // 회전 보정
                 animator.SetFloat("Speed", 0);
 
-                currentState = PlayerState.Idle;  // Idle 상태로 전환
-                isAttackExecuted = false;  // 공격 상태 초기화
+                currentState = PlayerState.Idle;
+                isAttackExecuted = false;
 
-                // 턴을 넘겨주는 로직 추가
+                // 다음 캐릭터로 턴을 넘김
                 GameManager.instance.turnSystem.EndTurn();  // 턴 종료
             }
         }
 
+
         protected virtual void HandleAttackInput()
         {
-            // 기본적으로 아무것도 하지 않음
+            // 현재 턴의 캐릭터만 입력을 처리하도록 설정
+            if ((GameManager.instance.turnSystem.CurrentCharacter as BaseCharacterControl) == this && currentState == PlayerState.Idle)
+            {
+                // 공격 및 스킬 입력 처리
+            }
         }
+
 
         public void CheckHP()
         {

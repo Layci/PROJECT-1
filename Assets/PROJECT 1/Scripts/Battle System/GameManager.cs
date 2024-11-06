@@ -15,12 +15,17 @@ namespace Project1
             if (instance == null)
             {
                 instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
             }
         }
 
         private void Start()
         {
-            turnSystem = FindObjectOfType<TurnSystem>();  // TurnSystem¿ª √£¿Ω
+            turnSystem.StartTurn();
         }
     }
 }

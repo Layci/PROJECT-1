@@ -37,7 +37,6 @@ namespace Project1
 
         public override void WaitForInput()
         {
-            // 현재 플레이어 유닛의 턴일 때만 입력을 대기
             HandleAttackInput();
         }
 
