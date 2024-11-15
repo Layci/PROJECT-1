@@ -30,6 +30,7 @@ namespace Project1
         public float attackRange; // 공격 거리
         public bool startAttacking;
         public bool skillAttack;
+        public bool isTurn = false;
         public Transform enemy; // 적 위치 참조
         public Slider hpBarSlider; // HP바
 
@@ -47,7 +48,12 @@ namespace Project1
         protected virtual void Update()
         {
             // 현재 턴의 캐릭터가 자신인 경우에만 입력을 처리
-            if ((GameManager.instance.turnSystem.CurrentCharacter as BaseCharacterControl) == this)
+            /*if ((GameManager.instance.turnSystem.CurrentCharacter as BaseCharacterControl) == this)
+            {
+                HandleState();
+                HandleAttackInput();
+            }*/
+            if (isTurn)
             {
                 HandleState();
                 HandleAttackInput();

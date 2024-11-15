@@ -44,7 +44,7 @@ namespace Project1
                 }
                 else if (CurrentCharacter is BaseEnemyControl enemyControl)
                 {
-                    enemyControl.StartAttack(); // 적이 공격을 시작하도록 설정
+                    enemyControl.StartAttack(); // 적이 자동으로 공격하도록 설정
                 }
 
                 // 턴이 끝난 후 캐릭터를 다시 큐에 추가

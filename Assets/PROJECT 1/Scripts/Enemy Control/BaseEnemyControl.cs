@@ -53,7 +53,6 @@ namespace Project1
         protected virtual void Update()
         {
             HandleState();
-            CheckPlayerDistance();
         }
 
         protected void HandleState()
@@ -74,80 +73,10 @@ namespace Project1
             }
         }
 
-        protected virtual void MoveToAttack()
-        {
-            if (!isAttackExecuted)
-            {
-                transform.LookAt(player.position);
-                transform.position = Vector3.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
-                animator.SetFloat("Speed", 1);
-            }
-            else
-            {
-                currentState = EnemyState.Returning;
-            }
-        }
-
-        protected virtual void PerformAttack()
-        {
-            if (!startAttacking && !skillAttack)
-            {
-                if (currentState == EnemyState.Attacking)
-                {
-                    animator.SetFloat("Speed", 0);
-                    animator.SetTrigger("Trigger EnemyAttack");
-                    isAttackExecuted = true; // 공격 수행 상태로 설정
-                }
-            }
-            else if (!startAttacking && skillAttack)
-            {
-                if (currentState == EnemyState.Attacking)
-                {
-                    animator.SetFloat("Speed", 0);
-                    animator.SetTrigger("Trigger EnemySkillAttack");
-                    isAttackExecuted = true;
-                }
-            }
-        }
-
-        protected virtual void ReturnToInitialPosition()
-        {
-            transform.position = Vector3.MoveTowards(transform.position, initialPosition, moveSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-            animator.SetFloat("Speed", 1);
-            skillAttack = false;
-
-            if (transform.position == initialPosition)
-            {
-                animator.SetFloat("Speed", 0);
-                transform.rotation = initialRotation;
-                currentState = EnemyState.Idle;
-                isAttackExecuted = false;
-                startAttacking = false;
-
-                // 턴 종료 시 호출
-                if (turnSystem != null)
-                {
-                    turnSystem.EndTurn();
-                }
-            }
-        }
-
-        protected void CheckPlayerDistance()
-        {
-            if (currentState == EnemyState.MovingToAttack)
-            {
-                float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-                if (distanceToPlayer <= attackRange)
-                {
-                    currentState = EnemyState.Attacking;
-                }
-            }
-        }
-
+        // TakeDamage 메서드 추가
         public void TakeDamage(float damage)
         {
-            if (maxHealth == 0 || curHealth == 0)
+            if (curHealth <= 0)
                 return;
 
             animator.SetTrigger("Trigger EnemyHit");
@@ -160,14 +89,73 @@ namespace Project1
 
             if (curHealth <= 0)
             {
-                Debug.Log("적 사망");
-                Destroy(gameObject);
+                Die();
             }
         }
 
+        // 적이 죽었을 때 처리
+        protected virtual void Die()
+        {
+            Debug.Log("적 사망");
+            Destroy(gameObject);
+        }
+
+        // 공격을 시작하도록 호출되는 메서드
         public void StartAttack()
         {
             currentState = EnemyState.MovingToAttack;
+        }
+
+        protected virtual void MoveToAttack()
+        {
+            // 플레이어를 향해 움직이기
+            if (!isAttackExecuted)
+            {
+                transform.LookAt(player.position);
+                transform.position = Vector3.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
+                animator.SetFloat("Speed", 1);
+
+                // 공격 범위에 도달하면 상태를 변경
+                if (Vector3.Distance(transform.position, player.position) <= attackRange)
+                {
+                    currentState = EnemyState.Attacking;
+                }
+            }
+            else
+            {
+                // 공격을 이미 수행한 경우 되돌아가는 상태로 변경
+                currentState = EnemyState.Returning;
+            }
+        }
+
+        protected virtual void PerformAttack()
+        {
+            if (currentState == EnemyState.Attacking && !isAttackExecuted)
+            {
+                animator.SetFloat("Speed", 0);
+                animator.SetTrigger("Trigger EnemyAttack");
+                isAttackExecuted = true; // 공격을 수행한 것으로 표시
+            }
+
+            // 공격이 끝난 후 상태를 되돌아가는 상태로 설정
+            currentState = EnemyState.Returning;
+        }
+
+        protected virtual void ReturnToInitialPosition()
+        {
+            transform.position = Vector3.MoveTowards(transform.position, initialPosition, moveSpeed * Time.deltaTime);
+            animator.SetFloat("Speed", 1);
+
+            if (transform.position == initialPosition)
+            {
+                animator.SetFloat("Speed", 0);
+                transform.rotation = initialRotation;
+                currentState = EnemyState.Idle;
+                isAttackExecuted = false; // 공격 수행 상태 초기화
+
+                // 턴 종료 시 호출
+                turnSystem?.EndTurn();
+            }
         }
     }
 }
