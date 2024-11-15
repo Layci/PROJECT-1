@@ -23,14 +23,14 @@ namespace Project1
                     skillAttack = false;
                     StartMove(enemyTransform);
                     SkillPointManager.instance.SkillPointUp();
-                    EndPlayerTurn(); // 공격 후 턴 종료
+                    //EndPlayerTurn(); // 공격 후 턴 종료
                 }
                 else if (SkillPointManager.instance.curSkillPoint > 0 && Input.GetKeyDown(KeyCode.E))
                 {
                     skillAttack = true;
                     StartMove(enemyTransform);
                     SkillPointManager.instance.UseSkillPoint();
-                    EndPlayerTurn(); // 스킬 사용 후 턴 종료
+                    //EndPlayerTurn(); // 스킬 사용 후 턴 종료
                 }
             }
         }
@@ -44,17 +44,17 @@ namespace Project1
         {
             if (enemyTransform != null)
             {
-                enemy = enemyTransform;
+                enemyTransform1 = enemyTransform;
                 currentState = PlayerState.MovingToAttack;
             }
         }
 
-        private void EndPlayerTurn()
+        /*private void EndPlayerTurn()
         {
             if (turnSystem != null)
             {
                 turnSystem.EndTurn(); // 턴 종료
             }
-        }
+        }*/
     }
 }

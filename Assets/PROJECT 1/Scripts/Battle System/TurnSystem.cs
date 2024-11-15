@@ -1,61 +1,111 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Project1
 {
     public class TurnSystem : MonoBehaviour
     {
-        public List<BaseCharacterControl> playerTeam = new List<BaseCharacterControl>();  // 플레이어 팀
-        public List<BaseEnemyControl> enemyTeam = new List<BaseEnemyControl>();           // 적 팀
-        private Queue<object> turnQueue = new Queue<object>();
+        public static TurnSystem instance; // 싱글톤 인스턴스
 
-        // 현재 턴의 캐릭터를 외부에서 접근할 수 있도록 public 속성으로 설정
-        public object CurrentCharacter { get; private set; }
+        public List<BaseCharacterControl> playerCharacters; // 플레이어 캐릭터 리스트
+        public List<BaseEnemyControl> enemyCharacters; // 적 캐릭터 리스트
+        private List<object> allCharacters; // 모든 캐릭터를 포함하는 리스트
+
+        private int currentTurnIndex = 0; // 현재 턴을 담당하는 캐릭터의 인덱스
+
+        private void Awake()
+        {
+            if (instance == null)
+            {
+                instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            DontDestroyOnLoad(gameObject);
+        }
 
         private void Start()
         {
-            InitializeTurnOrder();
-            StartTurn();
+            // 모든 캐릭터를 가져와 리스트에 추가
+            playerCharacters = FindObjectsOfType<BaseCharacterControl>().ToList();
+            enemyCharacters = FindObjectsOfType<BaseEnemyControl>().ToList();
+
+            // 모든 캐릭터를 하나의 리스트에 추가
+            allCharacters = new List<object>();
+            allCharacters.AddRange(playerCharacters);
+            allCharacters.AddRange(enemyCharacters);
+
+            // unitSpeed를 기준으로 내림차순 정렬
+            allCharacters = allCharacters.OrderByDescending(character =>
+            {
+                if (character is BaseCharacterControl player)
+                    return player.unitSpeed;
+                else if (character is BaseEnemyControl enemy)
+                    return enemy.unitSpeed;
+                return 0;
+            }).ToList();
+
+            StartTurn(); // 첫 번째 턴 시작
         }
 
-        // 턴 순서 초기화
-        private void InitializeTurnOrder()
+        // 맨 처음 실행
+        private void StartTurn()
         {
-            foreach (var player in playerTeam)
+            // 현재 턴 캐릭터를 가져옴
+            if (currentTurnIndex >= allCharacters.Count)
+                currentTurnIndex = 0; // 인덱스가 리스트를 초과하면 다시 처음으로
+
+            if (allCharacters[currentTurnIndex] is BaseCharacterControl playerCharacter)
             {
-                turnQueue.Enqueue(player);
+                playerCharacter.isTurn = true;
             }
-            foreach (var enemy in enemyTeam)
+            else if (allCharacters[currentTurnIndex] is BaseEnemyControl enemyCharacter)
             {
-                turnQueue.Enqueue(enemy);
-            }
-        }
-
-        // 다음 캐릭터의 턴 시작 (public으로 변경)
-        public void StartTurn()
-        {
-            if (turnQueue.Count > 0)
-            {
-                CurrentCharacter = turnQueue.Dequeue();
-
-                if (CurrentCharacter is BaseCharacterControl playerControl)
-                {
-                    playerControl.WaitForInput(); // 플레이어가 입력을 받을 수 있도록 설정
-                }
-                else if (CurrentCharacter is BaseEnemyControl enemyControl)
-                {
-                    enemyControl.StartAttack(); // 적이 자동으로 공격하도록 설정
-                }
-
-                // 턴이 끝난 후 캐릭터를 다시 큐에 추가
-                turnQueue.Enqueue(CurrentCharacter);
+                enemyCharacter.isTurn = true;
             }
         }
 
-        // 턴 종료 메서드
+        // 턴이 끝날시 호출
         public void EndTurn()
         {
-            StartTurn();
+            // 현재 턴 캐릭터의 isTurn을 false로 설정
+            if (allCharacters[currentTurnIndex] is BaseCharacterControl playerCharacter)
+            {
+                playerCharacter.isTurn = false;
+            }
+            else if (allCharacters[currentTurnIndex] is BaseEnemyControl enemyCharacter)
+            {
+                enemyCharacter.isTurn = false;
+            }
+
+            // 다음 캐릭터로 넘어감
+            currentTurnIndex++;
+            if (currentTurnIndex >= allCharacters.Count)
+            {
+                currentTurnIndex = 0; // 인덱스가 리스트를 초과하면 다시 처음으로
+            }
+
+            StartTurn(); // 다음 턴 시작
         }
+
+        // 캐릭터 죽을시 턴에서 제외
+        public void RemoveCharacterFromTurnOrder(object character)
+        {
+            // 사망한 캐릭터를 리스트에서 제거
+            allCharacters.Remove(character);
+
+            // 현재 턴 인덱스가 리스트 범위를 초과하지 않도록 보정
+            if (currentTurnIndex >= allCharacters.Count)
+            {
+                currentTurnIndex = 0;
+            }
+        }
+
     }
 }

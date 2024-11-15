@@ -19,9 +19,9 @@ namespace Project1
             if (player != null && player.currentState == PlayerState.Attacking)
             {
                 // 적에게 피해를 입힘
-                if (player.enemy != null)
+                if (player.enemyTransform1 != null)
                 {
-                    BaseEnemyControl enemyControl = player.enemy.GetComponent<BaseEnemyControl>();
+                    BaseEnemyControl enemyControl = player.enemyTransform1.GetComponent<BaseEnemyControl>();
                     if (enemyControl != null)
                     {
                         float damage = player.skillAttack ? player.playerSkillAttackPower : player.playerAttackPower;
@@ -36,12 +36,13 @@ namespace Project1
             if (enemy != null && enemy.currentState == EnemyState.Attacking)
             {
                 // 플레이어에게 피해를 입힘
-                if (enemy.player != null)
+                if (enemy.playerTransform1 != null)
                 {
-                    BaseCharacterControl playerControl = enemy.player.GetComponent<BaseCharacterControl>();
+                    BaseCharacterControl playerControl = enemy.playerTransform1.GetComponent<BaseCharacterControl>();
                     if (playerControl != null)
                     {
-                        playerControl.TakeDamage(enemy.enemyAttackPower);
+                        float damage = enemy.skillAttack ? enemy.enemySkillAttackPower : enemy.enemyAttackPower;
+                        playerControl.TakeDamage(damage);
                     }
                 }
             }

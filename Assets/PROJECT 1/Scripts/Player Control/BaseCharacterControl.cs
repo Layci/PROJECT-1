@@ -21,18 +21,18 @@ namespace Project1
         protected Quaternion initialRotation;
 
         [Header("캐릭터 정보")]
-        public float maxHealth;
-        public float curHealth;
-        public float moveSpeed;
-        public float unitSpeed;
-        public float playerAttackPower;
-        public float playerSkillAttackPower;
-        public float attackRange; // 공격 거리
-        public bool startAttacking;
-        public bool skillAttack;
-        public bool isTurn = false;
-        public Transform enemy; // 적 위치 참조
-        public Slider hpBarSlider; // HP바
+        public float maxHealth;               // 최대 체력
+        public float curHealth;               // 현재 체력
+        public float moveSpeed;               // 이동 속도
+        public float unitSpeed;               // 유닛 속도(턴 순서 관련)
+        public float playerAttackPower;       // 플레이어 기본공격력
+        public float playerSkillAttackPower;  // 플레이어 스킬공격력
+        public float attackRange;             // 공격 거리
+        public bool startAttacking;           // 공격중을 알리는 연산자
+        public bool skillAttack;              // 스킬공격을 할지 알리는 연산자
+        public bool isTurn = false;           // 본인 턴인지 알려주는 연산자
+        public Transform enemyTransform1;     // 적 위치 참조
+        public Slider hpBarSlider;            // HP바
 
         [Header("캐릭터 움직임")]
         public PlayerState currentState = PlayerState.Idle; // 현재 상태 추가
@@ -53,6 +53,7 @@ namespace Project1
                 HandleState();
                 HandleAttackInput();
             }*/
+            // 캐릭터가 자신의 턴일 경우에 입력 처리
             if (isTurn)
             {
                 HandleState();
@@ -83,12 +84,12 @@ namespace Project1
 
         protected virtual void MoveToAttack()
         {
-            if (enemy != null)
+            if (enemyTransform1 != null)
             {
-                transform.position = Vector3.MoveTowards(transform.position, enemy.position, moveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, enemyTransform1.position, moveSpeed * Time.deltaTime);
                 animator.SetFloat("Speed", 1);
 
-                float distanceToTarget = Vector3.Distance(transform.position, enemy.position);
+                float distanceToTarget = Vector3.Distance(transform.position, enemyTransform1.position);
                 if (distanceToTarget <= attackRange)
                 {
                     currentState = PlayerState.Attacking;
@@ -129,19 +130,21 @@ namespace Project1
                 currentState = PlayerState.Idle;
                 isAttackExecuted = false;
 
+                isTurn = false;
                 // 다음 캐릭터로 턴을 넘김
-                GameManager.instance.turnSystem.EndTurn();  // 턴 종료
+                TurnSystem.instance.EndTurn();
+                //GameManager.instance.turnSystem.EndTurn();  // 턴 종료
             }
         }
 
 
         protected virtual void HandleAttackInput()
         {
-            // 현재 턴의 캐릭터만 입력을 처리하도록 설정
+            /*// 현재 턴의 캐릭터만 입력을 처리하도록 설정
             if ((GameManager.instance.turnSystem.CurrentCharacter as BaseCharacterControl) == this && currentState == PlayerState.Idle)
             {
                 // 공격 및 스킬 입력 처리
-            }
+            }*/
         }
 
 

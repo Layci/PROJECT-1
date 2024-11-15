@@ -2389,7 +2389,8 @@ MonoBehaviour:
   attackRange: 1
   startAttacking: 0
   skillAttack: 0
-  enemy: {fileID: 1964147780}
+  isTurn: 0
+  enemyTransform1: {fileID: 1964147780}
   hpBarSlider: {fileID: 167503570}
   currentState: 0
   enemyTransform: {fileID: 1964147780}
@@ -3080,16 +3081,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 660fc7966e2dea347830062afabb3cb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTeam:
-  - {fileID: 489353501}
-  - {fileID: 799152679}
-  - {fileID: 250670126}
-  - {fileID: 676084075}
-  enemyTeam:
-  - {fileID: 1964147784}
-  - {fileID: 1845761857}
-  - {fileID: 943152726}
-  - {fileID: 1033709849}
+  playerCharacters: []
+  enemyCharacters: []
 --- !u!114 &353701280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3097,7 +3090,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 353701275}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1cbe11bd5b53e6d41968a36548247dde, type: 3}
   m_Name: 
@@ -4203,7 +4196,8 @@ MonoBehaviour:
   attackRange: 1
   startAttacking: 0
   skillAttack: 0
-  enemy: {fileID: 1964147780}
+  isTurn: 0
+  enemyTransform1: {fileID: 1964147780}
   hpBarSlider: {fileID: 125958548}
   currentState: 0
   enemyTransform: {fileID: 1964147780}
@@ -5691,7 +5685,8 @@ MonoBehaviour:
   attackRange: 1
   startAttacking: 0
   skillAttack: 0
-  enemy: {fileID: 1964147780}
+  isTurn: 0
+  enemyTransform1: {fileID: 1964147780}
   hpBarSlider: {fileID: 1910444911}
   currentState: 0
   enemyTransform: {fileID: 1964147780}
@@ -6508,7 +6503,8 @@ MonoBehaviour:
   attackRange: 1
   startAttacking: 0
   skillAttack: 0
-  enemy: {fileID: 1964147780}
+  isTurn: 0
+  enemyTransform1: {fileID: 1964147780}
   hpBarSlider: {fileID: 431315078}
   currentState: 0
   enemyTransform: {fileID: 1964147780}
@@ -7440,11 +7436,15 @@ MonoBehaviour:
   maxHealth: 235
   curHealth: 235
   moveSpeed: 3
+  unitSpeed: 96
   enemyAttackPower: 30
+  enemySkillAttackPower: 37
   attackRange: 1
   startAttacking: 0
   skillAttack: 0
-  player: {fileID: 250670122}
+  isTurn: 0
+  isSkillTurn: 0
+  playerTransform1: {fileID: 250670122}
   hpBarSlider: {fileID: 48247208}
   currentState: 0
 --- !u!1 &950474402
@@ -7921,11 +7921,15 @@ MonoBehaviour:
   maxHealth: 220
   curHealth: 220
   moveSpeed: 3
+  unitSpeed: 108
   enemyAttackPower: 40
+  enemySkillAttackPower: 55
   attackRange: 1
   startAttacking: 0
   skillAttack: 0
-  player: {fileID: 250670122}
+  isTurn: 0
+  isSkillTurn: 0
+  playerTransform1: {fileID: 250670122}
   hpBarSlider: {fileID: 1241843596}
   currentState: 0
 --- !u!1 &1054420888
@@ -13542,11 +13546,15 @@ MonoBehaviour:
   maxHealth: 250
   curHealth: 250
   moveSpeed: 3
+  unitSpeed: 102
   enemyAttackPower: 18
+  enemySkillAttackPower: 25
   attackRange: 1
   startAttacking: 0
   skillAttack: 0
-  player: {fileID: 250670122}
+  isTurn: 0
+  isSkillTurn: 0
+  playerTransform1: {fileID: 250670122}
   hpBarSlider: {fileID: 2020105201}
   currentState: 0
 --- !u!1 &1856601198
@@ -14329,11 +14337,15 @@ MonoBehaviour:
   maxHealth: 250
   curHealth: 250
   moveSpeed: 3
+  unitSpeed: 90
   enemyAttackPower: 28
+  enemySkillAttackPower: 15
   attackRange: 1
   startAttacking: 0
   skillAttack: 0
-  player: {fileID: 250670122}
+  isTurn: 0
+  isSkillTurn: 0
+  playerTransform1: {fileID: 250670122}
   hpBarSlider: {fileID: 1563148827}
   currentState: 0
 --- !u!1 &1975384061

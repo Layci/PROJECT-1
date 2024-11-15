@@ -25,7 +25,7 @@ namespace Project1
 
         private void Start()
         {
-            turnSystem.StartTurn();
+            //turnSystem.StartTurn();
         }
     }
 }
