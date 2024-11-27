@@ -9,9 +9,13 @@ namespace Project1
     {
         public static TurnSystem instance; // 싱글톤 인스턴스
 
+        public int selectedEnemyIndex = 0; // 현재 선택된 적의 인덱스
         public List<BaseCharacterControl> playerCharacters; // 플레이어 캐릭터 리스트
         public List<BaseEnemyControl> enemyCharacters; // 적 캐릭터 리스트
         private List<object> allCharacters; // 모든 캐릭터를 포함하는 리스트
+
+        public List<BaseEnemyControl> activeEnemies = new List<BaseEnemyControl>(); // 적 타겟 리스트
+
 
         private int currentTurnIndex = 0; // 현재 턴을 담당하는 캐릭터의 인덱스
 
@@ -57,13 +61,15 @@ namespace Project1
         // 맨 처음 실행
         private void StartTurn()
         {
-            // 현재 턴 캐릭터를 가져옴
             if (currentTurnIndex >= allCharacters.Count)
                 currentTurnIndex = 0; // 인덱스가 리스트를 초과하면 다시 처음으로
 
             if (allCharacters[currentTurnIndex] is BaseCharacterControl playerCharacter)
             {
                 playerCharacter.isTurn = true;
+
+                // 적 선택 로직 활성화
+                //HandleEnemySelection();
             }
             else if (allCharacters[currentTurnIndex] is BaseEnemyControl enemyCharacter)
             {
@@ -95,7 +101,7 @@ namespace Project1
         }
 
         // 캐릭터 죽을시 턴에서 제외
-        public void RemoveCharacterFromTurnOrder(object character)
+        /*public void RemoveCharacterFromTurnOrder(object character)
         {
             // 사망한 캐릭터를 리스트에서 제거
             allCharacters.Remove(character);
@@ -105,7 +111,72 @@ namespace Project1
             {
                 currentTurnIndex = 0;
             }
+        }*/
+
+        private void HandleEnemySelection()
+        {
+            if (enemyCharacters.Count == 0) return;
+
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                // 왼쪽으로 이동
+                selectedEnemyIndex--;
+                if (selectedEnemyIndex < 0)
+                    selectedEnemyIndex = enemyCharacters.Count - 1;
+            }
+            else if (Input.GetKeyDown(KeyCode.D))
+            {
+                // 오른쪽으로 이동
+                selectedEnemyIndex++;
+                if (selectedEnemyIndex >= enemyCharacters.Count)
+                    selectedEnemyIndex = 0;
+            }
+
+            
         }
 
+        public void RemoveCharacterFromTurnOrder(object character)
+        {
+            // 사망한 캐릭터를 전체 턴 리스트에서 제거
+            allCharacters.Remove(character);
+
+            // 적 캐릭터 리스트에서 제거
+            if (character is BaseEnemyControl enemy)
+            {
+                enemyCharacters.Remove(enemy);
+            }
+
+            // 플레이어 캐릭터 리스트에서도 제거 가능
+            if (character is BaseCharacterControl player)
+            {
+                playerCharacters.Remove(player);
+            }
+
+            // 현재 턴 인덱스가 리스트 범위를 초과하지 않도록 보정
+            if (currentTurnIndex >= allCharacters.Count)
+            {
+                currentTurnIndex = 0;
+            }
+        }
+
+        // 적 추가 함수
+        public void RegisterEnemy(BaseEnemyControl enemy)
+        {
+            // 적 리스트에 추가
+            enemyCharacters.Add(enemy);
+
+            // 전체 턴 리스트에도 추가
+            allCharacters.Add(enemy);
+
+            // unitSpeed 기준으로 다시 정렬
+            allCharacters = allCharacters.OrderByDescending(character =>
+            {
+                if (character is BaseCharacterControl player)
+                    return player.unitSpeed;
+                else if (character is BaseEnemyControl enemyControl)
+                    return enemyControl.unitSpeed;
+                return 0;
+            }).ToList();
+        }
     }
 }

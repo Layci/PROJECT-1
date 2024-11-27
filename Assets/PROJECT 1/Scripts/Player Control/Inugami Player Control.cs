@@ -44,7 +44,7 @@ namespace Project1
         {
             if (enemyTransform != null)
             {
-                enemyTransform1 = enemyTransform;
+                currentTarget = enemyTransform;
                 currentState = PlayerState.MovingToAttack;
             }
         }

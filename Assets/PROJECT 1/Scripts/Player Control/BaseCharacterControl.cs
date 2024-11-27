@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using ProJect1;
 
 namespace Project1
 {
@@ -31,8 +32,10 @@ namespace Project1
         public bool startAttacking;           // 공격중을 알리는 연산자
         public bool skillAttack;              // 스킬공격을 할지 알리는 연산자
         public bool isTurn = false;           // 본인 턴인지 알려주는 연산자
-        public Transform enemyTransform1;     // 적 위치 참조
+        //public Transform enemyTransform1;     // 적 위치 참조
         public Slider hpBarSlider;            // HP바
+        public EnemySelection enemySelection; // 선택된 적 관리
+        public Transform currentTarget;     // 현재 이동 중인 적의 Transform
 
         [Header("캐릭터 움직임")]
         public PlayerState currentState = PlayerState.Idle; // 현재 상태 추가
@@ -84,12 +87,13 @@ namespace Project1
 
         protected virtual void MoveToAttack()
         {
-            if (enemyTransform1 != null)
+            if (currentTarget != null)
             {
-                transform.position = Vector3.MoveTowards(transform.position, enemyTransform1.position, moveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, currentTarget.position, moveSpeed * Time.deltaTime);
                 animator.SetFloat("Speed", 1);
 
-                float distanceToTarget = Vector3.Distance(transform.position, enemyTransform1.position);
+                float distanceToTarget = Vector3.Distance(transform.position, currentTarget.position);
+
                 if (distanceToTarget <= attackRange)
                 {
                     currentState = PlayerState.Attacking;

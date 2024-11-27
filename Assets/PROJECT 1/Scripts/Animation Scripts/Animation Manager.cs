@@ -19,9 +19,9 @@ namespace Project1
             if (player != null && player.currentState == PlayerState.Attacking)
             {
                 // 적에게 피해를 입힘
-                if (player.enemyTransform1 != null)
+                if (player.currentTarget != null)
                 {
-                    BaseEnemyControl enemyControl = player.enemyTransform1.GetComponent<BaseEnemyControl>();
+                    BaseEnemyControl enemyControl = player.currentTarget.GetComponent<BaseEnemyControl>();
                     if (enemyControl != null)
                     {
                         float damage = player.skillAttack ? player.playerSkillAttackPower : player.playerAttackPower;

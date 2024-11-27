@@ -6,7 +6,7 @@ namespace Project1
 {
     public class GameManager : MonoBehaviour
     {
-        public static GameManager instance;
+        /*public static GameManager instance;
 
         public TurnSystem turnSystem;
 
@@ -26,6 +26,6 @@ namespace Project1
         private void Start()
         {
             //turnSystem.StartTurn();
-        }
+        }*/
     }
 }
