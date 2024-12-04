@@ -3102,6 +3102,7 @@ MonoBehaviour:
   selectorUI: {fileID: 1056092455}
   mainCamera: {fileID: 1029456351}
   isTurn: 0
+  yOffset: 75
 --- !u!114 &353701281
 MonoBehaviour:
   m_ObjectHideFlags: 0

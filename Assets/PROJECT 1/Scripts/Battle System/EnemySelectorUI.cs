@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace ProJect1
 {
@@ -10,6 +11,7 @@ namespace ProJect1
         public Camera mainCamera;        // 메인 카메라 참조
         public bool isTurn = false;
         public static EnemySelectorUI instance;
+        public float yOffset = 50f;    // Y값을 올릴 오프셋 값
 
         private Transform selectedEnemy; // 현재 선택된 적의 Transform
 
@@ -31,24 +33,25 @@ namespace ProJect1
 
         private void Update()
         {
-            if (selectedEnemy != null)
+            if (selectedEnemy != null && isTurn)
             {
                 // 선택된 적의 위치를 UI로 변환
-                Vector3 screenPosition = mainCamera.WorldToScreenPoint(selectedEnemy.position);
+                Vector3 screenPosition = mainCamera.WorldToScreenPoint(selectedEnemy.transform.position);
+                screenPosition.y += yOffset;
 
                 // UI의 위치 갱신
                 selectorUI.position = screenPosition;
             }
-            else
+            else if (!isTurn)
             {
                 // 선택된 적이 없으면 UI를 숨김
                 selectorUI.gameObject.SetActive(false);
             }
 
-            if (!isTurn)
+            if(isTurn)
             {
-                // 플레이어 턴이 아니면 UI를 숨김
-                selectorUI.gameObject.SetActive(false);
+                // 플레이어 턴이면 UI를 보이게 함
+                selectorUI.gameObject.SetActive(true);
             }
         }
 

@@ -56,6 +56,8 @@ namespace Project1
                 return 0;
             }).ToList();
 
+            SortEnemiesByPosition();
+
             StartTurn(); // 첫 번째 턴 시작
         }
 
@@ -116,26 +118,13 @@ namespace Project1
             }
         }*/
 
-        private void HandleEnemySelection()
+        private void SortEnemiesByPosition()
         {
-            if (enemyCharacters.Count == 0) return;
+            // 적 리스트를 x값 기준으로 오름차순 정렬
+            enemyCharacters = enemyCharacters.OrderBy(enemy => enemy.transform.position.x).ToList();
 
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                // 왼쪽으로 이동
-                selectedEnemyIndex--;
-                if (selectedEnemyIndex < 0)
-                    selectedEnemyIndex = enemyCharacters.Count - 1;
-            }
-            else if (Input.GetKeyDown(KeyCode.D))
-            {
-                // 오른쪽으로 이동
-                selectedEnemyIndex++;
-                if (selectedEnemyIndex >= enemyCharacters.Count)
-                    selectedEnemyIndex = 0;
-            }
-
-            
+            // 선택된 인덱스를 초기화 (첫 번째 적을 기본 선택)
+            //selectedEnemyIndex = 1;
         }
 
         public void RemoveCharacterFromTurnOrder(object character)

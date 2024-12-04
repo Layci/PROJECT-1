@@ -11,31 +11,45 @@ namespace ProJect1
         public EnemySelectorUI enemySelectorUI; // 선택 UI 관리 스크립트
         private int selectedEnemyIndex = 0;     // 현재 선택된 적의 인덱스
 
+        private void Start()
+        {
+            EnemySelectorUI.instance.selectorUI.gameObject.SetActive(true);
+
+            // 처음 실행시 처음 적 타겟
+            selectedEnemyIndex = 0;
+
+            UpdateSelectedEnemy();
+        }
+
         private void Update()
         {
             if (turnSystem.enemyCharacters.Count == 0) return;
 
-            // 왼쪽으로 적 선택
-            if (Input.GetKeyDown(KeyCode.A))
+            if (EnemySelectorUI.instance.isTurn)
             {
-                selectedEnemyIndex--;
-                if (selectedEnemyIndex < 0)
+                // 왼쪽으로 적 선택
+                if (Input.GetKeyDown(KeyCode.A))
                 {
-                    selectedEnemyIndex = turnSystem.enemyCharacters.Count - 1; // 마지막 적으로 순환
+                    selectedEnemyIndex--;
+                    if (selectedEnemyIndex < 0)
+                    {
+                        selectedEnemyIndex = turnSystem.enemyCharacters.Count - 1; // 마지막 적으로 순환
+                    }
+                    UpdateSelectedEnemy();
                 }
-                UpdateSelectedEnemy();
-            }
 
-            // 오른쪽으로 적 선택
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                selectedEnemyIndex++;
-                if (selectedEnemyIndex >= turnSystem.enemyCharacters.Count)
+                // 오른쪽으로 적 선택
+                if (Input.GetKeyDown(KeyCode.D))
                 {
-                    selectedEnemyIndex = 0; // 첫 번째 적으로 순환
+                    selectedEnemyIndex++;
+                    if (selectedEnemyIndex >= turnSystem.enemyCharacters.Count)
+                    {
+                        selectedEnemyIndex = 0; // 첫 번째 적으로 순환
+                    }
+                    UpdateSelectedEnemy();
                 }
-                UpdateSelectedEnemy();
             }
+            
         }
 
         private void UpdateSelectedEnemy()
