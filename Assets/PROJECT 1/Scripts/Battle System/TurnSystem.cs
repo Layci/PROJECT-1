@@ -1,3 +1,4 @@
+using ProJect1;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,6 +69,7 @@ namespace Project1
             {
                 playerCharacter.isTurn = true;
 
+                EnemySelectorUI.instance.isTurn = true;
                 // 적 선택 로직 활성화
                 //HandleEnemySelection();
             }
@@ -84,6 +86,7 @@ namespace Project1
             if (allCharacters[currentTurnIndex] is BaseCharacterControl playerCharacter)
             {
                 playerCharacter.isTurn = false;
+                EnemySelectorUI.instance.isTurn = false;
             }
             else if (allCharacters[currentTurnIndex] is BaseEnemyControl enemyCharacter)
             {

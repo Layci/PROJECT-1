@@ -9,8 +9,17 @@ namespace ProJect1
         public RectTransform selectorUI; // 선택 UI 오브젝트
         public Camera mainCamera;        // 메인 카메라 참조
         public bool isTurn = false;
+        public static EnemySelectorUI instance;
 
         private Transform selectedEnemy; // 현재 선택된 적의 Transform
+
+        private void Awake()
+        {
+            if (instance == null)
+            {
+                instance = this;
+            }
+        }
 
         private void Start()
         {
@@ -30,14 +39,15 @@ namespace ProJect1
                 // UI의 위치 갱신
                 selectorUI.position = screenPosition;
             }
-            else if (!isTurn)
-            {
-                // 플레이어 턴이 아니면 UI를 숨김
-                selectorUI.gameObject.SetActive(false);
-            }
             else
             {
                 // 선택된 적이 없으면 UI를 숨김
+                selectorUI.gameObject.SetActive(false);
+            }
+
+            if (!isTurn)
+            {
+                // 플레이어 턴이 아니면 UI를 숨김
                 selectorUI.gameObject.SetActive(false);
             }
         }
