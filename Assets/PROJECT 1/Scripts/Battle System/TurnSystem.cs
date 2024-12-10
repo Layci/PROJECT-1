@@ -18,7 +18,7 @@ namespace Project1
         public List<BaseEnemyControl> activeEnemies = new List<BaseEnemyControl>(); // 적 타겟 리스트
 
 
-        private int currentTurnIndex = 0; // 현재 턴을 담당하는 캐릭터의 인덱스
+        public int currentTurnIndex = 0; // 현재 턴을 담당하는 캐릭터의 인덱스
 
         private void Awake()
         {
@@ -72,8 +72,6 @@ namespace Project1
                 playerCharacter.isTurn = true;
 
                 EnemySelectorUI.instance.isTurn = true;
-                // 적 선택 로직 활성화
-                //HandleEnemySelection();
             }
             else if (allCharacters[currentTurnIndex] is BaseEnemyControl enemyCharacter)
             {
@@ -105,26 +103,10 @@ namespace Project1
             StartTurn(); // 다음 턴 시작
         }
 
-        // 캐릭터 죽을시 턴에서 제외
-        /*public void RemoveCharacterFromTurnOrder(object character)
-        {
-            // 사망한 캐릭터를 리스트에서 제거
-            allCharacters.Remove(character);
-
-            // 현재 턴 인덱스가 리스트 범위를 초과하지 않도록 보정
-            if (currentTurnIndex >= allCharacters.Count)
-            {
-                currentTurnIndex = 0;
-            }
-        }*/
-
         private void SortEnemiesByPosition()
         {
             // 적 리스트를 x값 기준으로 오름차순 정렬
             enemyCharacters = enemyCharacters.OrderBy(enemy => enemy.transform.position.x).ToList();
-
-            // 선택된 인덱스를 초기화 (첫 번째 적을 기본 선택)
-            //selectedEnemyIndex = 1;
         }
 
         public void RemoveCharacterFromTurnOrder(object character)

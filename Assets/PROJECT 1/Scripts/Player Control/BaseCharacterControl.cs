@@ -32,10 +32,10 @@ namespace Project1
         public bool startAttacking;           // 공격중을 알리는 연산자
         public bool skillAttack;              // 스킬공격을 할지 알리는 연산자
         public bool isTurn = false;           // 본인 턴인지 알려주는 연산자
-        //public Transform enemyTransform1;     // 적 위치 참조
         public Slider hpBarSlider;            // HP바
         public EnemySelection enemySelection; // 선택된 적 관리
-        public Transform currentTarget;     // 현재 이동 중인 적의 Transform
+        public Transform currentTarget;       // 현재 이동 중인 적의 Transform
+
 
         [Header("캐릭터 움직임")]
         public PlayerState currentState = PlayerState.Idle; // 현재 상태 추가
@@ -50,21 +50,21 @@ namespace Project1
 
         protected virtual void Update()
         {
-            // 현재 턴의 캐릭터가 자신인 경우에만 입력을 처리
-            /*if ((GameManager.instance.turnSystem.CurrentCharacter as BaseCharacterControl) == this)
-            {
-                HandleState();
-                HandleAttackInput();
-            }*/
             // 캐릭터가 자신의 턴일 경우에 입력 처리
             if (isTurn)
             {
                 HandleState();
                 HandleAttackInput();
+                TargetUpdate();
             }
         }
 
 
+        public void TargetUpdate()
+        {
+            Transform targetposition = EnemySelectorUI.instance.selectedEnemy;
+            currentTarget = targetposition;
+        }
 
         protected void HandleState()
         {
@@ -89,10 +89,10 @@ namespace Project1
         {
             if (currentTarget != null)
             {
-                transform.position = Vector3.MoveTowards(transform.position, currentTarget.position, moveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, EnemySelectorUI.instance.selectedEnemy.position, moveSpeed * Time.deltaTime);
                 animator.SetFloat("Speed", 1);
 
-                float distanceToTarget = Vector3.Distance(transform.position, currentTarget.position);
+                float distanceToTarget = Vector3.Distance(transform.position, EnemySelectorUI.instance.selectedEnemy.position);
 
                 if (distanceToTarget <= attackRange)
                 {
@@ -137,18 +137,13 @@ namespace Project1
                 isTurn = false;
                 // 다음 캐릭터로 턴을 넘김
                 TurnSystem.instance.EndTurn();
-                //GameManager.instance.turnSystem.EndTurn();  // 턴 종료
             }
         }
 
 
         protected virtual void HandleAttackInput()
         {
-            /*// 현재 턴의 캐릭터만 입력을 처리하도록 설정
-            if ((GameManager.instance.turnSystem.CurrentCharacter as BaseCharacterControl) == this && currentState == PlayerState.Idle)
-            {
-                // 공격 및 스킬 입력 처리
-            }*/
+            // 각 플레이어 HandleAttackInput 참조
         }
 
 
@@ -192,12 +187,6 @@ namespace Project1
         public void StopAction()
         {
             currentState = PlayerState.Idle;
-        }
-
-        // 기본적인 WaitForInput 메서드, 모든 캐릭터가 이를 가질 수 있도록 정의
-        public virtual void WaitForInput()
-        {
-            // 기본적으로 아무것도 하지 않음 (오버라이드 목적)
         }
     }
 }

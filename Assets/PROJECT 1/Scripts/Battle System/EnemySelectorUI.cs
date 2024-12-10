@@ -13,7 +13,7 @@ namespace ProJect1
         public static EnemySelectorUI instance;
         public float yOffset = 50f;    // Y값을 올릴 오프셋 값
 
-        private Transform selectedEnemy; // 현재 선택된 적의 Transform
+        public Transform selectedEnemy; // 현재 선택된 적의 Transform
 
         private void Awake()
         {

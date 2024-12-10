@@ -11,6 +11,16 @@ namespace ProJect1
         public EnemySelectorUI enemySelectorUI; // 선택 UI 관리 스크립트
         private int selectedEnemyIndex = 0;     // 현재 선택된 적의 인덱스
 
+        public static EnemySelection instance;
+
+        private void Awake()
+        {
+            if (instance == null)
+            {
+                instance = this;
+            }
+        }
+
         private void Start()
         {
             EnemySelectorUI.instance.selectorUI.gameObject.SetActive(true);
