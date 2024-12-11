@@ -11,9 +11,11 @@ namespace Project1
         public static TurnSystem instance; // 싱글톤 인스턴스
 
         public int selectedEnemyIndex = 0; // 현재 선택된 적의 인덱스
+        public int randomIndex; // 랜덤 캐릭터리스트 인덱스
         public List<BaseCharacterControl> playerCharacters; // 플레이어 캐릭터 리스트
         public List<BaseEnemyControl> enemyCharacters; // 적 캐릭터 리스트
         private List<object> allCharacters; // 모든 캐릭터를 포함하는 리스트
+        public Transform playerTargetPosition;
 
         public List<BaseEnemyControl> activeEnemies = new List<BaseEnemyControl>(); // 적 타겟 리스트
 
@@ -45,7 +47,7 @@ namespace Project1
             allCharacters = new List<object>();
             allCharacters.AddRange(playerCharacters);
             allCharacters.AddRange(enemyCharacters);
-
+      
             // unitSpeed를 기준으로 내림차순 정렬
             allCharacters = allCharacters.OrderByDescending(character =>
             {
@@ -77,6 +79,8 @@ namespace Project1
             {
                 enemyCharacter.isTurn = true;
             }
+
+            RandomPlayer();
         }
 
         // 턴이 끝날시 호출
@@ -151,6 +155,13 @@ namespace Project1
                     return enemyControl.unitSpeed;
                 return 0;
             }).ToList();
+        }
+
+        public void RandomPlayer()
+        {
+            randomIndex = Random.Range(0, playerCharacters.Count);
+
+            playerTargetPosition = playerCharacters[randomIndex].transform;
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Project1
         public bool skillAttack;             // 스킬공격을 할지 알리는 연산자
         public bool isTurn = false;          // 본인 턴인지 알려주는 연산자
         public bool isSkillTurn = false;
-        public Transform playerTransform1;    // 플레이어 참조
+        public Transform playerTransform;    // 플레이어 참조
         public Slider hpBarSlider;           // HP바
 
         [Header("적 움직임")]
@@ -59,7 +59,7 @@ namespace Project1
             if (isTurn || isSkillTurn)
             {
                 HandleState();
-
+                playerTransform = TurnSystem.instance.playerTargetPosition;
                 if (currentState == EnemyState.Idle)
                 {
                     if (isTurn)
@@ -104,30 +104,21 @@ namespace Project1
 
         private void StartMove()
         {
-            if (playerTransform1 != null)
+            if (playerTransform != null)
             {
                 currentState = EnemyState.MovingToAttack;
             }
         }
 
-        /*private void EndPlayerTurn()
-        {
-            if (turnSystem != null)
-            {
-                turnSystem.EndTurn(); // 턴 종료
-            }
-        }*/
-
         protected virtual void MoveToAttack()
         {
             // 플레이어를 향해 움직이기
-            if (playerTransform1 != null)
+            if (playerTransform != null)
             {
-                //transform.LookAt(playerTransform1.position);
-                transform.position = Vector3.MoveTowards(transform.position, playerTransform1.position, moveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, playerTransform.position, moveSpeed * Time.deltaTime);
                 animator.SetFloat("Speed", 1);
 
-                float distanceToTarget = Vector3.Distance(transform.position, playerTransform1.position);
+                float distanceToTarget = Vector3.Distance(transform.position, playerTransform.position);
                 if (distanceToTarget <= attackRange)
                 {
                     currentState = EnemyState.Attacking;

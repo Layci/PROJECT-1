@@ -36,9 +36,9 @@ namespace Project1
             if (enemy != null && enemy.currentState == EnemyState.Attacking)
             {
                 // 플레이어에게 피해를 입힘
-                if (enemy.playerTransform1 != null)
+                if (enemy.playerTransform != null)
                 {
-                    BaseCharacterControl playerControl = enemy.playerTransform1.GetComponent<BaseCharacterControl>();
+                    BaseCharacterControl playerControl = enemy.playerTransform.GetComponent<BaseCharacterControl>();
                     if (playerControl != null)
                     {
                         float damage = enemy.skillAttack ? enemy.enemySkillAttackPower : enemy.enemyAttackPower;
