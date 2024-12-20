@@ -7,7 +7,7 @@ namespace Project1
     {
         private BaseCharacterControl player;
         private BaseEnemyControl enemy;
-        public Transform target;   // 적의 위치 (Inspector에서 설정)
+        public Transform target;
 
         private void Awake()
         {
@@ -15,10 +15,21 @@ namespace Project1
             enemy = GetComponentInParent<BaseEnemyControl>();
         }
 
-        /*private void Update()
+        private void Update()
         {
-            target = enemy.transform;
-        }*/
+            // 플레이어가 참조하는 경우
+            if (player != null)
+            {
+                // 플레이어의 currentTarget을 타겟으로 설정
+                target = player.currentTarget;
+            }
+            // 적이 참조하는 경우
+            else if (enemy != null)
+            {
+                // 적의 currentTarget을 타겟으로 설정
+                target = enemy.playerTransform;
+            }
+        }
 
         public void PlayerMeleeAttack()
         {
@@ -56,11 +67,11 @@ namespace Project1
                         float damage = enemy.skillAttack ? enemy.enemySkillAttackPower : enemy.enemyAttackPower;
                         playerControl.TakeDamage(damage);
 
-                        /*// 싱글턴을 사용하여 DamageTextSpawner 호출
+                        // 싱글턴을 사용하여 DamageTextSpawner 호출
                         if (DamageTextSpawner.Instance != null)
                         {
                             DamageTextSpawner.Instance.SpawnDamageText(target.position + Vector3.up * 1.5f, (int)damage);
-                        }*/
+                        }
                     }
                 }
             }
