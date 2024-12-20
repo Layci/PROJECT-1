@@ -4,8 +4,8 @@ using UnityEngine.UI;
 public class DamageTextSpawner : MonoBehaviour
 {
     public static DamageTextSpawner Instance; // 싱글턴 인스턴스
-    public GameObject damageTextPrefab;       // DamageText 프리팹
-    public Canvas worldCanvas;                // 월드 스페이스 캔버스
+    public GameObject damageTextPrefab; // 텍스트만 있는 프리팹
+    public Canvas worldCanvas; // 월드 캔버스 참조
 
     private void Awake()
     {
@@ -22,20 +22,34 @@ public class DamageTextSpawner : MonoBehaviour
 
     public void SpawnDamageText(Vector3 position, int damage)
     {
-        // DamageText 프리팹 생성
-        GameObject instance = Instantiate(damageTextPrefab, worldCanvas.transform);
+        // 텍스트 프리팹 생성
+        GameObject damageTextObj = Instantiate(damageTextPrefab, worldCanvas.transform);
 
-        // 텍스트 위치 설정
-        instance.transform.position = position;
-
-        // 텍스트 초기화
-        Text damageText = instance.GetComponent<Text>();
-        if (damageText != null)
+        // Text 컴포넌트에 데미지 값 설정
+        Text textComponent = damageTextObj.GetComponent<Text>();
+        if (textComponent != null)
         {
-            damageText.text = damage.ToString();
+            textComponent.text = damage.ToString();
+        }
+        else
+        {
+            Debug.LogError("Text 컴포넌트를 찾을 수 없습니다!");
+            return;
+        }
+
+        // RectTransform 위치 설정
+        RectTransform rectTransform = damageTextObj.GetComponent<RectTransform>();
+        if (rectTransform != null)
+        {
+            // 월드 좌표를 로컬 캔버스 좌표로 변환
+            rectTransform.position = position + new Vector3(0, 2, 0); // 약간 위로 올림
+        }
+        else
+        {
+            Debug.LogError("RectTransform을 찾을 수 없습니다!");
         }
 
         // 일정 시간 후 삭제
-        //Destroy(instance, 1.5f); // 1.5초 후 삭제
+        Destroy(damageTextObj, 2f);
     }
 }
