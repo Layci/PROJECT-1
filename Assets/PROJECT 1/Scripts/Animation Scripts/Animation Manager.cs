@@ -5,14 +5,20 @@ namespace Project1
 {
     public class AnimationManager : MonoBehaviour
     {
+        public static AnimationManager instans;
+
         private BaseCharacterControl player;
         private BaseEnemyControl enemy;
         public Transform target;
+
+        public int totalDamage = 0;
 
         private void Awake()
         {
             player = GetComponentInParent<BaseCharacterControl>();
             enemy = GetComponentInParent<BaseEnemyControl>();
+
+            instans = this;
         }
 
         private void Update()
@@ -43,12 +49,15 @@ namespace Project1
                     {
                         float damage = player.skillAttack ? player.playerSkillAttackPower : player.playerAttackPower;
                         enemyControl.TakeDamage(damage);
+                        totalDamage += (int)damage;
 
                         // 싱글턴을 사용하여 DamageTextSpawner 호출
                         if (DamageTextSpawner.Instance != null)
                         {
                             DamageTextSpawner.Instance.SpawnDamageText(target.position + Vector3.up * 1.5f, (int)damage);
                         }
+
+                        TotalDamageUI.Instance.ShowTotalDamage(totalDamage);
                     }
                 }
             }
@@ -75,6 +84,12 @@ namespace Project1
                     }
                 }
             }
+        }
+
+        public void EndAttack()
+        {
+            totalDamage = 0;
+            Debug.Log(totalDamage);
         }
     }
 }

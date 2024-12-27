@@ -72,7 +72,6 @@ namespace Project1
             if (allCharacters[currentTurnIndex] is BaseCharacterControl playerCharacter)
             {
                 playerCharacter.isTurn = true;
-
                 EnemySelectorUI.instance.isTurn = true;
             }
             else if (allCharacters[currentTurnIndex] is BaseEnemyControl enemyCharacter)
@@ -91,6 +90,7 @@ namespace Project1
             {
                 playerCharacter.isTurn = false;
                 EnemySelectorUI.instance.isTurn = false;
+                
             }
             else if (allCharacters[currentTurnIndex] is BaseEnemyControl enemyCharacter)
             {
@@ -103,7 +103,7 @@ namespace Project1
             {
                 currentTurnIndex = 0; // 인덱스가 리스트를 초과하면 다시 처음으로
             }
-
+            
             StartTurn(); // 다음 턴 시작
         }
 
