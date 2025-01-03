@@ -35,6 +35,8 @@ namespace Project1
         public bool isSkillTurn = false;
         public Transform playerTransform;    // 플레이어 참조
         public Slider hpBarSlider;           // HP바
+        public string unitName;               // 캐릭터 이름
+        public Sprite unitIcon;               // 캐릭터 아이콘
 
         [Header("적 움직임")]
         public EnemyState currentState = EnemyState.Idle;
@@ -66,13 +68,11 @@ namespace Project1
                     {
                         skillAttack = false;
                         StartMove();
-                        //EndPlayerTurn(); // 공격 후 턴 종료
                     }
                     if (isSkillTurn)
                     {
                         skillAttack = true;
                         StartMove();
-                        //EndPlayerTurn(); // 스킬 사용 후 턴 종료
                     }
                 }
             }
@@ -191,7 +191,8 @@ namespace Project1
         protected virtual void Die()
         {
             Debug.Log("적 사망");
-            //Destroy(gameObject);
+            Destroy(gameObject);
+            TurnSystem.instance.RemoveCharacterFromTurnOrder(this);
         }
     }
 }

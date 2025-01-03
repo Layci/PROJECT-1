@@ -35,6 +35,8 @@ namespace Project1
         public Slider hpBarSlider;            // HP바
         public EnemySelection enemySelection; // 선택된 적 관리
         public Transform currentTarget;       // 현재 이동 중인 적의 Transform
+        public string unitName;               // 캐릭터 이름
+        public Sprite unitIcon;               // 캐릭터 아이콘
 
 
         [Header("캐릭터 움직임")]
@@ -168,7 +170,7 @@ namespace Project1
 
             if (curHealth <= 0)
             {
-                Debug.Log("죽음");
+                Die();
             }
             Debug.Log("hit");
         }
@@ -187,6 +189,14 @@ namespace Project1
         public void StopAction()
         {
             currentState = PlayerState.Idle;
+        }
+
+        // 아군 사망시 호출
+        public void Die()
+        {
+            Debug.Log("아군 사망");
+            Destroy(gameObject);
+            TurnSystem.instance.RemoveCharacterFromTurnOrder(this);
         }
     }
 }
