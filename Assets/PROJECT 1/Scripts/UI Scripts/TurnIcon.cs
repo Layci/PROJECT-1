@@ -10,8 +10,11 @@ namespace Project1
 
         public void Setup(Sprite icon, string name)
         {
-            iconImage.sprite = icon;
-            nameText.text = name;
+            if (iconImage != null)
+                iconImage.sprite = icon;
+
+            if (nameText != null)
+                nameText.text = name;
         }
     }
 }

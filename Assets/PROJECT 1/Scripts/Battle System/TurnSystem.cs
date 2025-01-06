@@ -19,8 +19,8 @@ namespace Project1
 
         public List<BaseEnemyControl> activeEnemies = new List<BaseEnemyControl>(); // 적 타겟 리스트
 
-
         public int currentTurnIndex = 0; // 현재 턴을 담당하는 캐릭터의 인덱스
+        public TurnOrderUI turnOrderUI;  // 턴 순서 UI 관리 스크립트
 
         private void Awake()
         {
@@ -79,7 +79,11 @@ namespace Project1
                 enemyCharacter.isTurn = true;
             }
 
+            // 랜덤 플레이어 타겟
             RandomPlayer();
+
+            // UI 갱신
+            turnOrderUI.Initialize(allCharacters, currentTurnIndex);
         }
 
         // 턴이 끝날시 호출
