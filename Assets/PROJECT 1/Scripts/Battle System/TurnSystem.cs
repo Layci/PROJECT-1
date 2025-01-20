@@ -10,8 +10,10 @@ namespace Project1
     {
         public static TurnSystem instance; // 싱글톤 인스턴스
 
+        public int currentTurn = 0; // 현재 진행중인 턴
         public int selectedEnemyIndex = 0; // 현재 선택된 적의 인덱스
         public int randomIndex; // 랜덤 캐릭터리스트 인덱스
+        public int randomPoint; // 랜덤 적 스킬포인트
         public List<BaseCharacterControl> playerCharacters; // 플레이어 캐릭터 리스트
         public List<BaseEnemyControl> enemyCharacters; // 적 캐릭터 리스트
         private List<object> allCharacters; // 모든 캐릭터를 포함하는 리스트
@@ -76,6 +78,11 @@ namespace Project1
             }
             else if (allCharacters[currentTurnIndex] is BaseEnemyControl enemyCharacter)
             {
+                if(enemyCharacter.enemySkillPoint >= 2)
+                {
+                    enemyCharacter.skillAttack = true;
+                    Debug.Log("적 스킬공격");
+                }
                 enemyCharacter.isTurn = true;
             }
 
@@ -99,6 +106,8 @@ namespace Project1
             else if (allCharacters[currentTurnIndex] is BaseEnemyControl enemyCharacter)
             {
                 enemyCharacter.isTurn = false;
+                randomPoint = Random.Range(1, 3);
+                enemyCharacter.enemySkillPoint += randomPoint;
             }
 
             // 다음 캐릭터로 넘어감

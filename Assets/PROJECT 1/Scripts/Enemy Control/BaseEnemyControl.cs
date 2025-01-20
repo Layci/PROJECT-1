@@ -29,10 +29,10 @@ namespace Project1
         public float enemyAttackPower;       // 적 기본 공격력
         public float enemySkillAttackPower;  // 플레이어 스킬공격력
         public float attackRange;            // 공격 거리
+        public float enemySkillPoint;        // 적 공격 스킬 포인트
         public bool startAttacking;          // 공격중을 알리는 연산자
         public bool skillAttack;             // 스킬공격을 할지 알리는 연산자
         public bool isTurn = false;          // 본인 턴인지 알려주는 연산자
-        public bool isSkillTurn = false;
         public Transform playerTransform;    // 플레이어 참조
         public Slider hpBarSlider;           // HP바
         public string unitName;               // 캐릭터 이름
@@ -58,7 +58,7 @@ namespace Project1
 
         protected virtual void Update()
         {
-            if (isTurn || isSkillTurn)
+            if (isTurn)
             {
                 HandleState();
                 playerTransform = TurnSystem.instance.playerTargetPosition;
@@ -66,12 +66,6 @@ namespace Project1
                 {
                     if (isTurn)
                     {
-                        skillAttack = false;
-                        StartMove();
-                    }
-                    if (isSkillTurn)
-                    {
-                        skillAttack = true;
                         StartMove();
                     }
                 }
@@ -140,10 +134,9 @@ namespace Project1
                 animator.SetFloat("Speed", 0);
                 animator.SetTrigger("Trigger EnemySkillAttack");
                 isAttackExecuted = true;
-            }
 
-            // 공격이 끝난 후 상태를 되돌아가는 상태로 설정
-            //currentState = EnemyState.Returning;
+                enemySkillPoint -= 2;
+            }
         }
 
         protected virtual void ReturnToInitialPosition()
@@ -162,7 +155,7 @@ namespace Project1
                 isAttackExecuted = false;
 
                 isTurn = false;
-                isSkillTurn = false;
+                skillAttack = false;
                 TurnSystem.instance.EndTurn();
             }
         }

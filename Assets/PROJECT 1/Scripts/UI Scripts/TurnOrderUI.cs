@@ -73,11 +73,11 @@ namespace Project1
 
                 if (allCharacters[turnIndex] is BaseCharacterControl playerCharacter)
                 {
-                    iconScript.Setup(playerCharacter.unitIcon, playerCharacter.unitName);
+                    iconScript.Setup(playerCharacter.unitIcon, playerCharacter.unitName, true);
                 }
                 else if (allCharacters[turnIndex] is BaseEnemyControl enemyCharacter)
                 {
-                    iconScript.Setup(enemyCharacter.unitIcon, enemyCharacter.unitName);
+                    iconScript.Setup(enemyCharacter.unitIcon, enemyCharacter.unitName, false);
                 }
             }
         }
