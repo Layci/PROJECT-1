@@ -29,12 +29,21 @@ namespace Project1
                     StartMove();
                     SkillPointManager.instance.UseSkillPoint();
                 }
+                /*else if (SkillPointManager.instance.curSkillPoint > 0 && Input.GetKeyDown(KeyCode.E))
+                {
+
+                }*/
             }
         }
 
-        private void StartMove()
+        private void StartMove()    
         {
             currentState = PlayerState.MovingToAttack;
+        }
+
+        private void StartBlock()
+        {
+            //currentState = 
         }
     }
 }

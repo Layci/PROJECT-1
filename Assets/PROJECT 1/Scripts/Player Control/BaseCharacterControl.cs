@@ -10,6 +10,7 @@ namespace Project1
         Idle,
         MovingToAttack,
         Attacking,
+        Block,
         Returning
     }
 
@@ -32,6 +33,7 @@ namespace Project1
         public bool startAttacking;           // 공격중을 알리는 연산자
         public bool skillAttack;              // 스킬공격을 할지 알리는 연산자
         public bool isTurn = false;           // 본인 턴인지 알려주는 연산자
+        public bool isBlock = false;          // 본인이 방어 상태인지 알려주는 연산자
         public Slider hpBarSlider;            // HP바
         public EnemySelection enemySelection; // 선택된 적 관리
         public Transform currentTarget;       // 현재 이동 중인 적의 Transform
@@ -81,6 +83,9 @@ namespace Project1
                 case PlayerState.Attacking:
                     PerformAttack();
                     break;
+                case PlayerState.Block:
+
+                    break;
                 case PlayerState.Returning:
                     ReturnToInitialPosition();
                     break;
@@ -117,6 +122,16 @@ namespace Project1
                 // 스킬 공격 로직
                 animator.SetFloat("Speed", 0);
                 animator.SetTrigger("Trigger SkillAttack");
+                isAttackExecuted = true;
+            }
+        }
+
+        protected virtual void PerformBlock()
+        {
+            if (!isAttackExecuted)
+            {
+                animator.SetFloat("Speed", 0);
+                animator.SetTrigger("Trigger Block");
                 isAttackExecuted = true;
             }
         }
@@ -173,22 +188,6 @@ namespace Project1
                 Die();
             }
             Debug.Log("hit");
-        }
-
-        // StartMoveToAttack 메서드 추가
-        public void StartMoveToAttack()
-        {
-            currentState = PlayerState.MovingToAttack;
-        }
-
-        public void StartAttack()
-        {
-            currentState = PlayerState.Attacking;
-        }
-
-        public void StopAction()
-        {
-            currentState = PlayerState.Idle;
         }
 
         // 아군 사망시 호출

@@ -1,9 +1,11 @@
 using Project1;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace Project1
+namespace ProJect1
 {
-    public class PlayerAttackBehaviour : StateMachineBehaviour
+    public class PlayerBlockBehaviour : StateMachineBehaviour
     {
         // 애니메이터 상태 진입 시 호출됩니다.
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -26,7 +28,6 @@ namespace Project1
             {
                 // 공격이 끝났음을 알립니다.
                 characterControl.currentState = PlayerState.Returning;
-                characterControl.startAttacking = false;
             }
         }
     }
