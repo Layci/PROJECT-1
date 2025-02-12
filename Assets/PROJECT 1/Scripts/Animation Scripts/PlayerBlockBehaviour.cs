@@ -15,7 +15,8 @@ namespace ProJect1
             if (characterControl != null)
             {
                 // 공격이 시작됨을 알립니다.
-                characterControl.startAttacking = true;
+                characterControl.startBlocking = true;
+                characterControl.isBlock = true;
             }
         }
 
@@ -28,6 +29,8 @@ namespace ProJect1
             {
                 // 공격이 끝났음을 알립니다.
                 characterControl.currentState = PlayerState.Returning;
+                characterControl.startBlocking = false;
+                characterControl.isBlock = false;
             }
         }
     }

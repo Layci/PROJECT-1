@@ -3425,6 +3425,7 @@ MonoBehaviour:
   playerSkillAttackPower: 12
   attackRange: 1
   startAttacking: 0
+  startBlocking: 0
   skillAttack: 0
   isTurn: 0
   isBlock: 0
@@ -5048,11 +5049,12 @@ MonoBehaviour:
   maxHealth: 260
   curHealth: 260
   moveSpeed: 3
-  unitSpeed: 105
+  unitSpeed: 1050
   playerAttackPower: 38
   playerSkillAttackPower: 12
   attackRange: 1
   startAttacking: 0
+  startBlocking: 0
   skillAttack: 0
   isTurn: 0
   isBlock: 0
@@ -6175,6 +6177,7 @@ MonoBehaviour:
   playerSkillAttackPower: 33
   attackRange: 1
   startAttacking: 0
+  startBlocking: 0
   skillAttack: 0
   isTurn: 0
   isBlock: 0
@@ -8617,6 +8620,7 @@ MonoBehaviour:
   playerSkillAttackPower: 14
   attackRange: 1
   startAttacking: 0
+  startBlocking: 0
   skillAttack: 0
   isTurn: 0
   isBlock: 0
@@ -9966,6 +9970,7 @@ MonoBehaviour:
   playerSkillAttackPower: 15
   attackRange: 1
   startAttacking: 0
+  startBlocking: 0
   skillAttack: 0
   isTurn: 0
   isBlock: 0

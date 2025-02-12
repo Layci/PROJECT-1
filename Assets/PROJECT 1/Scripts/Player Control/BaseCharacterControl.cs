@@ -10,7 +10,7 @@ namespace Project1
         Idle,
         MovingToAttack,
         Attacking,
-        Block,
+        Blocking,
         Returning
     }
 
@@ -31,6 +31,7 @@ namespace Project1
         public float playerSkillAttackPower;  // 플레이어 스킬공격력
         public float attackRange;             // 공격 거리
         public bool startAttacking;           // 공격중을 알리는 연산자
+        public bool startBlocking;            // 방어중을 알리는 연산자
         public bool skillAttack;              // 스킬공격을 할지 알리는 연산자
         public bool isTurn = false;           // 본인 턴인지 알려주는 연산자
         public bool isBlock = false;          // 본인이 방어 상태인지 알려주는 연산자
@@ -83,8 +84,8 @@ namespace Project1
                 case PlayerState.Attacking:
                     PerformAttack();
                     break;
-                case PlayerState.Block:
-
+                case PlayerState.Blocking:
+                    PerformBlock();
                     break;
                 case PlayerState.Returning:
                     ReturnToInitialPosition();
@@ -101,10 +102,14 @@ namespace Project1
 
                 float distanceToTarget = Vector3.Distance(transform.position, EnemySelectorUI.instance.selectedEnemy.position);
 
-                if (distanceToTarget <= attackRange)
+                if (distanceToTarget <= attackRange && !isBlock)
                 {
                     currentState = PlayerState.Attacking;
                 }
+                /*else if (distanceToTarget <= attackRange && isBlock)
+                {
+                    currentState = PlayerState.Blocking;
+                }*/
             }
         }
 
@@ -131,9 +136,15 @@ namespace Project1
             if (!isAttackExecuted)
             {
                 animator.SetFloat("Speed", 0);
-                animator.SetTrigger("Trigger Block");
-                isAttackExecuted = true;
+                animator.SetBool("Trigger Block", true);
             }
+        }
+
+        public void BlockEnd()
+        {
+            isTurn = false;
+            // 다음 캐릭터로 턴을 넘김
+            TurnSystem.instance.EndTurn();
         }
 
         protected virtual void ReturnToInitialPosition()

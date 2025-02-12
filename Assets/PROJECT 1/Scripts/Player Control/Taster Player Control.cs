@@ -25,8 +25,9 @@ namespace Project1
                 }
                 else if (SkillPointManager.instance.curSkillPoint > 0 && Input.GetKeyDown(KeyCode.E))
                 {
-                    skillAttack = true;
-                    StartMove();
+                    //skillAttack = true;
+                    //StartMove();
+                    StartBlock();
                     SkillPointManager.instance.UseSkillPoint();
                 }
                 /*else if (SkillPointManager.instance.curSkillPoint > 0 && Input.GetKeyDown(KeyCode.E))
@@ -43,7 +44,7 @@ namespace Project1
 
         private void StartBlock()
         {
-            //currentState = 
+            currentState = PlayerState.Blocking;
         }
     }
 }
