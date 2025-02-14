@@ -25,15 +25,9 @@ namespace Project1
                 }
                 else if (SkillPointManager.instance.curSkillPoint > 0 && Input.GetKeyDown(KeyCode.E))
                 {
-                    //skillAttack = true;
-                    //StartMove();
                     StartBlock();
                     SkillPointManager.instance.UseSkillPoint();
                 }
-                /*else if (SkillPointManager.instance.curSkillPoint > 0 && Input.GetKeyDown(KeyCode.E))
-                {
-
-                }*/
             }
         }
 

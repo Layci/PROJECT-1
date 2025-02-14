@@ -106,10 +106,6 @@ namespace Project1
                 {
                     currentState = PlayerState.Attacking;
                 }
-                /*else if (distanceToTarget <= attackRange && isBlock)
-                {
-                    currentState = PlayerState.Blocking;
-                }*/
             }
         }
 
@@ -180,6 +176,14 @@ namespace Project1
             if (hpBarSlider != null)
             {
                 hpBarSlider.value = curHealth / maxHealth;
+            }
+        }
+
+        public void CheckBlocking()
+        {
+            if (!isBlock)
+            {
+                animator.SetBool("Trigger Block", false);
             }
         }
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 namespace Project1
 {
@@ -75,6 +76,11 @@ namespace Project1
             {
                 playerCharacter.isTurn = true;
                 EnemySelectorUI.instance.isTurn = true;
+                if (playerCharacter.isBlock)
+                {
+                    playerCharacter.isBlock = false;
+                    //playerCharacter.a
+                }
             }
             else if (allCharacters[currentTurnIndex] is BaseEnemyControl enemyCharacter)
             {
@@ -172,9 +178,20 @@ namespace Project1
 
         public void RandomPlayer()
         {
-            randomIndex = Random.Range(0, playerCharacters.Count);
+            // isBlock이 true인 플레이어가 있는지 확인
+            BaseCharacterControl blockingCharacter = playerCharacters.FirstOrDefault(player => player.isBlock);
 
-            playerTargetPosition = playerCharacters[randomIndex].transform;
+            if (blockingCharacter != null)
+            {
+                // 방어 중인 캐릭터가 있으면 해당 캐릭터 우선 타격
+                playerTargetPosition = blockingCharacter.transform;
+            }
+            else
+            {
+                // 방어 중인 캐릭터가 없으면 랜덤 타겟 선택
+                randomIndex = Random.Range(0, playerCharacters.Count);
+                playerTargetPosition = playerCharacters[randomIndex].transform;
+            }
         }
     }
 }
