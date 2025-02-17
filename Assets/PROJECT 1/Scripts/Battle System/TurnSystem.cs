@@ -79,7 +79,8 @@ namespace Project1
                 if (playerCharacter.isBlock)
                 {
                     playerCharacter.isBlock = false;
-                    //playerCharacter.a
+                    playerCharacter.startBlocking = false;
+                    playerCharacter.CheckIdle();
                 }
             }
             else if (allCharacters[currentTurnIndex] is BaseEnemyControl enemyCharacter)

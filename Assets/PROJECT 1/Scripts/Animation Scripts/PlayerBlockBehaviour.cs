@@ -15,8 +15,9 @@ namespace ProJect1
             if (characterControl != null)
             {
                 // 공격이 시작됨을 알립니다.
-                characterControl.startBlocking = true;
-                characterControl.isBlock = true;
+                /*characterControl.startBlocking = true;
+                characterControl.isBlock = true;*/
+                characterControl.damageReduction = 0.7f;
             }
         }
 
@@ -31,6 +32,7 @@ namespace ProJect1
                 characterControl.currentState = PlayerState.Idle;
                 characterControl.startBlocking = false;
                 characterControl.isBlock = false;
+                characterControl.damageReduction = 1f;
             }
         }
     }

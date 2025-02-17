@@ -30,6 +30,7 @@ namespace Project1
         public float playerAttackPower;       // 플레이어 기본공격력
         public float playerSkillAttackPower;  // 플레이어 스킬공격력
         public float attackRange;             // 공격 거리
+        public float damageReduction;         // 피해 감소
         public bool startAttacking;           // 공격중을 알리는 연산자
         public bool startBlocking;            // 방어중을 알리는 연산자
         public bool skillAttack;              // 스킬공격을 할지 알리는 연산자
@@ -77,6 +78,7 @@ namespace Project1
             {
                 case PlayerState.Idle:
                     // Idle 상태의 로직
+                    CheckIdle();
                     break;
                 case PlayerState.MovingToAttack:
                     MoveToAttack();
@@ -138,9 +140,12 @@ namespace Project1
 
         public void BlockEnd()
         {
-            isTurn = false;
-            // 다음 캐릭터로 턴을 넘김
-            TurnSystem.instance.EndTurn();
+            if (isBlock)
+            {
+                isTurn = false;
+                // 다음 캐릭터로 턴을 넘김
+                TurnSystem.instance.EndTurn();
+            }
         }
 
         protected virtual void ReturnToInitialPosition()
@@ -179,12 +184,10 @@ namespace Project1
             }
         }
 
-        public void CheckBlocking()
+        public void CheckIdle()
         {
-            if (!isBlock)
-            {
-                animator.SetBool("Trigger Block", false);
-            }
+            animator.SetBool("Trigger Block", false);
+            damageReduction = 1f;
         }
 
         public void TakeDamage(float damage)
@@ -194,7 +197,7 @@ namespace Project1
 
             animator.SetTrigger("Trigger Hit");
 
-            curHealth -= damage;
+            curHealth -= damage * damageReduction;
 
             CheckHP();
 

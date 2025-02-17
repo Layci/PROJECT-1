@@ -38,6 +38,8 @@ namespace Project1
 
         private void StartBlock()
         {
+            isBlock = true;
+            startBlocking = true;
             currentState = PlayerState.Blocking;
         }
     }
