@@ -48,6 +48,8 @@ namespace Project1
                     if (enemyControl != null)
                     {
                         float damage = player.skillAttack ? player.playerSkillAttackPower : player.playerAttackPower;
+                        // 적에게 피해를 입힐때 적 피해 감소율에 따라 데미지 조정
+                        damage *= enemyControl.enemyDamageReduction;
                         enemyControl.TakeDamage(damage);
                         totalDamage += (int)damage;
 
@@ -74,6 +76,8 @@ namespace Project1
                     if (playerControl != null)
                     {
                         float damage = enemy.skillAttack ? enemy.enemySkillAttackPower : enemy.enemyAttackPower;
+                        // 아군에게 피해를 입힐때 아군 피해 감소율에 따라 데미지 조정
+                        damage *= playerControl.damageReduction;
                         playerControl.TakeDamage(damage);
 
                         // 싱글턴을 사용하여 DamageTextSpawner 호출

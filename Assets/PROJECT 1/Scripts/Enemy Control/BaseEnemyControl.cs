@@ -22,21 +22,22 @@ namespace Project1
         protected Quaternion initialRotation;
 
         [Header("적 정보")]
-        public float maxHealth;              // 최대 체력
-        public float curHealth;              // 현재 체력
-        public float moveSpeed;              // 이동 속도
-        public float unitSpeed;              // 유닛 속도(턴 순서 관련)
-        public float enemyAttackPower;       // 적 기본 공격력
-        public float enemySkillAttackPower;  // 플레이어 스킬공격력
-        public float attackRange;            // 공격 거리
-        public float enemySkillPoint;        // 적 공격 스킬 포인트
-        public bool startAttacking;          // 공격중을 알리는 연산자
-        public bool skillAttack;             // 스킬공격을 할지 알리는 연산자
-        public bool isTurn = false;          // 본인 턴인지 알려주는 연산자
-        public Transform playerTransform;    // 플레이어 참조
-        public Slider hpBarSlider;           // HP바
-        public string unitName;               // 캐릭터 이름
-        public Sprite unitIcon;               // 캐릭터 아이콘
+        public float maxHealth;                  // 최대 체력
+        public float curHealth;                  // 현재 체력
+        public float moveSpeed;                  // 이동 속도
+        public float unitSpeed;                  // 유닛 속도(턴 순서 관련)
+        public float enemyAttackPower;           // 적 기본 공격력
+        public float enemySkillAttackPower;      // 플레이어 스킬공격력
+        public float attackRange;                // 공격 거리
+        public float enemySkillPoint;            // 적 공격 스킬 포인트
+        public float enemyDamageReduction = 1f;  // 적 피해 감소
+        public bool startAttacking;              // 공격중을 알리는 연산자
+        public bool skillAttack;                 // 스킬공격을 할지 알리는 연산자
+        public bool isTurn = false;              // 본인 턴인지 알려주는 연산자
+        public Transform playerTransform;        // 플레이어 참조
+        public Slider hpBarSlider;               // HP바
+        public string unitName;                  // 캐릭터 이름
+        public Sprite unitIcon;                  // 캐릭터 아이콘
 
         [Header("적 움직임")]
         public EnemyState currentState = EnemyState.Idle;

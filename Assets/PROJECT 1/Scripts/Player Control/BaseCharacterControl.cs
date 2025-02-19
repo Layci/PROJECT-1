@@ -63,6 +63,10 @@ namespace Project1
                 HandleAttackInput();
                 TargetUpdate();
             }
+            else if (!isBlock)
+            {
+                damageReduction = 1;
+            }
         }
 
 
@@ -186,8 +190,11 @@ namespace Project1
 
         public void CheckIdle()
         {
-            animator.SetBool("Trigger Block", false);
             damageReduction = 1f;
+        }
+        public void DoneBlock()
+        {
+            animator.SetBool("Trigger Block", false);
         }
 
         public void TakeDamage(float damage)
@@ -197,7 +204,7 @@ namespace Project1
 
             animator.SetTrigger("Trigger Hit");
 
-            curHealth -= damage * damageReduction;
+            curHealth -= damage;
 
             CheckHP();
 
