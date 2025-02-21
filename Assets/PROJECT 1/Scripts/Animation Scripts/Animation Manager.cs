@@ -48,6 +48,8 @@ namespace Project1
                     if (enemyControl != null)
                     {
                         float damage = player.skillAttack ? player.playerSkillAttackPower : player.playerAttackPower;
+                        // 적에게 피해를 입히기전 피해 증가율에 따라 데미지 조정
+                        damage *= player.damageIncreased;
                         // 적에게 피해를 입힐때 적 피해 감소율에 따라 데미지 조정
                         damage *= enemyControl.enemyDamageReduction;
                         enemyControl.TakeDamage(damage);

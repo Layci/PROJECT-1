@@ -31,6 +31,7 @@ namespace Project1
         public float playerSkillAttackPower;  // 플레이어 스킬공격력
         public float attackRange;             // 공격 거리
         public float damageReduction;         // 피해 감소
+        public float damageIncreased = 1;     // 피해 증가
         public bool startAttacking;           // 공격중을 알리는 연산자
         public bool startBlocking;            // 방어중을 알리는 연산자
         public bool skillAttack;              // 스킬공격을 할지 알리는 연산자
@@ -195,6 +196,10 @@ namespace Project1
         public void DoneBlock()
         {
             animator.SetBool("Trigger Block", false);
+            isBlock = false;
+            startBlocking = false;
+            damageReduction = 1f;
+            currentState = PlayerState.Idle;
         }
 
         public void TakeDamage(float damage)
@@ -202,7 +207,10 @@ namespace Project1
             if (maxHealth == 0 || curHealth == 0)
                 return;
 
-            animator.SetTrigger("Trigger Hit");
+            if (!isBlock)
+            {
+                animator.SetTrigger("Trigger Hit");
+            }
 
             curHealth -= damage;
 

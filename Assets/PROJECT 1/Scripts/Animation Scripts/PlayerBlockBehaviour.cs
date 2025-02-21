@@ -29,10 +29,10 @@ namespace ProJect1
             if (characterControl != null)
             {
                 // 공격이 끝났음을 알립니다.
-                characterControl.currentState = PlayerState.Idle;
+                /*characterControl.currentState = PlayerState.Idle;
                 characterControl.startBlocking = false;
                 characterControl.isBlock = false;
-                characterControl.damageReduction = 1f;
+                characterControl.damageReduction = 1f;*/
             }
         }
     }

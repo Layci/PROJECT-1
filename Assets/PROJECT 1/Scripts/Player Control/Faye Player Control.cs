@@ -8,6 +8,10 @@ namespace Project1
     {
         private TurnSystem turnSystem;
 
+        // 공격력 버프
+        public int powerBuff = 0;
+        public int maxPowerBuff = 2;
+
         private void Start()
         {
             turnSystem = FindObjectOfType<TurnSystem>();
