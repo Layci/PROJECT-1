@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using Project1;
+using System.Collections.Generic;
 using UnityEngine.UI;
 using ProJect1;
 
@@ -14,7 +16,7 @@ namespace Project1
         Returning
     }
 
-    public abstract class BaseCharacterControl : MonoBehaviour
+    public abstract class BaseCharacterControl : BaseUnit
     {
         public static BaseCharacterControl instance;
 
@@ -23,15 +25,15 @@ namespace Project1
         protected Quaternion initialRotation;
 
         [Header("캐릭터 정보")]
-        public float maxHealth;               // 최대 체력
-        public float curHealth;               // 현재 체력
-        public float moveSpeed;               // 이동 속도
-        public float unitSpeed;               // 유닛 속도(턴 순서 관련)
+        //public float maxHealth;               // 최대 체력
+        //public float curHealth;               // 현재 체력
+        //public float moveSpeed;               // 이동 속도
+        //public float unitSpeed;               // 유닛 속도(턴 순서 관련)
         public float playerAttackPower;       // 플레이어 기본공격력
         public float playerSkillAttackPower;  // 플레이어 스킬공격력
-        public float attackRange;             // 공격 거리
-        public float damageReduction;         // 피해 감소
-        public float damageIncreased = 1;     // 피해 증가
+        //public float attackRange;             // 공격 거리
+        //public float damageReduction;         // 피해 감소
+        //public float damageIncreased = 1;     // 피해 증가
         public bool startAttacking;           // 공격중을 알리는 연산자
         public bool startBlocking;            // 방어중을 알리는 연산자
         public bool skillAttack;              // 스킬공격을 할지 알리는 연산자
@@ -47,6 +49,8 @@ namespace Project1
         [Header("캐릭터 움직임")]
         public PlayerState currentState = PlayerState.Idle; // 현재 상태 추가
         protected bool isAttackExecuted = false;
+
+        //private List<Buff> activeBuffs = new List<Buff>();
 
         protected virtual void Awake()
         {
@@ -69,7 +73,6 @@ namespace Project1
                 damageReduction = 1;
             }
         }
-
 
         public void TargetUpdate()
         {
@@ -99,6 +102,31 @@ namespace Project1
                     break;
             }
         }
+
+        /*public void AddBuff(Buff newBuff)
+        {
+            activeBuffs.Add(newBuff);
+            newBuff.ApplyEffect(this);
+        }
+
+        public void RemoveExpiredBuffs()
+        {
+            activeBuffs.RemoveAll(buff => buff.remainingTurns <= 0);
+        }
+
+        public void OnTurnStart()
+        {
+            foreach (var buff in activeBuffs)
+            {
+                buff.remainingTurns--;
+                if (buff.remainingTurns <= 0)
+                {
+                    buff.RemoveEffect(this);
+                }
+            }
+
+            RemoveExpiredBuffs();
+        }*/
 
         protected virtual void MoveToAttack()
         {
@@ -191,14 +219,14 @@ namespace Project1
 
         public void CheckIdle()
         {
-            damageReduction = 1f;
+            //damageReduction = 1f;
         }
         public void DoneBlock()
         {
             animator.SetBool("Trigger Block", false);
             isBlock = false;
             startBlocking = false;
-            damageReduction = 1f;
+            //damageReduction = 1f;
             currentState = PlayerState.Idle;
         }
 

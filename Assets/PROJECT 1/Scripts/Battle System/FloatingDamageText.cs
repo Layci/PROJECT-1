@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Project1;
 
-namespace ProJect1
+namespace Project1
 {
     public class FloatingDamageText : MonoBehaviour
     {

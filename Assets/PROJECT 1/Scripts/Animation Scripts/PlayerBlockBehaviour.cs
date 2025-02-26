@@ -17,7 +17,7 @@ namespace ProJect1
                 // 공격이 시작됨을 알립니다.
                 /*characterControl.startBlocking = true;
                 characterControl.isBlock = true;*/
-                characterControl.damageReduction = 0.7f;
+                //characterControl.damageReduction = 0.7f;
             }
         }
 

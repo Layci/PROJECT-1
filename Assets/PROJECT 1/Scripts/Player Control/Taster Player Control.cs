@@ -41,6 +41,8 @@ namespace Project1
             isBlock = true;
             startBlocking = true;
             currentState = PlayerState.Blocking;
+            Buff defance = new Buff("방어력증가 + 도발", 1, 0, 0.3f);
+            AddBuff(defance);
         }
     }
 }

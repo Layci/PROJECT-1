@@ -1,38 +1,40 @@
-using Project1;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Project1;
+using ProJect1;
 
-namespace ProJect1
+namespace Project1
 {
     public class Buff
     {
         public string buffName; // 버프 이름
-        public float effectValue; // 버프 효과량
-        public int duration; // 지속 턴 수
-        public Action<BaseCharacterControl> ApplyEffect; // 효과 적용
-        public Action<BaseCharacterControl> RemoveEffect; // 효과 제거
+        public int remainingTurns; // 버프 지속 턴
+        public float attackBoost;      // 공격력 증가량
+        public float defenseBoost;     // 방어력 증가량
 
-        public Buff(string name, float value, int turns, Action<BaseCharacterControl> apply, Action<BaseCharacterControl> remove)
+        public Buff(string name, int duration, float atkBoost, float defBoost)
         {
             buffName = name;
-            effectValue = value;
-            duration = turns;
-            ApplyEffect = apply;
-            RemoveEffect = remove;
+            remainingTurns = duration;
+            attackBoost = atkBoost;
+            defenseBoost = defBoost;
         }
 
-        public void Apply(BaseCharacterControl target)
+        // 버프 효과 적용
+        public void ApplyEffect(BaseUnit unit)
         {
-            ApplyEffect?.Invoke(target);
-            Debug.Log($"{target.unitName}에게 {buffName} 버프 적용! (턴: {duration})");
+            unit.damageIncreased += attackBoost;  // 공격력 증가
+            unit.damageReduction -= defenseBoost; // 받는 피해 감소
+            Debug.Log(unit.name + "에게 " + buffName + " 버프 적용! (턴 수: " + remainingTurns + ")");
         }
 
-        public void Remove(BaseCharacterControl target)
+        // 버프 제거 시 효과 원상복구
+        public void RemoveEffect(BaseUnit unit)
         {
-            RemoveEffect?.Invoke(target);
-            Debug.Log($"{target.unitName}의 {buffName} 버프 종료!");
+            unit.damageIncreased -= attackBoost;  // 공격력 복구
+            unit.damageReduction += defenseBoost; // 받는 피해 복구
+            Debug.Log(unit.name + "의 " + buffName + " 버프가 해제됨!");
         }
     }
 }
+

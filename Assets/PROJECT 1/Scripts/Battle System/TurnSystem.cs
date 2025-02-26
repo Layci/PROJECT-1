@@ -1,3 +1,4 @@
+using Project1;
 using ProJect1;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace Project1
         public Transform playerTargetPosition;
 
         public List<BaseEnemyControl> activeEnemies = new List<BaseEnemyControl>(); // 적 타겟 리스트
+        public List<BaseUnit> allUnits; // 전투에 있는 모든 캐릭터 (버프 관리용 리스트)
 
         public int currentTurnIndex = 0; // 현재 턴을 담당하는 캐릭터의 인덱스
         public TurnOrderUI turnOrderUI;  // 턴 순서 UI 관리 스크립트
@@ -71,6 +73,11 @@ namespace Project1
         {
             if (currentTurnIndex >= allCharacters.Count)
                 currentTurnIndex = 0; // 인덱스가 리스트를 초과하면 다시 처음으로
+
+            foreach (var unit in allUnits)
+            {
+                unit.OnTurnStart(); // 각 캐릭터의 버프 지속 턴 감소
+            }
 
             if (allCharacters[currentTurnIndex] is BaseCharacterControl playerCharacter)
             {
