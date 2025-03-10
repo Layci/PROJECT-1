@@ -4471,7 +4471,7 @@ MonoBehaviour:
   playerCharacters: []
   enemyCharacters: []
   playerTargetPosition: {fileID: 0}
-  activeEnemies: []
+  allUnits: []
   currentTurnIndex: 0
   turnOrderUI: {fileID: 192965547}
 --- !u!114 &353701280
@@ -4882,10 +4882,11 @@ MonoBehaviour:
   moveSpeed: 3
   unitSpeed: 105
   attackRange: 1
+  damageReduction: 1
+  damageIncreased: 1
   playerAttackPower: 38
   playerSkillAttackPower: 12
-  damageReduction: 0
-  damageIncreased: 1
+  buffPower: 0
   startAttacking: 0
   startBlocking: 0
   skillAttack: 0
@@ -6005,12 +6006,13 @@ MonoBehaviour:
   maxHealth: 245
   curHealth: 245
   moveSpeed: 3
-  unitSpeed: 93
+  unitSpeed: 930
   attackRange: 1
+  damageReduction: 1
+  damageIncreased: 1
   playerAttackPower: 50
   playerSkillAttackPower: 33
-  damageReduction: 0
-  damageIncreased: 1
+  buffPower: 0
   startAttacking: 0
   startBlocking: 0
   skillAttack: 0
@@ -6022,8 +6024,6 @@ MonoBehaviour:
   unitName: Faye
   unitIcon: {fileID: 21300000, guid: 809a6a65b705bea4fb70d6f7bffbfb1b, type: 3}
   currentState: 0
-  powerBuff: 0
-  maxPowerBuff: 2
 --- !u!1 &492079124
 GameObject:
   m_ObjectHideFlags: 0
@@ -8454,10 +8454,11 @@ MonoBehaviour:
   moveSpeed: 3
   unitSpeed: 97
   attackRange: 1
+  damageReduction: 1
+  damageIncreased: 1
   playerAttackPower: 18
   playerSkillAttackPower: 14
-  damageReduction: 0
-  damageIncreased: 1
+  buffPower: 0
   startAttacking: 0
   startBlocking: 0
   skillAttack: 0
@@ -9806,10 +9807,11 @@ MonoBehaviour:
   moveSpeed: 3
   unitSpeed: 110
   attackRange: 1
+  damageReduction: 1
+  damageIncreased: 1
   playerAttackPower: 18
   playerSkillAttackPower: 15
-  damageReduction: 0
-  damageIncreased: 1
+  buffPower: 0
   startAttacking: 0
   startBlocking: 0
   skillAttack: 0
@@ -11363,10 +11365,11 @@ MonoBehaviour:
   moveSpeed: 3
   unitSpeed: 96
   attackRange: 1
+  damageReduction: 1
+  damageIncreased: 1
   enemyAttackPower: 30
   enemySkillAttackPower: 37
   enemySkillPoint: 0
-  enemyDamageReduction: 1
   startAttacking: 0
   skillAttack: 0
   isTurn: 0
@@ -12136,10 +12139,11 @@ MonoBehaviour:
   moveSpeed: 3
   unitSpeed: 108
   attackRange: 1
+  damageReduction: 1
+  damageIncreased: 1
   enemyAttackPower: 40
   enemySkillAttackPower: 55
   enemySkillPoint: 0
-  enemyDamageReduction: 1
   startAttacking: 0
   skillAttack: 0
   isTurn: 0
@@ -21001,10 +21005,11 @@ MonoBehaviour:
   moveSpeed: 3
   unitSpeed: 102
   attackRange: 1
+  damageReduction: 1
+  damageIncreased: 1
   enemyAttackPower: 18
   enemySkillAttackPower: 25
   enemySkillPoint: 0
-  enemyDamageReduction: 1
   startAttacking: 0
   skillAttack: 0
   isTurn: 0
@@ -21926,10 +21931,11 @@ MonoBehaviour:
   moveSpeed: 3
   unitSpeed: 90
   attackRange: 1
+  damageReduction: 1
+  damageIncreased: 1
   enemyAttackPower: 28
   enemySkillAttackPower: 15
   enemySkillPoint: 0
-  enemyDamageReduction: 0.7
   startAttacking: 0
   skillAttack: 0
   isTurn: 0

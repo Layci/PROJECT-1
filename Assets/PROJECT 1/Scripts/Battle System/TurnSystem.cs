@@ -1,4 +1,4 @@
-using Project1;
+ï»¿using Project1;
 using ProJect1;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,22 +10,22 @@ namespace Project1
 {
     public class TurnSystem : MonoBehaviour
     {
-        public static TurnSystem instance; // ½Ì±ÛÅæ ÀÎ½ºÅÏ½º
+        public static TurnSystem instance; // ì‹±ê¸€í†¤ ì¸ìŠ¤í„´ìŠ¤
 
-        public int currentTurn = 0; // ÇöÀç ÁøÇàÁßÀÎ ÅÏ
-        public int selectedEnemyIndex = 0; // ÇöÀç ¼±ÅÃµÈ ÀûÀÇ ÀÎµ¦½º
-        public int randomIndex; // ·£´ı Ä³¸¯ÅÍ¸®½ºÆ® ÀÎµ¦½º
-        public int randomPoint; // ·£´ı Àû ½ºÅ³Æ÷ÀÎÆ®
-        public List<BaseCharacterControl> playerCharacters; // ÇÃ·¹ÀÌ¾î Ä³¸¯ÅÍ ¸®½ºÆ®
-        public List<BaseEnemyControl> enemyCharacters; // Àû Ä³¸¯ÅÍ ¸®½ºÆ®
-        private List<object> allCharacters; // ¸ğµç Ä³¸¯ÅÍ¸¦ Æ÷ÇÔÇÏ´Â ¸®½ºÆ®
+        public int currentTurn = 0; // í˜„ì¬ ì§„í–‰ì¤‘ì¸ í„´
+        public int selectedEnemyIndex = 0; // í˜„ì¬ ì„ íƒëœ ì ì˜ ì¸ë±ìŠ¤
+        public int randomIndex; // ëœë¤ ìºë¦­í„°ë¦¬ìŠ¤íŠ¸ ì¸ë±ìŠ¤
+        public int randomPoint; // ëœë¤ ì  ìŠ¤í‚¬í¬ì¸íŠ¸
+        public List<BaseCharacterControl> playerCharacters; // í”Œë ˆì´ì–´ ìºë¦­í„° ë¦¬ìŠ¤íŠ¸
+        public List<BaseEnemyControl> enemyCharacters; // ì  ìºë¦­í„° ë¦¬ìŠ¤íŠ¸
+        private List<object> allCharacters; // ëª¨ë“  ìºë¦­í„°ë¥¼ í¬í•¨í•˜ëŠ” ë¦¬ìŠ¤íŠ¸
         public Transform playerTargetPosition;
 
-        public List<BaseEnemyControl> activeEnemies = new List<BaseEnemyControl>(); // Àû Å¸°Ù ¸®½ºÆ®
-        public List<BaseUnit> allUnits; // ÀüÅõ¿¡ ÀÖ´Â ¸ğµç Ä³¸¯ÅÍ (¹öÇÁ °ü¸®¿ë ¸®½ºÆ®)
+        //public List<BaseEnemyControl> activeEnemies = new List<BaseEnemyControl>(); // ì  íƒ€ê²Ÿ ë¦¬ìŠ¤íŠ¸
+        public List<BaseUnit> allUnits; // ì „íˆ¬ì— ìˆëŠ” ëª¨ë“  ìºë¦­í„° (ë²„í”„ ê´€ë¦¬ìš© ë¦¬ìŠ¤íŠ¸)
 
-        public int currentTurnIndex = 0; // ÇöÀç ÅÏÀ» ´ã´çÇÏ´Â Ä³¸¯ÅÍÀÇ ÀÎµ¦½º
-        public TurnOrderUI turnOrderUI;  // ÅÏ ¼ø¼­ UI °ü¸® ½ºÅ©¸³Æ®
+        public int currentTurnIndex = 0; // í˜„ì¬ í„´ì„ ë‹´ë‹¹í•˜ëŠ” ìºë¦­í„°ì˜ ì¸ë±ìŠ¤
+        public TurnOrderUI turnOrderUI;  // í„´ ìˆœì„œ UI ê´€ë¦¬ ìŠ¤í¬ë¦½íŠ¸
 
         private void Awake()
         {
@@ -44,16 +44,17 @@ namespace Project1
 
         private void Start()
         {
-            // ¸ğµç Ä³¸¯ÅÍ¸¦ °¡Á®¿Í ¸®½ºÆ®¿¡ Ãß°¡
+            // ëª¨ë“  ìºë¦­í„°ë¥¼ ê°€ì ¸ì™€ ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€
             playerCharacters = FindObjectsOfType<BaseCharacterControl>().ToList();
             enemyCharacters = FindObjectsOfType<BaseEnemyControl>().ToList();
+            allUnits = FindObjectsOfType<BaseUnit>().ToList();
 
-            // ¸ğµç Ä³¸¯ÅÍ¸¦ ÇÏ³ªÀÇ ¸®½ºÆ®¿¡ Ãß°¡
+            // ëª¨ë“  ìºë¦­í„°ë¥¼ í•˜ë‚˜ì˜ ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€
             allCharacters = new List<object>();
             allCharacters.AddRange(playerCharacters);
             allCharacters.AddRange(enemyCharacters);
       
-            // unitSpeed¸¦ ±âÁØÀ¸·Î ³»¸²Â÷¼ø Á¤·Ä
+            // unitSpeedë¥¼ ê¸°ì¤€ìœ¼ë¡œ ë‚´ë¦¼ì°¨ìˆœ ì •ë ¬
             allCharacters = allCharacters.OrderByDescending(character =>
             {
                 if (character is BaseCharacterControl player)
@@ -65,24 +66,35 @@ namespace Project1
 
             SortEnemiesByPosition();
 
-            StartTurn(); // Ã¹ ¹øÂ° ÅÏ ½ÃÀÛ
+            StartTurn(); // ì²« ë²ˆì§¸ í„´ ì‹œì‘
         }
 
-        // ¸Ç Ã³À½ ½ÇÇà
+        // ë§¨ ì²˜ìŒ ì‹¤í–‰
         private void StartTurn()
         {
             if (currentTurnIndex >= allCharacters.Count)
-                currentTurnIndex = 0; // ÀÎµ¦½º°¡ ¸®½ºÆ®¸¦ ÃÊ°úÇÏ¸é ´Ù½Ã Ã³À½À¸·Î
+                currentTurnIndex = 0; // ì¸ë±ìŠ¤ê°€ ë¦¬ìŠ¤íŠ¸ë¥¼ ì´ˆê³¼í•˜ë©´ ë‹¤ì‹œ ì²˜ìŒìœ¼ë¡œ
 
-            foreach (var unit in allUnits)
+            Debug.Log($"[StartTurn] í˜„ì¬ í„´ ì¸ë±ìŠ¤: {currentTurnIndex}");
+
+            BaseUnit currentUnit = allCharacters[currentTurnIndex] as BaseUnit;
+
+            if (currentUnit != null)
             {
-                unit.OnTurnStart(); // °¢ Ä³¸¯ÅÍÀÇ ¹öÇÁ Áö¼Ó ÅÏ °¨¼Ò
+                Debug.Log($"[OnTurnStart] {currentUnit.name}ì˜ ë²„í”„ í™•ì¸ ì‹œì‘");
+
+                currentUnit.OnTurnStart(); // í˜„ì¬ í„´ ìœ ë‹›ì˜ ë²„í”„ ì§€ì† í„´ë§Œ ê°ì†Œ
             }
+            /*foreach (var unit in allUnits)
+            {
+                unit.OnTurnStart(); // ê° ìºë¦­í„°ì˜ ë²„í”„ ì§€ì† í„´ ê°ì†Œ
+            }*/
 
             if (allCharacters[currentTurnIndex] is BaseCharacterControl playerCharacter)
             {
                 playerCharacter.isTurn = true;
                 EnemySelectorUI.instance.isTurn = true;
+
                 if (playerCharacter.isBlock)
                 {
                     playerCharacter.isBlock = false;
@@ -95,22 +107,22 @@ namespace Project1
                 if(enemyCharacter.enemySkillPoint >= 2)
                 {
                     enemyCharacter.skillAttack = true;
-                    Debug.Log("Àû ½ºÅ³°ø°İ");
+                    Debug.Log("ì  ìŠ¤í‚¬ê³µê²©");
                 }
                 enemyCharacter.isTurn = true;
             }
 
-            // ·£´ı ÇÃ·¹ÀÌ¾î Å¸°Ù
+            // ëœë¤ í”Œë ˆì´ì–´ íƒ€ê²Ÿ
             RandomPlayer();
 
-            // UI °»½Å
+            // UI ê°±ì‹ 
             turnOrderUI.Initialize(allCharacters, currentTurnIndex);
         }
 
-        // ÅÏÀÌ ³¡³¯½Ã È£Ãâ
+        // í„´ì´ ëë‚ ì‹œ í˜¸ì¶œ
         public void EndTurn()
         {
-            // ÇöÀç ÅÏ Ä³¸¯ÅÍÀÇ isTurnÀ» false·Î ¼³Á¤
+            // í˜„ì¬ í„´ ìºë¦­í„°ì˜ isTurnì„ falseë¡œ ì„¤ì •
             if (allCharacters[currentTurnIndex] is BaseCharacterControl playerCharacter)
             {
                 playerCharacter.isTurn = false;
@@ -124,56 +136,56 @@ namespace Project1
                 enemyCharacter.enemySkillPoint += randomPoint;
             }
 
-            // ´ÙÀ½ Ä³¸¯ÅÍ·Î ³Ñ¾î°¨
+            // ë‹¤ìŒ ìºë¦­í„°ë¡œ ë„˜ì–´ê°
             currentTurnIndex++;
             if (currentTurnIndex >= allCharacters.Count)
             {
-                currentTurnIndex = 0; // ÀÎµ¦½º°¡ ¸®½ºÆ®¸¦ ÃÊ°úÇÏ¸é ´Ù½Ã Ã³À½À¸·Î
+                currentTurnIndex = 0; // ì¸ë±ìŠ¤ê°€ ë¦¬ìŠ¤íŠ¸ë¥¼ ì´ˆê³¼í•˜ë©´ ë‹¤ì‹œ ì²˜ìŒìœ¼ë¡œ
             }
             
-            StartTurn(); // ´ÙÀ½ ÅÏ ½ÃÀÛ
+            StartTurn(); // ë‹¤ìŒ í„´ ì‹œì‘
         }
 
         private void SortEnemiesByPosition()
         {
-            // Àû ¸®½ºÆ®¸¦ x°ª ±âÁØÀ¸·Î ¿À¸§Â÷¼ø Á¤·Ä
+            // ì  ë¦¬ìŠ¤íŠ¸ë¥¼ xê°’ ê¸°ì¤€ìœ¼ë¡œ ì˜¤ë¦„ì°¨ìˆœ ì •ë ¬
             enemyCharacters = enemyCharacters.OrderBy(enemy => enemy.transform.position.x).ToList();
         }
 
         public void RemoveCharacterFromTurnOrder(object character)
         {
-            // »ç¸ÁÇÑ Ä³¸¯ÅÍ¸¦ ÀüÃ¼ ÅÏ ¸®½ºÆ®¿¡¼­ Á¦°Å
+            // ì‚¬ë§í•œ ìºë¦­í„°ë¥¼ ì „ì²´ í„´ ë¦¬ìŠ¤íŠ¸ì—ì„œ ì œê±°
             allCharacters.Remove(character);
 
-            // Àû Ä³¸¯ÅÍ ¸®½ºÆ®¿¡¼­ Á¦°Å
+            // ì  ìºë¦­í„° ë¦¬ìŠ¤íŠ¸ì—ì„œ ì œê±°
             if (character is BaseEnemyControl enemy)
             {
                 enemyCharacters.Remove(enemy);
             }
 
-            // ÇÃ·¹ÀÌ¾î Ä³¸¯ÅÍ ¸®½ºÆ®¿¡¼­µµ Á¦°Å °¡´É
+            // í”Œë ˆì´ì–´ ìºë¦­í„° ë¦¬ìŠ¤íŠ¸ì—ì„œë„ ì œê±° ê°€ëŠ¥
             if (character is BaseCharacterControl player)
             {
                 playerCharacters.Remove(player);
             }
 
-            // ÇöÀç ÅÏ ÀÎµ¦½º°¡ ¸®½ºÆ® ¹üÀ§¸¦ ÃÊ°úÇÏÁö ¾Êµµ·Ï º¸Á¤
+            // í˜„ì¬ í„´ ì¸ë±ìŠ¤ê°€ ë¦¬ìŠ¤íŠ¸ ë²”ìœ„ë¥¼ ì´ˆê³¼í•˜ì§€ ì•Šë„ë¡ ë³´ì •
             if (currentTurnIndex >= allCharacters.Count)
             {
                 currentTurnIndex = 0;
             }
         }
 
-        // Àû Ãß°¡ ÇÔ¼ö
+        // ì  ì¶”ê°€ í•¨ìˆ˜
         public void RegisterEnemy(BaseEnemyControl enemy)
         {
-            // Àû ¸®½ºÆ®¿¡ Ãß°¡
+            // ì  ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€
             enemyCharacters.Add(enemy);
 
-            // ÀüÃ¼ ÅÏ ¸®½ºÆ®¿¡µµ Ãß°¡
+            // ì „ì²´ í„´ ë¦¬ìŠ¤íŠ¸ì—ë„ ì¶”ê°€
             allCharacters.Add(enemy);
 
-            // unitSpeed ±âÁØÀ¸·Î ´Ù½Ã Á¤·Ä
+            // unitSpeed ê¸°ì¤€ìœ¼ë¡œ ë‹¤ì‹œ ì •ë ¬
             allCharacters = allCharacters.OrderByDescending(character =>
             {
                 if (character is BaseCharacterControl player)
@@ -186,17 +198,17 @@ namespace Project1
 
         public void RandomPlayer()
         {
-            // isBlockÀÌ trueÀÎ ÇÃ·¹ÀÌ¾î°¡ ÀÖ´ÂÁö È®ÀÎ
+            // isBlockì´ trueì¸ í”Œë ˆì´ì–´ê°€ ìˆëŠ”ì§€ í™•ì¸
             BaseCharacterControl blockingCharacter = playerCharacters.FirstOrDefault(player => player.isBlock);
 
             if (blockingCharacter != null)
             {
-                // ¹æ¾î ÁßÀÎ Ä³¸¯ÅÍ°¡ ÀÖÀ¸¸é ÇØ´ç Ä³¸¯ÅÍ ¿ì¼± Å¸°İ
+                // ë°©ì–´ ì¤‘ì¸ ìºë¦­í„°ê°€ ìˆìœ¼ë©´ í•´ë‹¹ ìºë¦­í„° ìš°ì„  íƒ€ê²©
                 playerTargetPosition = blockingCharacter.transform;
             }
             else
             {
-                // ¹æ¾î ÁßÀÎ Ä³¸¯ÅÍ°¡ ¾øÀ¸¸é ·£´ı Å¸°Ù ¼±ÅÃ
+                // ë°©ì–´ ì¤‘ì¸ ìºë¦­í„°ê°€ ì—†ìœ¼ë©´ ëœë¤ íƒ€ê²Ÿ ì„ íƒ
                 randomIndex = Random.Range(0, playerCharacters.Count);
                 playerTargetPosition = playerCharacters[randomIndex].transform;
             }

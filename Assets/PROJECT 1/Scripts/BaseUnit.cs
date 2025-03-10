@@ -19,9 +19,29 @@ namespace ProJect1
 
         public void AddBuff(Buff newBuff)
         {
+            Buff existingBuff = activeBuffs.Find(buff => buff.buffName == newBuff.buffName);
+
+            if (existingBuff != null)
+            {
+                // 새 버프가 기존 버프보다 약하면 적용하지 않음
+                if (newBuff.attackBoost <= existingBuff.attackBoost && newBuff.defenseBoost <= existingBuff.defenseBoost)
+                {
+                    Debug.Log($"{newBuff.buffName} 버프가 이미 더 강력하게 적용 중이므로 무시됨.");
+                    return;
+                }
+
+                // 기존 버프 제거 (리스트에서도 삭제)
+                existingBuff.RemoveEffect(this);
+                activeBuffs.Remove(existingBuff);
+            }
+
+            // 새로운 버프 추가
             activeBuffs.Add(newBuff);
             newBuff.ApplyEffect(this);
+            Debug.Log($"{newBuff.buffName} 버프가 적용되었습니다! (공격력 증가: {newBuff.attackBoost}, 방어력 증가: {newBuff.defenseBoost})");
         }
+
+
 
         public void RemoveExpiredBuffs()
         {

@@ -32,7 +32,6 @@ namespace Project1
         public float playerAttackPower;       // 플레이어 기본공격력
         public float playerSkillAttackPower;  // 플레이어 스킬공격력
         public int buffPower = 0;             // 플레이어 버프 파워
-        public int maxBuffPower = 3;          // 플레이어 최대 버프 파워
         //public float attackRange;             // 공격 거리
         //public float damageReduction;         // 피해 감소
         //public float damageIncreased = 1;     // 피해 증가
@@ -69,10 +68,6 @@ namespace Project1
                 HandleState();
                 HandleAttackInput();
                 TargetUpdate();
-            }
-            else if (!isBlock)
-            {
-                damageReduction = 1;
             }
         }
 

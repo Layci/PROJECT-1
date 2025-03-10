@@ -17,6 +17,25 @@ namespace Project1
         {
             if (currentState == PlayerState.Idle)
             {
+                Buff FayeAttackBuff = null;
+                switch (buffPower)
+                {
+                    case 1:
+                        FayeAttackBuff = new Buff("Faye공격력 증가", 3, 0.2f, 0);
+                        break;
+                    case 2:
+                        FayeAttackBuff = new Buff("Faye공격력 증가", 3, 0.5f, 0);
+                        break;
+                    case 3:
+                        FayeAttackBuff = new Buff("Faye공격력 증가", 3, 0.8f, 0);
+                        break;
+                }
+
+                if (FayeAttackBuff != null)
+                {
+                    AddBuff(FayeAttackBuff);
+                }
+
                 if (Input.GetKeyDown(KeyCode.Q))
                 {
                     skillAttack = false;

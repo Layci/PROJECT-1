@@ -7,8 +7,8 @@ namespace Project1
 {
     public class Buff
     {
-        public string buffName; // 버프 이름
-        public int remainingTurns; // 버프 지속 턴
+        public string buffName;        // 버프 이름
+        public int remainingTurns;     // 버프 지속 턴
         public float attackBoost;      // 공격력 증가량
         public float defenseBoost;     // 방어력 증가량
 
