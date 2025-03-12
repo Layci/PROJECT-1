@@ -34,6 +34,7 @@ namespace Project1
             unit.damageIncreased -= attackBoost;  // 공격력 복구
             unit.damageReduction += defenseBoost; // 받는 피해 복구
             Debug.Log(unit.name + "의 " + buffName + " 버프가 해제됨!");
+
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Project1
         //public float unitSpeed;               // 유닛 속도(턴 순서 관련)
         public float playerAttackPower;       // 플레이어 기본공격력
         public float playerSkillAttackPower;  // 플레이어 스킬공격력
-        public int buffPower = 0;             // 플레이어 버프 파워
+        //public int buffPower = 0;             // 플레이어 버프 파워
         //public float attackRange;             // 공격 거리
         //public float damageReduction;         // 피해 감소
         //public float damageIncreased = 1;     // 피해 증가
@@ -41,6 +41,7 @@ namespace Project1
         public bool isTurn = false;           // 본인 턴인지 알려주는 연산자
         public bool isBlock = false;          // 본인이 방어 상태인지 알려주는 연산자
         public Slider hpBarSlider;            // HP바
+        public Text hpText;                   // HP 텍스트
         public EnemySelection enemySelection; // 선택된 적 관리
         public Transform currentTarget;       // 현재 이동 중인 적의 Transform
         public string unitName;               // 캐릭터 이름
@@ -58,6 +59,7 @@ namespace Project1
             animator = GetComponentInChildren<Animator>();
             initialPosition = transform.position;
             initialRotation = transform.rotation;
+            CheckHP();
         }
 
         protected virtual void Update()
@@ -211,6 +213,7 @@ namespace Project1
             if (hpBarSlider != null)
             {
                 hpBarSlider.value = curHealth / maxHealth;
+                hpText.text = curHealth.ToString();
             }
         }
 
@@ -254,6 +257,13 @@ namespace Project1
             Debug.Log("아군 사망");
             Destroy(gameObject);
             TurnSystem.instance.RemoveCharacterFromTurnOrder(this);
+
+            // FayePlayerControl 찾아서 버프 파워 증가
+            FayePlayerControl faye = FindObjectOfType<FayePlayerControl>();
+            if (faye != null)
+            {
+                faye.IncreaseBuffPower();  // 버프 증가 함수 호출
+            }
         }
     }
 }

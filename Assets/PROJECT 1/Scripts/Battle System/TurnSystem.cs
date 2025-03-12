@@ -85,10 +85,6 @@ namespace Project1
 
                 currentUnit.OnTurnStart(); // 현재 턴 유닛의 버프 지속 턴만 감소
             }
-            /*foreach (var unit in allUnits)
-            {
-                unit.OnTurnStart(); // 각 캐릭터의 버프 지속 턴 감소
-            }*/
 
             if (allCharacters[currentTurnIndex] is BaseCharacterControl playerCharacter)
             {

@@ -14,6 +14,7 @@ namespace ProJect1
         public float attackRange;             // 공격 거리
         public float damageReduction = 1f;    // 피해 감소
         public float damageIncreased = 1;     // 피해 증가
+        public int buffPower = 0;             // 버프 파워
 
         public List<Buff> activeBuffs = new List<Buff>();
 
@@ -55,6 +56,7 @@ namespace ProJect1
                 buff.remainingTurns--;
                 if (buff.remainingTurns <= 0)
                 {
+                    buffPower = 0;
                     buff.RemoveEffect(this);
                 }
             }

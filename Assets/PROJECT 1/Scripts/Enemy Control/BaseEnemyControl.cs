@@ -96,31 +96,6 @@ namespace Project1
             }
         }
 
-        /*public void AddBuff(Buff newBuff)
-        {
-            activeBuffs.Add(newBuff);
-            newBuff.ApplyEffect(this);
-        }
-
-        public void RemoveExpiredBuffs()
-        {
-            activeBuffs.RemoveAll(buff => buff.remainingTurns <= 0);
-        }
-
-        public void OnTurnStart()
-        {
-            foreach (var buff in activeBuffs)
-            {
-                buff.remainingTurns--;
-                if (buff.remainingTurns <= 0)
-                {
-                    buff.RemoveEffect(this);
-                }
-            }
-
-            RemoveExpiredBuffs();
-        }*/
-
         // 공격을 시작하도록 호출되는 메서드
         public void StartAttack()
         {
@@ -217,6 +192,7 @@ namespace Project1
             Debug.Log("적 사망");
             Destroy(gameObject);
             TurnSystem.instance.RemoveCharacterFromTurnOrder(this);
+            FayePlayerControl.instance.buffPower++;
         }
     }
 }
