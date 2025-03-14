@@ -7,12 +7,14 @@ namespace Project1
 {
     public class FayePlayerControl : BaseCharacterControl
     {
-        public static FayePlayerControl instance;
+        public static new FayePlayerControl instance;
         private TurnSystem turnSystem;
         private BuffUI buffUI;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();  // 부모 클래스의 Awake()도 호출 (필요하지 않으면 삭제해도 됨)
+
             if (instance != null && instance != this)
             {
                 Destroy(this.gameObject);

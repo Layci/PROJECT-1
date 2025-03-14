@@ -47,8 +47,6 @@ namespace Project1
         protected bool isAttackExecuted = false;
         private TurnSystem turnSystem;
 
-        //private List<Buff> activeBuffs = new List<Buff>();
-
         protected virtual void Awake()
         {
             animator = GetComponentInChildren<Animator>();
