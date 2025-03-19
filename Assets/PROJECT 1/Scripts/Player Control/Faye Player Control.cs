@@ -28,7 +28,7 @@ namespace Project1
         {
             turnSystem = FindObjectOfType<TurnSystem>();
             // 이 캐릭터에게 연결된 BuffPowerUI 찾기 (캐릭터 오브젝트의 자식으로 설정)
-            buffUI = GetComponentInChildren<BuffUI>();
+            buffUI = GetComponent<BuffUI>();
         }
 
         protected override void HandleAttackInput()
@@ -79,6 +79,7 @@ namespace Project1
             if (buffUI != null)
             {
                 buffUI.UpdateBuffUI(buffPower);
+                Debug.Log("버프UI 활성화");
             }
         }
 

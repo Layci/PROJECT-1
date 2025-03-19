@@ -15,6 +15,7 @@ namespace ProJect1
         public float damageReduction = 1f;    // 피해 감소
         public float damageIncreased = 1;     // 피해 증가
         public int buffPower = 0;             // 버프 파워
+        public bool buff = false;             // 버프 적용 확인 연산자
 
         public List<Buff> activeBuffs = new List<Buff>();
 

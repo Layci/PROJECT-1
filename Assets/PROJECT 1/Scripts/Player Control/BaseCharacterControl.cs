@@ -256,14 +256,7 @@ namespace Project1
         {
             Debug.Log("아군 사망");
             Destroy(gameObject);
-            TurnSystem.instance.RemoveCharacterFromTurnOrder(this);
-
-            // FayePlayerControl 찾아서 버프 파워 증가
-            FayePlayerControl faye = FindObjectOfType<FayePlayerControl>();
-            if (faye != null)
-            {
-                faye.IncreaseBuffPower();  // 버프 증가 함수 호출
-            }
+            TurnSystem.instance.RemoveCharacterFromTurnOrder(this);            
         }
     }
 }
