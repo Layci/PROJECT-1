@@ -41,6 +41,7 @@ namespace ProJect1
             activeBuffs.Add(newBuff);
             newBuff.ApplyEffect(this);
             Debug.Log($"{newBuff.buffName} 버프가 적용되었습니다! (공격력 증가: {newBuff.attackBoost}, 방어력 증가: {newBuff.defenseBoost})");
+            buff = true;
         }
 
 
