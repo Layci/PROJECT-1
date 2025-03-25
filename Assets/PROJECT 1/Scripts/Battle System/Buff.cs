@@ -11,13 +11,15 @@ namespace Project1
         public int remainingTurns;     // 버프 지속 턴
         public float attackBoost;      // 공격력 증가량
         public float defenseBoost;     // 방어력 증가량
+        public Type exclusiveCharacter;  // 특정 캐릭터 전용 (없으면 null)
 
-        public Buff(string name, int duration, float atkBoost, float defBoost)
+        public Buff(string name, int duration, float atkBoost, float defBoost, Type exclusiveCharacter = null)
         {
             buffName = name;
             remainingTurns = duration;
             attackBoost = atkBoost;
             defenseBoost = defBoost;
+            this.exclusiveCharacter = exclusiveCharacter;
         }
 
         // 버프 효과 적용
@@ -35,6 +37,13 @@ namespace Project1
             unit.damageReduction += defenseBoost; // 받는 피해 복구
             Debug.Log(unit.name + "의 " + buffName + " 버프가 해제됨!");
 
+            if(exclusiveCharacter != null && unit.GetType() == exclusiveCharacter)
+            {
+                if (unit is FayePlayerControl faye)
+                {
+                    faye.DecreaseBuffPower();
+                }
+            }
         }
     }
 }
