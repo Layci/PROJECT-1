@@ -10,6 +10,7 @@ namespace Project1
         public static new FayePlayerControl instance;
         private TurnSystem turnSystem;
         private BuffUI buffUI;
+        public int buffTurn; // 남은 버프 턴 확인용
 
         protected override void Awake()
         {
@@ -42,16 +43,17 @@ namespace Project1
                         FayeAttackBuff = new Buff("Faye공격력 증가", 3, 0.2f, 0, typeof(FayePlayerControl));
                         break;
                     case 2:
-                        FayeAttackBuff = new Buff("Faye공격력 증가", 3, 0.5f, 0, typeof(FayePlayerControl));
+                        FayeAttackBuff = new Buff("Faye공격력 증가", 3, 0.4f, 0, typeof(FayePlayerControl));
                         break;
                     case 3:
-                        FayeAttackBuff = new Buff("Faye공격력 증가", 2, 0.8f, 0, typeof(FayePlayerControl));
+                        FayeAttackBuff = new Buff("Faye공격력 증가", 2, 0.6f, 0, typeof(FayePlayerControl));
                         break;
                 }
 
                 if (FayeAttackBuff != null)
                 {
                     AddBuff(FayeAttackBuff);
+                    buffUI.UpdateBuffTurn(FayeAttackBuff.remainingTurns);
                 }
 
                 if (Input.GetKeyDown(KeyCode.Q))
