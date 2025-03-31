@@ -123,7 +123,18 @@ namespace Project1
             {
                 playerCharacter.isTurn = false;
                 EnemySelectorUI.instance.isTurn = false;
-                
+
+                // BuffUI 컴포넌트 찾기
+                BuffUI buffUI = playerCharacter.GetComponentInChildren<BuffUI>();
+                if (buffUI != null)
+                {
+                    buffUI.UpdateBuffTurn(playerCharacter.buffTurn); // 남은 버프 턴 업데이트
+                    Debug.Log($"{playerCharacter.name}의 BuffUI 업데이트 완료! (남은 턴: {playerCharacter.buffTurn})");
+                }
+                else
+                {
+                    Debug.LogWarning($"{playerCharacter.name}의 BuffUI를 찾을 수 없습니다!");
+                }
             }
             else if (allCharacters[currentTurnIndex] is BaseEnemyControl enemyCharacter)
             {
@@ -131,6 +142,21 @@ namespace Project1
                 randomPoint = Random.Range(1, 3);
                 enemyCharacter.enemySkillPoint += randomPoint;
             }
+
+            /*// 현재 모든 캐릭터를 확인하면서 BuffUI가 있는 경우만 업데이트
+            foreach (var character in allCharacters)
+            {
+                // BaseCharacterControl 또는 BaseEnemyControl로 캐스팅
+                if (character is BaseCharacterControl playerCharacter1)
+                {
+                    BuffUI buffUI = playerCharacter1.GetComponentInChildren<BuffUI>(); // BuffUI 컴포넌트 찾기
+                    if (buffUI != null)
+                    {
+                        buffUI.UpdateBuffTurn(playerCharacter1.buffTurn); // 남은 버프 턴 업데이트
+                        Debug.Log($"{playerCharacter1.name}의 BuffUI 업데이트 완료!");
+                    }
+                }
+            }*/
 
             // 다음 캐릭터로 넘어감
             currentTurnIndex++;

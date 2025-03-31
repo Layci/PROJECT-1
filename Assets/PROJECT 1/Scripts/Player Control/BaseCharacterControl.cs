@@ -31,6 +31,7 @@ namespace Project1
         //public float unitSpeed;               // 유닛 속도(턴 순서 관련)
         public float playerAttackPower;       // 플레이어 기본공격력
         public float playerSkillAttackPower;  // 플레이어 스킬공격력
+        public int buffTurn;                  // 남은 버프 턴
         //public int buffPower = 0;             // 플레이어 버프 파워
         //public float attackRange;             // 공격 거리
         //public float damageReduction;         // 피해 감소

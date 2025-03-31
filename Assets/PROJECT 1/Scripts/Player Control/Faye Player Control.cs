@@ -9,8 +9,7 @@ namespace Project1
     {
         public static new FayePlayerControl instance;
         private TurnSystem turnSystem;
-        private BuffUI buffUI;
-        public int buffTurn; // 남은 버프 턴 확인용
+        public BuffUI buffUI;
 
         protected override void Awake()
         {
@@ -21,7 +20,6 @@ namespace Project1
                 Destroy(this.gameObject);
                 return;
             }
-
             instance = this;  // 인스턴스 설정
         }
 
@@ -81,7 +79,7 @@ namespace Project1
             if (buffUI != null)
             {
                 buffUI.UpdateBuffUI(buffPower);
-                Debug.Log("버프UI 활성화");
+                Debug.Log("버프 UI 활성화");
             }
         }
 

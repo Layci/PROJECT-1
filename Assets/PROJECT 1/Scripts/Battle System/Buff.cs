@@ -44,6 +44,13 @@ namespace Project1
                     faye.DecreaseBuffPower();
                 }
             }
+
+            // BuffUI 업데이트
+            BuffUI buffUI = unit.GetComponent<BuffUI>();
+            if (buffUI != null)
+            {
+                buffUI.UpdateBuffTurn(0); // 버프가 없어지면 0으로 초기화
+            }
         }
     }
 }

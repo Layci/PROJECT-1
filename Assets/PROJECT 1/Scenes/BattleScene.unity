@@ -3230,7 +3230,7 @@ GameObject:
   - component: {fileID: 226680008}
   - component: {fileID: 226680007}
   m_Layer: 5
-  m_Name: Buff Turn Text
+  m_Name: Faye Buff Turn UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5220,6 +5220,7 @@ MonoBehaviour:
   buff: 0
   playerAttackPower: 38
   playerSkillAttackPower: 12
+  buffTurn: 0
   startAttacking: 0
   startBlocking: 0
   skillAttack: 0
@@ -6342,7 +6343,7 @@ MonoBehaviour:
   maxHealth: 245
   curHealth: 245
   moveSpeed: 3
-  unitSpeed: 93
+  unitSpeed: 930
   attackRange: 1
   damageReduction: 1
   damageIncreased: 1
@@ -6350,6 +6351,7 @@ MonoBehaviour:
   buff: 0
   playerAttackPower: 50
   playerSkillAttackPower: 33
+  buffTurn: 0
   startAttacking: 0
   startBlocking: 0
   skillAttack: 0
@@ -6362,7 +6364,7 @@ MonoBehaviour:
   unitName: Faye
   unitIcon: {fileID: 21300000, guid: 809a6a65b705bea4fb70d6f7bffbfb1b, type: 3}
   currentState: 0
-  buffTurn: 0
+  buffUI: {fileID: 0}
 --- !u!114 &489353502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9083,6 +9085,7 @@ MonoBehaviour:
   buff: 0
   playerAttackPower: 18
   playerSkillAttackPower: 14
+  buffTurn: 0
   startAttacking: 0
   startBlocking: 0
   skillAttack: 0
@@ -10430,7 +10433,7 @@ MonoBehaviour:
   maxHealth: 220
   curHealth: 220
   moveSpeed: 3
-  unitSpeed: 110
+  unitSpeed: 1100
   attackRange: 1
   damageReduction: 1
   damageIncreased: 1
@@ -10438,6 +10441,7 @@ MonoBehaviour:
   buff: 0
   playerAttackPower: 18
   playerSkillAttackPower: 15
+  buffTurn: 0
   startAttacking: 0
   startBlocking: 0
   skillAttack: 0
@@ -18355,7 +18359,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 3
+  m_Text: 0
 --- !u!222 &1531286841
 CanvasRenderer:
   m_ObjectHideFlags: 0

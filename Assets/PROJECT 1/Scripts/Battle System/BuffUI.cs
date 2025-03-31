@@ -15,7 +15,7 @@ namespace ProJect1
 
         private void Start()
         {
-            buffText = GetComponent<Text>();
+            
         }
 
         public void UpdateBuffUI(int buffPower)
