@@ -98,7 +98,6 @@ namespace Project1
         {
             // 총 피해량 초기화
             totalDamage = 0;
-            Debug.Log(totalDamage);
         }
 
         public void EndBlock()

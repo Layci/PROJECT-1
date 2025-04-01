@@ -23,14 +23,14 @@ namespace ProJect1
             for (int i = 0; i < buffIcons.Length; i++)
             {
                 buffIcons[i].gameObject.SetActive(i < buffPower);
-            }
+            }   
         }
 
         public void UpdateBuffTurn(int characterBuff)
         {
             curbuff = characterBuff;
-            buffText.text = curbuff.ToString();
-            Debug.Log("확인");
+            buffText.text = characterBuff.ToString();
+            Debug.Log("버프 턴 UI 업데이트: " + characterBuff);
         }
     }
 }

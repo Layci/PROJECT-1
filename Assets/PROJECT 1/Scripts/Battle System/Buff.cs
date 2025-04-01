@@ -41,7 +41,7 @@ namespace Project1
             {
                 if (unit is FayePlayerControl faye)
                 {
-                    faye.DecreaseBuffPower();
+                    faye.DecreaseBuffPower();   
                 }
             }
 

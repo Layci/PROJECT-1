@@ -5217,10 +5217,10 @@ MonoBehaviour:
   damageReduction: 1
   damageIncreased: 1
   buffPower: 0
+  buffTrun: 0
   buff: 0
   playerAttackPower: 38
   playerSkillAttackPower: 12
-  buffTurn: 0
   startAttacking: 0
   startBlocking: 0
   skillAttack: 0
@@ -6348,10 +6348,10 @@ MonoBehaviour:
   damageReduction: 1
   damageIncreased: 1
   buffPower: 0
+  buffTrun: 0
   buff: 0
   playerAttackPower: 50
   playerSkillAttackPower: 33
-  buffTurn: 0
   startAttacking: 0
   startBlocking: 0
   skillAttack: 0
@@ -9082,10 +9082,10 @@ MonoBehaviour:
   damageReduction: 1
   damageIncreased: 1
   buffPower: 0
+  buffTrun: 0
   buff: 0
   playerAttackPower: 18
   playerSkillAttackPower: 14
-  buffTurn: 0
   startAttacking: 0
   startBlocking: 0
   skillAttack: 0
@@ -10436,12 +10436,12 @@ MonoBehaviour:
   unitSpeed: 1100
   attackRange: 1
   damageReduction: 1
-  damageIncreased: 1
+  damageIncreased: 22
   buffPower: 0
+  buffTrun: 0
   buff: 0
   playerAttackPower: 18
   playerSkillAttackPower: 15
-  buffTurn: 0
   startAttacking: 0
   startBlocking: 0
   skillAttack: 0
@@ -12074,6 +12074,7 @@ MonoBehaviour:
   damageReduction: 1
   damageIncreased: 1
   buffPower: 0
+  buffTrun: 0
   buff: 0
   enemyAttackPower: 30
   enemySkillAttackPower: 37
@@ -12888,6 +12889,7 @@ MonoBehaviour:
   damageReduction: 1
   damageIncreased: 1
   buffPower: 0
+  buffTrun: 0
   buff: 0
   enemyAttackPower: 40
   enemySkillAttackPower: 55
@@ -22101,6 +22103,7 @@ MonoBehaviour:
   damageReduction: 1
   damageIncreased: 1
   buffPower: 0
+  buffTrun: 0
   buff: 0
   enemyAttackPower: 18
   enemySkillAttackPower: 25
@@ -23090,6 +23093,7 @@ MonoBehaviour:
   damageReduction: 1
   damageIncreased: 1
   buffPower: 0
+  buffTrun: 0
   buff: 0
   enemyAttackPower: 28
   enemySkillAttackPower: 15

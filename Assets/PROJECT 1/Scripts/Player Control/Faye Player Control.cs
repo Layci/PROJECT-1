@@ -51,7 +51,7 @@ namespace Project1
                 if (FayeAttackBuff != null)
                 {
                     AddBuff(FayeAttackBuff);
-                    buffUI.UpdateBuffTurn(FayeAttackBuff.remainingTurns);
+                    buffUI.UpdateBuffTurn(buffTrun);
                 }
 
                 if (Input.GetKeyDown(KeyCode.Q))
@@ -74,10 +74,11 @@ namespace Project1
             currentState = PlayerState.MovingToAttack;
         }
 
-        void UpdateBuffUI()
+        public void UpdateBuffUI()
         {
             if (buffUI != null)
             {
+                // buffPower 값에 따라 아이콘 활성화 업데이트
                 buffUI.UpdateBuffUI(buffPower);
                 Debug.Log("버프 UI 활성화");
             }
