@@ -77,14 +77,7 @@ namespace Project1
 
             Debug.Log($"[StartTurn] 현재 턴 인덱스: {currentTurnIndex}");
 
-            BaseUnit currentUnit = allCharacters[currentTurnIndex] as BaseUnit;
-
-            if (currentUnit != null)
-            {
-                Debug.Log($"[OnTurnStart] {currentUnit.name}의 버프 확인 시작");
-
-                currentUnit.OnTurnStart(); // 현재 턴 유닛의 버프 지속 턴만 감소
-            }
+            
 
             if (allCharacters[currentTurnIndex] is BaseCharacterControl playerCharacter)
             {
@@ -124,16 +117,19 @@ namespace Project1
                 playerCharacter.isTurn = false;
                 EnemySelectorUI.instance.isTurn = false;
 
+                BaseUnit currentUnit = allCharacters[currentTurnIndex] as BaseUnit;
+                if (currentUnit != null)
+                {
+                    Debug.Log($"[OnTurnStart] {currentUnit.name}의 버프 확인 시작");
+                    currentUnit.OnTurnStart(); // 현재 턴 유닛의 버프 지속 턴만 감소
+                }
+
                 // BuffUI 컴포넌트 찾기
-                BuffUI buffUI = playerCharacter.GetComponent<BuffUI>();
+                BuffUI buffUI = FindObjectOfType<BuffUI>();
                 if (buffUI != null)
                 {
                     buffUI.UpdateBuffTurn(playerCharacter.buffTrun); // 남은 버프 턴 업데이트
                     Debug.Log($"{playerCharacter.name}의 BuffUI 업데이트 완료! (남은 턴: {playerCharacter.buffTrun})");
-                }
-                else
-                {
-                    Debug.LogWarning($"{playerCharacter.name}의 BuffUI를 찾을 수 없습니다!");
                 }
             }
             else if (allCharacters[currentTurnIndex] is BaseEnemyControl enemyCharacter)

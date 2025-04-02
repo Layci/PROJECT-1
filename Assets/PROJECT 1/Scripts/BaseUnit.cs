@@ -15,7 +15,6 @@ namespace ProJect1
         public float damageReduction = 1f;    // 피해 감소
         public float damageIncreased = 1;     // 피해 증가
         public int buffPower = 0;             // 버프 파워
-        [SerializeField]
         public int buffTrun;                  // 남은 버프 턴
         public bool buff = false;             // 버프 적용 확인 연산자
 
@@ -24,7 +23,6 @@ namespace ProJect1
         public void AddBuff(Buff newBuff)
         {
             Buff existingBuff = activeBuffs.Find(buff => buff.buffName == newBuff.buffName);
-            buffTrun = newBuff.remainingTurns;
 
             if (existingBuff != null)
             {
@@ -39,6 +37,11 @@ namespace ProJect1
                 existingBuff.RemoveEffect(this);
                 activeBuffs.Remove(existingBuff);
             }
+
+            buffTrun = newBuff.remainingTurns;
+            BuffUI.instance.curbuff = newBuff.remainingTurns;
+            
+            Debug.Log("버프 활성화 턴 반영");
 
             // 새로운 버프 추가
             activeBuffs.Add(newBuff);
@@ -59,8 +62,8 @@ namespace ProJect1
             foreach (var buff in activeBuffs)
             {
                 buff.remainingTurns--;
-                buffTrun --;
-                Debug.Log($"{buffTrun} 남은턴");
+                buffTrun = buff.remainingTurns;
+                Debug.Log($"{buff.remainingTurns} 남은버프턴");
                 if (buff.remainingTurns <= 0)
                 {
                     buffPower = 0;

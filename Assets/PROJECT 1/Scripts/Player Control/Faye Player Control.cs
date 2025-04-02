@@ -23,6 +23,31 @@ namespace Project1
             instance = this;  // 인스턴스 설정
         }
 
+        protected override void Update()
+        {
+            base.Update();
+
+            Buff FayeAttackBuff = null;
+            switch (buffPower)
+            {
+                case 1:
+                    FayeAttackBuff = new Buff("Faye공격력 증가", 3, 0.2f, 0, typeof(FayePlayerControl));
+                    break;
+                case 2:
+                    FayeAttackBuff = new Buff("Faye공격력 증가", 3, 0.4f, 0, typeof(FayePlayerControl));
+                    break;
+                case 3:
+                    FayeAttackBuff = new Buff("Faye공격력 증가", 2, 0.6f, 0, typeof(FayePlayerControl));
+                    break;
+            }
+
+            if (FayeAttackBuff != null)
+            {
+                AddBuff(FayeAttackBuff);
+                buffUI.UpdateBuffTurn(buffTrun);
+            }
+        }
+
         private void Start()
         {
             turnSystem = FindObjectOfType<TurnSystem>();
@@ -34,25 +59,7 @@ namespace Project1
         {
             if (currentState == PlayerState.Idle)
             {
-                Buff FayeAttackBuff = null;
-                switch (buffPower)
-                {
-                    case 1:
-                        FayeAttackBuff = new Buff("Faye공격력 증가", 3, 0.2f, 0, typeof(FayePlayerControl));
-                        break;
-                    case 2:
-                        FayeAttackBuff = new Buff("Faye공격력 증가", 3, 0.4f, 0, typeof(FayePlayerControl));
-                        break;
-                    case 3:
-                        FayeAttackBuff = new Buff("Faye공격력 증가", 2, 0.6f, 0, typeof(FayePlayerControl));
-                        break;
-                }
-
-                if (FayeAttackBuff != null)
-                {
-                    AddBuff(FayeAttackBuff);
-                    buffUI.UpdateBuffTurn(buffTrun);
-                }
+                
 
                 if (Input.GetKeyDown(KeyCode.Q))
                 {
