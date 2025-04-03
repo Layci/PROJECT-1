@@ -31,10 +31,10 @@ namespace Project1
             switch (buffPower)
             {
                 case 1:
-                    FayeAttackBuff = new Buff("Faye공격력 증가", 3, 0.2f, 0, typeof(FayePlayerControl));
+                    FayeAttackBuff = new Buff("Faye공격력 증가", 2, 0.2f, 0, typeof(FayePlayerControl));
                     break;
                 case 2:
-                    FayeAttackBuff = new Buff("Faye공격력 증가", 3, 0.4f, 0, typeof(FayePlayerControl));
+                    FayeAttackBuff = new Buff("Faye공격력 증가", 2, 0.4f, 0, typeof(FayePlayerControl));
                     break;
                 case 3:
                     FayeAttackBuff = new Buff("Faye공격력 증가", 2, 0.6f, 0, typeof(FayePlayerControl));
@@ -101,9 +101,6 @@ namespace Project1
 
         public void DecreaseBuffPower()
         {
-            if (buffPower > 0)
-                buffPower = 0;
-
             UpdateBuffUI();  // 버프 파워 값 변경 시 UI 업데이트 호출
         }
     }

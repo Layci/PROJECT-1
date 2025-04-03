@@ -32,7 +32,6 @@ namespace ProJect1
                     Debug.Log($"{newBuff.buffName} 버프가 이미 더 강력하게 적용 중이므로 무시됨.");
                     return;
                 }
-
                 // 기존 버프 제거 (리스트에서도 삭제)
                 existingBuff.RemoveEffect(this);
                 activeBuffs.Remove(existingBuff);

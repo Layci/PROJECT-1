@@ -77,8 +77,6 @@ namespace Project1
 
             Debug.Log($"[StartTurn] 현재 턴 인덱스: {currentTurnIndex}");
 
-            
-
             if (allCharacters[currentTurnIndex] is BaseCharacterControl playerCharacter)
             {
                 playerCharacter.isTurn = true;
