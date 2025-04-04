@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: e9e7b0c3fa55858448c2df58cadd3428
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _tex_ground_03: {fileID: 2800000, guid: 2b6a5cd3a05828040822f30fb1b55aa0, type: 3}
+  - _tex_voidzona: {fileID: 2800000, guid: b3518cf558881654cbadf0ae28caeecb, type: 3}
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

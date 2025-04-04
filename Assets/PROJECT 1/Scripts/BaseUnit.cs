@@ -14,7 +14,7 @@ namespace ProJect1
         public float attackRange;             // 공격 거리
         public float damageReduction = 1f;    // 피해 감소
         public float damageIncreased = 1;     // 피해 증가
-        public int buffPower = 0;             // 버프 파워
+        
         public int buffTrun;                  // 남은 버프 턴
         public bool buff = false;             // 버프 적용 확인 연산자
 
@@ -38,7 +38,7 @@ namespace ProJect1
             }
 
             buffTrun = newBuff.remainingTurns;
-            BuffUI.instance.curbuff = newBuff.remainingTurns;
+            BuffTurnUI.instance.curbuff = newBuff.remainingTurns;
             
             Debug.Log("버프 활성화 턴 반영");
 
@@ -65,7 +65,8 @@ namespace ProJect1
                 Debug.Log($"{buff.remainingTurns} 남은버프턴");
                 if (buff.remainingTurns <= 0)
                 {
-                    buffPower = 0;
+                    BuffIconUI buffIconUI = GetComponent<BuffIconUI>();
+                    buffIconUI.buffPower = 0;
                     buff.RemoveEffect(this);
                 }
             }

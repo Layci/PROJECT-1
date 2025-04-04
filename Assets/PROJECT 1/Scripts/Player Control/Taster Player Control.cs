@@ -1,4 +1,5 @@
 using Project1;
+using ProJect1;
 using System;
 using UnityEngine;
 
@@ -11,6 +12,12 @@ namespace Project1
         private void Start()
         {
             turnSystem = FindObjectOfType<TurnSystem>();
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+            //buffTurnUI.UpdateBuffTurn(buffTrun);
         }
 
         protected override void HandleAttackInput()

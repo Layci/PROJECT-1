@@ -9,7 +9,8 @@ namespace Project1
     {
         public static new FayePlayerControl instance;
         private TurnSystem turnSystem;
-        public BuffUI buffUI;
+        public BuffTurnUI buffTurnUI;
+        public BuffIconUI buffIconUI;
 
         protected override void Awake()
         {
@@ -28,10 +29,10 @@ namespace Project1
             base.Update();
 
             Buff FayeAttackBuff = null;
-            switch (buffPower)
+            switch (buffIconUI.buffPower)
             {
                 case 1:
-                    FayeAttackBuff = new Buff("Faye공격력 증가", 2, 0.2f, 0, typeof(FayePlayerControl));
+                    FayeAttackBuff = new Buff("Faye공격력 증가", 1, 0.2f, 0, typeof(FayePlayerControl));
                     break;
                 case 2:
                     FayeAttackBuff = new Buff("Faye공격력 증가", 2, 0.4f, 0, typeof(FayePlayerControl));
@@ -44,15 +45,15 @@ namespace Project1
             if (FayeAttackBuff != null)
             {
                 AddBuff(FayeAttackBuff);
-                buffUI.UpdateBuffTurn(buffTrun);
+                buffTurnUI.UpdateBuffTurn(buffTrun);
             }
         }
 
         private void Start()
         {
             turnSystem = FindObjectOfType<TurnSystem>();
-            // 이 캐릭터에게 연결된 BuffPowerUI 찾기 (캐릭터 오브젝트의 자식으로 설정)
-            buffUI = GetComponent<BuffUI>();
+            buffTurnUI = GetComponent<BuffTurnUI>();
+            buffIconUI = GetComponent<BuffIconUI>();
         }
 
         protected override void HandleAttackInput()
@@ -81,27 +82,27 @@ namespace Project1
             currentState = PlayerState.MovingToAttack;
         }
 
-        public void UpdateBuffUI()
+        /*public void UpdateBuffUI()
         {
-            if (buffUI != null)
+            if (buffIconUI != null)
             {
                 // buffPower 값에 따라 아이콘 활성화 업데이트
-                buffUI.UpdateBuffUI(buffPower);
+                buffIconUI.UpdateBuffUI(buffPower);
                 Debug.Log("버프 UI 활성화");
             }
-        }
+        }*/
 
-        public void IncreaseBuffPower()
+        /*public void IncreaseBuffPower()
         {
             if (buffPower < 3)
                 buffPower++;
 
             UpdateBuffUI();  // 버프 파워 값 변경 시 UI 업데이트 호출
-        }
+        }*/
 
-        public void DecreaseBuffPower()
+        /*public void DecreaseBuffPower()
         {
             UpdateBuffUI();  // 버프 파워 값 변경 시 UI 업데이트 호출
-        }
+        }*/
     }
 }

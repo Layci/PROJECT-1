@@ -123,7 +123,7 @@ namespace Project1
                 }
 
                 // BuffUI 컴포넌트 찾기
-                BuffUI buffUI = FindObjectOfType<BuffUI>();
+                BuffTurnUI buffUI = FindObjectOfType<BuffTurnUI>();
                 if (buffUI != null)
                 {
                     buffUI.UpdateBuffTurn(playerCharacter.buffTrun); // 남은 버프 턴 업데이트

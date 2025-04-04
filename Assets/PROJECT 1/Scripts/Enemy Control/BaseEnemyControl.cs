@@ -195,7 +195,7 @@ namespace Project1
             FayePlayerControl faye = FayePlayerControl.instance;
             if (faye != null)
             {
-                faye.IncreaseBuffPower();  // 버프 파워 증가
+                BuffIconUI.instance.IncreaseBuffPower();
             }
         }
     }

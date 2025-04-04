@@ -39,14 +39,15 @@ namespace Project1
 
             if(exclusiveCharacter != null && unit.GetType() == exclusiveCharacter)
             {
-                if (unit is FayePlayerControl faye)
+                if (unit is FayePlayerControl)
                 {
-                    faye.DecreaseBuffPower();   
+                    BuffIconUI.instance.DecreaseBuffPower();
+                    Debug.Log("FAYE버프 해제");
                 }
             }
 
             // BuffUI 업데이트
-            BuffUI buffUI = unit.GetComponent<BuffUI>();
+            BuffTurnUI buffUI = unit.GetComponent<BuffTurnUI>();
             if (buffUI != null)
             {
                 buffUI.UpdateBuffTurn(0); // 버프가 없어지면 0으로 초기화

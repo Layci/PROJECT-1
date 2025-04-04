@@ -210,6 +210,24 @@ namespace Project1
             if (maxHealth == 0 || curHealth == 0)
                 return;
 
+            TasterPlayerControl tasterControl = GetComponent<TasterPlayerControl>();
+
+            if (tasterControl != null)
+            {
+                // BuffIconUI 컴포넌트에 접근
+                BuffIconUI buffIconUI = GetComponent<BuffIconUI>();
+                if (buffIconUI != null)
+                {
+                    // buffPower 값을 1 증가
+                    buffIconUI.buffPower += 1;
+                    Debug.Log("buffPower 증가: " + buffIconUI.buffPower);
+                }
+                else
+                {
+                    Debug.Log("BuffIconUI 컴포넌트를 찾을 수 없습니다.");
+                }
+            }
+
             if (!isBlock)
             {
                 animator.SetTrigger("Trigger Hit");
