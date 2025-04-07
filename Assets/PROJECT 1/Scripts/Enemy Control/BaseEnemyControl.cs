@@ -86,7 +86,7 @@ namespace Project1
                     MoveToAttack();
                     break;
                 case EnemyState.Attacking:
-                    PerformAttack();
+                    PerformAttack(playerTransform.gameObject);
                     break;
                 case EnemyState.Returning:
                     ReturnToInitialPosition();
@@ -124,13 +124,27 @@ namespace Project1
             }
         }
 
-        protected virtual void PerformAttack()
+        /*protected virtual void PerformAttack()
         {
             if (!isAttackExecuted && !skillAttack)
             {
                 animator.SetFloat("Speed", 0);
                 animator.SetTrigger("Trigger EnemyAttack");
                 isAttackExecuted = true; // 공격을 수행한 것으로 표시
+
+                // 공격 대상이 되는 캐릭터의 TasterPlayerControl 컴포넌트를 찾기.
+                TasterPlayerControl taster = FindObjectOfType<TasterPlayerControl>();
+
+                if (taster != null)
+                {
+                    // 해당 캐릭터의 BuffIconUI 컴포넌트를 가져옵니다.
+                    BuffIconUI buffIcon = taster.GetComponent<BuffIconUI>();
+                    if (buffIcon != null)
+                    {
+                        buffIcon.IncreaseBuffPower();
+                        Debug.Log("buffPower 증가: " + buffIcon.buffPower);
+                    }
+                }
             }
             else if (!isAttackExecuted && skillAttack)
             {
@@ -138,6 +152,73 @@ namespace Project1
                 animator.SetFloat("Speed", 0);
                 animator.SetTrigger("Trigger EnemySkillAttack");
                 isAttackExecuted = true;
+
+                // 공격 대상이 되는 캐릭터의 TasterPlayerControl 컴포넌트를 찾습니다.
+                TasterPlayerControl taster = FindObjectOfType<TasterPlayerControl>();
+
+                if (taster != null)
+                {
+                    // 해당 캐릭터의 BuffIconUI 컴포넌트를 가져옵니다.
+                    BuffIconUI buffIcon = taster.GetComponent<BuffIconUI>();
+                    if (buffIcon != null)
+                    {
+                        buffIcon.IncreaseBuffPower();
+                        Debug.Log("buffPower 증가: " + buffIcon.buffPower);
+                    }
+                }
+
+                enemySkillPoint -= 2;
+            }
+        }*/
+
+        protected virtual void PerformAttack(GameObject target)
+        {
+            if (!isAttackExecuted && !skillAttack)
+            {
+                animator.SetFloat("Speed", 0);
+                animator.SetTrigger("Trigger EnemyAttack");
+                isAttackExecuted = true;
+
+                // 공격 대상이 TasterPlayerControl 컴포넌트를 가지고 있는지 확인
+                TasterPlayerControl taster = target.GetComponent<TasterPlayerControl>();
+                if (taster != null)
+                {
+                    // 해당 대상의 BuffIconUI 컴포넌트를 가져와서 버프 파워 증가
+                    BuffIconUI buffIcon = taster.GetComponent<BuffIconUI>();
+                    if (buffIcon != null)
+                    {
+                        buffIcon.IncreaseBuffPower();
+                        Debug.Log("buffPower 증가: " + buffIcon.buffPower);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("BuffIconUI 컴포넌트를 찾을 수 없습니다.");
+                    }
+                }
+            }
+            else if (!isAttackExecuted && skillAttack)
+            {
+                // 스킬 공격 로직
+                animator.SetFloat("Speed", 0);
+                animator.SetTrigger("Trigger EnemySkillAttack");
+                isAttackExecuted = true;
+
+                // 공격 대상이 TasterPlayerControl 컴포넌트를 가지고 있는지 확인
+                TasterPlayerControl taster = target.GetComponent<TasterPlayerControl>();
+                if (taster != null)
+                {
+                    // 해당 대상의 BuffIconUI 컴포넌트를 가져와서 버프 파워 증가
+                    BuffIconUI buffIcon = taster.GetComponent<BuffIconUI>();
+                    if (buffIcon != null)
+                    {
+                        buffIcon.IncreaseBuffPower();
+                        Debug.Log("buffPower 증가: " + buffIcon.buffPower);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("BuffIconUI 컴포넌트를 찾을 수 없습니다.");
+                    }
+                }
 
                 enemySkillPoint -= 2;
             }

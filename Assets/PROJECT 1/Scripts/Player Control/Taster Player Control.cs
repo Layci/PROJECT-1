@@ -11,6 +11,8 @@ namespace Project1
 
         public static new TasterPlayerControl instance;
 
+        public BuffIconUI buffIconUI;
+
         protected override void Awake()
         {
             base.Awake();
@@ -26,6 +28,7 @@ namespace Project1
         private void Start()
         {
             turnSystem = FindObjectOfType<TurnSystem>();
+            buffIconUI = GetComponent<BuffIconUI>();
         }
 
         protected override void Update()

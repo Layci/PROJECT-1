@@ -63,15 +63,55 @@ namespace ProJect1
                 buff.remainingTurns--;
                 buffTrun = buff.remainingTurns;
                 Debug.Log($"{buff.remainingTurns} 남은버프턴");
+
                 if (buff.remainingTurns <= 0)
                 {
+                    // 자신이 BuffIconUI를 가지고 있는 경우에만 UI 관련 처리
                     BuffIconUI buffIconUI = GetComponent<BuffIconUI>();
-                    buffIconUI.buffPower = 0;
+                    if (buffIconUI != null)
+                    {
+                        buffIconUI.buffPower = 0;
+                    }
+
                     buff.RemoveEffect(this);
                 }
             }
 
             RemoveExpiredBuffs();
         }
+
+        /*public void OnTurnStart()
+        {
+            if (BuffIconUI.instance != null)
+            {
+                foreach (var buff in activeBuffs)
+                {
+                    buff.remainingTurns--;
+                    buffTrun = buff.remainingTurns;
+                    Debug.Log($"{buff.remainingTurns} 남은버프턴");
+                    if (buff.remainingTurns <= 0)
+                    {
+                        BuffIconUI buffIconUI = GetComponent<BuffIconUI>();
+                        buffIconUI.buffPower = 0;
+                        buff.RemoveEffect(this);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var buff in activeBuffs)
+                {
+                    buff.remainingTurns--;
+                    buffTrun = buff.remainingTurns;
+                    Debug.Log($"{buff.remainingTurns} 남은버프턴");
+                    if (buff.remainingTurns <= 0)
+                    {
+                        buff.RemoveEffect(this);
+                    }
+                }
+            }
+
+            RemoveExpiredBuffs();
+        }*/
     }
 }

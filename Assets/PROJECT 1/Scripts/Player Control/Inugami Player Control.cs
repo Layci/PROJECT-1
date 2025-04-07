@@ -22,7 +22,7 @@ namespace Project1
                     skillAttack = false;
                     StartMove();
                     SkillPointManager.instance.SkillPointUp();
-                    Buff attackBuff = new Buff("공격력 증가", 3, 0.2f, 0);
+                    Buff attackBuff = new Buff("공격력 증가", 3, 0.2f, 0, typeof(InugamiPlayerControl));
                     AddBuff(attackBuff);
                 }
                 else if (SkillPointManager.instance.curSkillPoint > 0 && Input.GetKeyDown(KeyCode.E))

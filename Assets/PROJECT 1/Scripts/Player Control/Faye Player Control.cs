@@ -8,7 +8,6 @@ namespace Project1
     public class FayePlayerControl : BaseCharacterControl
     {
         public static new FayePlayerControl instance;
-        private TurnSystem turnSystem;
         public BuffTurnUI buffTurnUI;
         public BuffIconUI buffIconUI;
 
@@ -51,7 +50,6 @@ namespace Project1
 
         private void Start()
         {
-            turnSystem = FindObjectOfType<TurnSystem>();
             buffTurnUI = GetComponent<BuffTurnUI>();
             buffIconUI = GetComponent<BuffIconUI>();
         }
