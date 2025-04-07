@@ -219,12 +219,8 @@ namespace Project1
                 if (buffIconUI != null)
                 {
                     // buffPower 값을 1 증가
-                    buffIconUI.buffPower += 1;
+                    buffIconUI.IncreaseBuffPower();
                     Debug.Log("buffPower 증가: " + buffIconUI.buffPower);
-                }
-                else
-                {
-                    Debug.Log("BuffIconUI 컴포넌트를 찾을 수 없습니다.");
                 }
             }
 

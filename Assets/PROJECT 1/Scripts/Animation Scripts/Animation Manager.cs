@@ -1,4 +1,5 @@
 using Project1;
+using ProJect1;
 using UnityEngine;
 
 namespace Project1
@@ -92,6 +93,12 @@ namespace Project1
                     }
                 }
             }
+        }
+
+        // Taster 캐릭터가 피격 시 버프 파워상승
+        public void TasterTakeDamaged()
+        {
+            BuffIconUI.instance.IncreaseBuffPower();
         }
 
         public void EndAttack()

@@ -9,6 +9,20 @@ namespace Project1
     {
         private TurnSystem turnSystem;
 
+        public static new TasterPlayerControl instance;
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            if (instance != null && instance != this)
+            {
+                Destroy(this.gameObject);
+                return;
+            }
+            instance = this;
+        }
+
         private void Start()
         {
             turnSystem = FindObjectOfType<TurnSystem>();
@@ -17,7 +31,7 @@ namespace Project1
         protected override void Update()
         {
             base.Update();
-            //buffTurnUI.UpdateBuffTurn(buffTrun);
+
         }
 
         protected override void HandleAttackInput()
