@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
+using UnityEngine.UI;
 
 namespace Project1
 {
@@ -20,6 +21,9 @@ namespace Project1
         public List<BaseEnemyControl> enemyCharacters; // 적 캐릭터 리스트
         private List<object> allCharacters; // 모든 캐릭터를 포함하는 리스트
         public Transform playerTargetPosition;
+
+        public Text curTurnText;
+        public Text winText;
 
         //public List<BaseEnemyControl> activeEnemies = new List<BaseEnemyControl>(); // 적 타겟 리스트
         public List<BaseUnit> allUnits; // 전투에 있는 모든 캐릭터 (버프 관리용 리스트)
@@ -73,7 +77,10 @@ namespace Project1
         private void StartTurn()
         {
             if (currentTurnIndex >= allCharacters.Count)
+            {
                 currentTurnIndex = 0; // 인덱스가 리스트를 초과하면 다시 처음으로
+                currentTurn++;        // 진행중인 턴 상승
+            }
 
             Debug.Log($"[StartTurn] 현재 턴 인덱스: {currentTurnIndex}");
 
@@ -81,6 +88,21 @@ namespace Project1
             {
                 playerCharacter.isTurn = true;
                 EnemySelectorUI.instance.isTurn = true;
+
+                BaseUnit currentUnit = allCharacters[currentTurnIndex] as BaseUnit;
+                if (currentUnit != null)
+                {
+                    Debug.Log($"[OnTurnStart] {currentUnit.name}의 버프 확인 시작");
+                    currentUnit.OnTurnStart(); // 현재 턴 유닛의 버프 지속 턴만 감소
+                }
+
+                // BuffUI 컴포넌트 찾기
+                BuffTurnUI buffUI = FindObjectOfType<BuffTurnUI>();
+                if (buffUI != null)
+                {
+                    buffUI.UpdateBuffTurn(playerCharacter.buffTrun); // 남은 버프 턴 업데이트
+                    Debug.Log($"{playerCharacter.name}의 BuffUI 업데이트 완료! (남은 턴: {playerCharacter.buffTrun})");
+                }
 
                 if (playerCharacter.isBlock)
                 {
@@ -109,26 +131,15 @@ namespace Project1
         // 턴이 끝날시 호출
         public void EndTurn()
         {
+            if (enemyCharacters.Count <= 0)
+            {
+                winText.gameObject.SetActive(true);
+            }
             // 현재 턴 캐릭터의 isTurn을 false로 설정
             if (allCharacters[currentTurnIndex] is BaseCharacterControl playerCharacter)
             {
                 playerCharacter.isTurn = false;
                 EnemySelectorUI.instance.isTurn = false;
-
-                BaseUnit currentUnit = allCharacters[currentTurnIndex] as BaseUnit;
-                if (currentUnit != null)
-                {
-                    Debug.Log($"[OnTurnStart] {currentUnit.name}의 버프 확인 시작");
-                    currentUnit.OnTurnStart(); // 현재 턴 유닛의 버프 지속 턴만 감소
-                }
-
-                // BuffUI 컴포넌트 찾기
-                BuffTurnUI buffUI = FindObjectOfType<BuffTurnUI>();
-                if (buffUI != null)
-                {
-                    buffUI.UpdateBuffTurn(playerCharacter.buffTrun); // 남은 버프 턴 업데이트
-                    Debug.Log($"{playerCharacter.name}의 BuffUI 업데이트 완료! (남은 턴: {playerCharacter.buffTrun})");
-                }
             }
             else if (allCharacters[currentTurnIndex] is BaseEnemyControl enemyCharacter)
             {

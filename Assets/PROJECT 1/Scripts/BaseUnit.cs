@@ -66,9 +66,11 @@ namespace ProJect1
 
                 if (buff.remainingTurns <= 0)
                 {
-                    // 자신이 BuffIconUI를 가지고 있는 경우에만 UI 관련 처리
+                    // BuffTurnUI와 BuffIconUI가 있을 경우만 buffPower를 0으로 초기화
+                    BuffTurnUI buffTurnUI = GetComponent<BuffTurnUI>();
                     BuffIconUI buffIconUI = GetComponent<BuffIconUI>();
-                    if (buffIconUI != null)
+
+                    if (buffTurnUI != null && buffIconUI != null)
                     {
                         buffIconUI.buffPower = 0;
                     }
