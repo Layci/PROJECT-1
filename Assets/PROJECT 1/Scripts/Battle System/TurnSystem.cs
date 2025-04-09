@@ -14,6 +14,7 @@ namespace Project1
         public static TurnSystem instance; // 싱글톤 인스턴스
 
         public int currentTurn = 0; // 현재 진행중인 턴
+        public int wave = 0; // 현재 진행중인 웨이브
         public int selectedEnemyIndex = 0; // 현재 선택된 적의 인덱스
         public int randomIndex; // 랜덤 캐릭터리스트 인덱스
         public int randomPoint; // 랜덤 적 스킬포인트

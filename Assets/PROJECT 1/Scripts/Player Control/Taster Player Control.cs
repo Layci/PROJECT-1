@@ -8,9 +8,6 @@ namespace Project1
     public class TasterPlayerControl : BaseCharacterControl
     {
         public static new TasterPlayerControl instance;
-
-        public ParticleSystem healEffect;
-
         public BuffIconUI buffIconUI;
 
         protected override void Awake()
@@ -33,7 +30,6 @@ namespace Project1
         protected override void Update()
         {
             base.Update();
-
         }
 
         protected override void HandleAttackInput()
@@ -49,20 +45,9 @@ namespace Project1
                     {
                         buffIconUI.buffPower = 0;
                         buffIconUI.UpdateBuffUI();
-                        healEffect.Play();
+                        HealManager.instance.PlayHealEffect();
                     }
                 }
-                /*else if (SkillPointManager.instance.curSkillPoint > 0 && Input.GetKeyDown(KeyCode.E))
-                {
-                    StartBlock();
-                    SkillPointManager.instance.UseSkillPoint();
-                    if (buffIconUI.buffPower >= 3)
-                    {
-                        buffIconUI.buffPower = 0;
-                        buffIconUI.UpdateBuffUI();
-                        healEffect.Play();
-                    }
-                }*/
                 else if (SkillPointManager.instance.curSkillPoint > 0 && Input.GetKeyDown(KeyCode.E))
                 {
                     StartBlock();
@@ -70,6 +55,13 @@ namespace Project1
 
                     Debug.Log("E키 눌림");
                     Debug.Log("버프 파워 현재 값: " + buffIconUI.buffPower);
+
+                    if (buffIconUI.buffPower >= 3)
+                    {
+                        buffIconUI.buffPower = 0;
+                        buffIconUI.UpdateBuffUI();
+                        HealManager.instance.PlayHealEffect();
+                    }
                 }
             }
         }
