@@ -84,8 +84,6 @@ namespace Project1
             switch (currentState)
             {
                 case PlayerState.Idle:
-                    // Idle 상태의 로직
-                    CheckIdle();
                     break;
                 case PlayerState.MovingToAttack:
                     MoveToAttack();
@@ -188,14 +186,10 @@ namespace Project1
             if (hpBarSlider != null)
             {
                 hpBarSlider.value = curHealth / maxHealth;
-                hpText.text = curHealth.ToString();
+                hpText.text = Mathf.RoundToInt(curHealth).ToString(); // 반올림해서 정수로 표시
             }
         }
 
-        public void CheckIdle()
-        {
-            //damageReduction = 1f;
-        }
         public void DoneBlock()
         {
             animator.SetBool("Trigger Block", false);

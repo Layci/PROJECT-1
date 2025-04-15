@@ -4839,6 +4839,7 @@ GameObject:
   - component: {fileID: 353701280}
   - component: {fileID: 353701282}
   - component: {fileID: 353701283}
+  - component: {fileID: 353701284}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -4873,15 +4874,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 660fc7966e2dea347830062afabb3cb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTurn: 0
+  currentTurn: 1
+  currentWave: 1
   selectedEnemyIndex: 0
   randomIndex: 0
   randomPoint: 0
+  textDuration: 2
+  fadeDuration: 1
   playerCharacters: []
   enemyCharacters: []
+  playerPositions: []
+  enemyPositions: []
   playerTargetPosition: {fileID: 0}
-  curTurnText: {fileID: 0}
-  winText: {fileID: 0}
+  curTurnText: {fileID: 493223848}
+  curWaveText: {fileID: 0}
+  winText: {fileID: 898246512}
   allUnits: []
   currentTurnIndex: 0
   turnOrderUI: {fileID: 192965547}
@@ -4946,6 +4953,23 @@ MonoBehaviour:
   healEffect: {fileID: 6211125795630296522}
   playerCharacters: []
   healAmount: 30
+--- !u!114 &353701284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 353701275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94b1cfd6b9c7c074cadf6648201e9034, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPlayerPos: {x: -3, y: 0, z: 2}
+  startEnemyPos: {x: -3, y: 0, z: 3}
+  spacing: 2
+  playerCharacters: []
+  enemyCharacters: []
 --- !u!1 &362126467
 GameObject:
   m_ObjectHideFlags: 0
@@ -6744,7 +6768,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Wave 1 - Turn 1
+  m_Text: Turn 1
 --- !u!222 &493223849
 CanvasRenderer:
   m_ObjectHideFlags: 0

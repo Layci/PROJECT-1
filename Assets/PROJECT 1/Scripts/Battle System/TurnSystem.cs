@@ -13,17 +13,22 @@ namespace Project1
     {
         public static TurnSystem instance; // 싱글톤 인스턴스
 
-        public int currentTurn = 0; // 현재 진행중인 턴
-        public int wave = 0; // 현재 진행중인 웨이브
+        public int currentTurn = 1; // 현재 진행중인 턴
+        public int currentWave = 1; // 현재 진행중인 웨이브
         public int selectedEnemyIndex = 0; // 현재 선택된 적의 인덱스
         public int randomIndex; // 랜덤 캐릭터리스트 인덱스
         public int randomPoint; // 랜덤 적 스킬포인트
+        public float textDuration = 2f;
+        public float fadeDuration = 1f;
         public List<BaseCharacterControl> playerCharacters; // 플레이어 캐릭터 리스트
         public List<BaseEnemyControl> enemyCharacters; // 적 캐릭터 리스트
+        public List<Transform> playerPositions; // 플레이어용 포지션
+        public List<Transform> enemyPositions;  // 적용 포지션
         private List<object> allCharacters; // 모든 캐릭터를 포함하는 리스트
         public Transform playerTargetPosition;
 
         public Text curTurnText;
+        public Text curWaveText;
         public Text winText;
 
         //public List<BaseEnemyControl> activeEnemies = new List<BaseEnemyControl>(); // 적 타겟 리스트
@@ -58,7 +63,9 @@ namespace Project1
             allCharacters = new List<object>();
             allCharacters.AddRange(playerCharacters);
             allCharacters.AddRange(enemyCharacters);
-      
+
+            UpdateTurnUI();
+
             // unitSpeed를 기준으로 내림차순 정렬
             allCharacters = allCharacters.OrderByDescending(character =>
             {
@@ -81,6 +88,7 @@ namespace Project1
             {
                 currentTurnIndex = 0; // 인덱스가 리스트를 초과하면 다시 처음으로
                 currentTurn++;        // 진행중인 턴 상승
+                UpdateTurnUI();
             }
 
             Debug.Log($"[StartTurn] 현재 턴 인덱스: {currentTurnIndex}");
@@ -134,7 +142,9 @@ namespace Project1
         {
             if (enemyCharacters.Count <= 0)
             {
-                winText.gameObject.SetActive(true);
+                StartCoroutine(ShowWinText());
+                currentWave++;
+                Debug.Log($"웨이브 증가 : {currentWave}");
             }
             // 현재 턴 캐릭터의 isTurn을 false로 설정
             if (allCharacters[currentTurnIndex] is BaseCharacterControl playerCharacter)
@@ -151,10 +161,6 @@ namespace Project1
 
             // 다음 캐릭터로 넘어감
             currentTurnIndex++;
-            if (currentTurnIndex >= allCharacters.Count)
-            {
-                currentTurnIndex = 0; // 인덱스가 리스트를 초과하면 다시 처음으로
-            }
             
             StartTurn(); // 다음 턴 시작
         }
@@ -225,6 +231,43 @@ namespace Project1
                 randomIndex = Random.Range(0, playerCharacters.Count);
                 playerTargetPosition = playerCharacters[randomIndex].transform;
             }
+        }
+
+        public void UpdateTurnUI()
+        {
+            curTurnText.text = ($"Turn {currentTurn}");
+        }
+
+        public void ShowWaveStart()
+        {
+            curWaveText.text = $"Wave {currentWave} Start!";
+            curWaveText.gameObject.SetActive(true);
+            StartCoroutine(HideWaveTextAfterSeconds(2f)); // 2초 후 숨김
+        }
+
+        IEnumerator HideWaveTextAfterSeconds(float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+            curWaveText.gameObject.SetActive(false);
+        }
+
+        IEnumerator ShowWinText()
+        {
+            winText.gameObject.SetActive(true);
+            Color originalColor = winText.color;
+            originalColor.a = 1f;
+            winText.color = originalColor;
+            yield return new WaitForSeconds(textDuration);
+            // 페이드 아웃
+            float elapsed = 0f;
+            while (elapsed < fadeDuration)
+            {
+                elapsed += Time.deltaTime;
+                float alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
+                winText.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+                yield return null;
+            }
+            winText.gameObject.SetActive(false);
         }
     }
 }
