@@ -3,6 +3,7 @@ using ProJect1;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.UI;
 
 namespace Project1
@@ -18,9 +19,10 @@ namespace Project1
     public abstract class BaseEnemyControl : BaseUnit
     {
         public static BaseEnemyControl instance;
+        public EnemyData enemyData;
 
         protected Animator animator;
-        protected Vector3 initialPosition;
+        public Vector3 initialPosition;
         protected Quaternion initialRotation;
 
         [Header("적 정보")]
@@ -58,6 +60,7 @@ namespace Project1
         {
             curHealth = maxHealth;
             turnSystem = FindObjectOfType<TurnSystem>();
+            ApplyEnemyData();
         }
 
         protected virtual void Update()
@@ -86,7 +89,15 @@ namespace Project1
                     MoveToAttack();
                     break;
                 case EnemyState.Attacking:
-                    PerformAttack(playerTransform.gameObject);
+                    if (playerTransform != null)
+                    {
+                        PerformAttack(playerTransform.gameObject);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("playerTransform이 파괴되어 공격을 수행할 수 없습니다.");
+                        currentState = EnemyState.Returning;
+                    }
                     break;
                 case EnemyState.Returning:
                     ReturnToInitialPosition();
@@ -198,6 +209,22 @@ namespace Project1
             }
         }
 
+        public void ApplyEnemyData()
+        {
+            if (enemyData != null)
+            {
+                unitName = enemyData.enemyName;
+                unitIcon = enemyData.enemyIcon;
+                maxHealth = enemyData.maxHealth;
+                curHealth = enemyData.maxHealth;
+                moveSpeed = enemyData.moveSpeed;
+                enemyAttackPower = enemyData.attackPower;
+                enemySkillAttackPower = enemyData.skillAttackPower;
+                unitSpeed = enemyData.unitSpeed;
+                attackRange = enemyData.attackRange;
+            }
+        }
+
         // TakeDamage 메서드 추가
         public void TakeDamage(float damage)
         {
@@ -224,6 +251,9 @@ namespace Project1
             Debug.Log("적 사망");
             Destroy(gameObject);
             TurnSystem.instance.RemoveCharacterFromTurnOrder(this);
+
+            BattleManager.instance.RefreshUnitLists();
+            BattleManager.instance.RepositionEnemyUnits();
 
             // FayePlayerControl 인스턴스를 찾아 버프 파워 증가 및 UI 업데이트
             FayePlayerControl faye = FayePlayerControl.instance;

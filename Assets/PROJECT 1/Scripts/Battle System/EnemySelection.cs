@@ -10,6 +10,7 @@ namespace Project1
         public TurnSystem turnSystem;  // 턴 시스템 참조
         public EnemySelectorUI enemySelectorUI; // 선택 UI 관리 스크립트
         private int selectedEnemyIndex = 0;     // 현재 선택된 적의 인덱스
+        public bool isMove = false;
 
         public static EnemySelection instance;
 
@@ -35,7 +36,7 @@ namespace Project1
         {
             if (turnSystem.enemyCharacters.Count == 0) return;
 
-            if (EnemySelectorUI.instance.isTurn)
+            if (EnemySelectorUI.instance.isTurn && !isMove)
             {
                 // 왼쪽으로 적 선택
                 if (Input.GetKeyDown(KeyCode.A))
@@ -69,7 +70,7 @@ namespace Project1
             enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
         }
 
-        public BaseEnemyControl GetSelectedEnemy()
+        /*public BaseEnemyControl GetSelectedEnemy()
         {
             // 현재 선택된 적 반환
             if (turnSystem.enemyCharacters.Count > 0)
@@ -77,6 +78,6 @@ namespace Project1
                 return turnSystem.enemyCharacters[selectedEnemyIndex];
             }
             return null;
-        }
+        }*/
     }
 }

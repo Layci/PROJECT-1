@@ -33,8 +33,13 @@ namespace ProJect1
 
         public void RefreshUnitLists()
         {
-            playerCharacters = FindObjectsOfType<BaseCharacterControl>().ToList();
-            enemyCharacters = FindObjectsOfType<BaseEnemyControl>().ToList();
+            playerCharacters = FindObjectsOfType<BaseCharacterControl>()
+                .OrderBy(p => p.transform.position.x)
+                .ToList();
+
+            enemyCharacters = FindObjectsOfType<BaseEnemyControl>()
+                .OrderBy(e => e.transform.position.x)
+                .ToList();
 
             Debug.Log($"[UnitManager] 아군 {playerCharacters.Count}명, 적군 {enemyCharacters.Count}명 발견됨.");
         }
@@ -45,12 +50,31 @@ namespace ProJect1
                 .Where(p => p.curHealth > 0)
                 .ToList();
 
+            Vector3 currentPos = startPlayerPos;
+
+            for (int i = 0; i < alivePlayers.Count; i++)
+            {
+                alivePlayers[i].transform.position = currentPos;
+
+                alivePlayers[i].initialPosition = currentPos;
+
+                // 다음 유닛 간격 누적
+                currentPos += new Vector3(alivePlayers[i].unitSpacing, 0, 0);
+            }
+        }
+
+        /*public void RepositionPlayerUnits()
+        {   
+            List<BaseCharacterControl> alivePlayers = playerCharacters
+                .Where(p => p.curHealth > 0)
+                .ToList();
+
             for (int i = 0; i < alivePlayers.Count; i++)
             {
                 Vector3 newPos = startPlayerPos + new Vector3(spacing * i, 0, 0);
                 alivePlayers[i].transform.position = newPos;
             }
-        }
+        }*/
 
         public void RepositionEnemyUnits()
         {
@@ -58,10 +82,17 @@ namespace ProJect1
                 .Where(e => e.curHealth > 0)
                 .ToList();
 
+            Vector3 currentPos = startEnemyPos;
+
             for (int i = 0; i < aliveEnemies.Count; i++)
             {
-                Vector3 newPos = startEnemyPos + new Vector3(spacing * i, 0, 0);
-                aliveEnemies[i].transform.position = newPos;
+                aliveEnemies[i].transform.position = currentPos;
+
+                // 개별 적의 초기 위치 설정
+                aliveEnemies[i].initialPosition = currentPos;
+
+                // 다음 유닛 간격 누적
+                currentPos += new Vector3(aliveEnemies[i].unitSpacing, 0, 0);
             }
         }
     }

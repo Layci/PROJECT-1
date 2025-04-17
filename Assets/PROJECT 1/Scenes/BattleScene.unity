@@ -4923,6 +4923,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turnSystem: {fileID: 353701279}
   enemySelectorUI: {fileID: 353701280}
+  isMove: 0
 --- !u!114 &353701282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5350,8 +5351,10 @@ MonoBehaviour:
   attackRange: 1
   damageReduction: 1
   damageIncreased: 1
+  unitSpacing: 2
   buffTrun: 0
   buff: 0
+  initialPosition: {x: 0, y: 0, z: 0}
   playerAttackPower: 38
   playerSkillAttackPower: 12
   startAttacking: 0
@@ -6574,8 +6577,10 @@ MonoBehaviour:
   attackRange: 1
   damageReduction: 1
   damageIncreased: 1
+  unitSpacing: 2
   buffTrun: 0
   buff: 0
+  initialPosition: {x: 0, y: 0, z: 0}
   playerAttackPower: 50
   playerSkillAttackPower: 33
   startAttacking: 0
@@ -9400,8 +9405,10 @@ MonoBehaviour:
   attackRange: 1
   damageReduction: 1
   damageIncreased: 1
+  unitSpacing: 2
   buffTrun: 0
   buff: 0
+  initialPosition: {x: 0, y: 0, z: 0}
   playerAttackPower: 18
   playerSkillAttackPower: 14
   startAttacking: 0
@@ -10854,8 +10861,10 @@ MonoBehaviour:
   attackRange: 1
   damageReduction: 1
   damageIncreased: 22
+  unitSpacing: 2
   buffTrun: 0
   buff: 0
+  initialPosition: {x: 0, y: 0, z: 0}
   playerAttackPower: 18
   playerSkillAttackPower: 15
   startAttacking: 0
@@ -12644,8 +12653,10 @@ MonoBehaviour:
   attackRange: 1
   damageReduction: 1
   damageIncreased: 1
+  unitSpacing: 2
   buffTrun: 0
   buff: 0
+  initialPosition: {x: 0, y: 0, z: 0}
   enemyAttackPower: 30
   enemySkillAttackPower: 37
   enemySkillPoint: 0
@@ -13460,8 +13471,10 @@ MonoBehaviour:
   attackRange: 1
   damageReduction: 1
   damageIncreased: 1
+  unitSpacing: 2
   buffTrun: 0
   buff: 0
+  initialPosition: {x: 0, y: 0, z: 0}
   enemyAttackPower: 40
   enemySkillAttackPower: 55
   enemySkillPoint: 0
@@ -22889,8 +22902,10 @@ MonoBehaviour:
   attackRange: 1
   damageReduction: 1
   damageIncreased: 1
+  unitSpacing: 2
   buffTrun: 0
   buff: 0
+  initialPosition: {x: 0, y: 0, z: 0}
   enemyAttackPower: 18
   enemySkillAttackPower: 25
   enemySkillPoint: 0
@@ -23880,8 +23895,10 @@ MonoBehaviour:
   attackRange: 1
   damageReduction: 1
   damageIncreased: 1
+  unitSpacing: 2
   buffTrun: 0
   buff: 0
+  initialPosition: {x: 0, y: 0, z: 0}
   enemyAttackPower: 28
   enemySkillAttackPower: 15
   enemySkillPoint: 0

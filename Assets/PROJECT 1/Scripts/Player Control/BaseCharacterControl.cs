@@ -21,7 +21,7 @@ namespace Project1
         public static BaseCharacterControl instance;
 
         protected Animator animator;
-        protected Vector3 initialPosition;
+        public Vector3 initialPosition;
         protected Quaternion initialRotation;
 
         [Header("캐릭터 정보")]
@@ -104,6 +104,7 @@ namespace Project1
         {
             if (currentTarget != null)
             {
+                EnemySelection.instance.isMove = true;
                 transform.position = Vector3.MoveTowards(transform.position, EnemySelectorUI.instance.selectedEnemy.position, moveSpeed * Time.deltaTime);
                 animator.SetFloat("Speed", 1);
 
@@ -168,6 +169,7 @@ namespace Project1
                 currentState = PlayerState.Idle;
                 isAttackExecuted = false;
 
+                EnemySelection.instance.isMove = false;
                 isTurn = false;
                 // 다음 캐릭터로 턴을 넘김
                 TurnSystem.instance.EndTurn();
@@ -195,7 +197,6 @@ namespace Project1
             animator.SetBool("Trigger Block", false);
             isBlock = false;
             startBlocking = false;
-            //damageReduction = 1f;
             currentState = PlayerState.Idle;
         }
 

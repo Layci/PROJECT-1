@@ -14,7 +14,8 @@ namespace ProJect1
         public float attackRange;             // 공격 거리
         public float damageReduction = 1f;    // 피해 감소
         public float damageIncreased = 1;     // 피해 증가
-        
+        public float unitSpacing = 2f;        // 각 유닛마다 간격 조절 거리
+
         public int buffTrun;                  // 남은 버프 턴
         public bool buff = false;             // 버프 적용 확인 연산자
 
