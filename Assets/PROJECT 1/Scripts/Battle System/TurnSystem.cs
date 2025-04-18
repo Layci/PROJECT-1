@@ -26,6 +26,7 @@ namespace Project1
         public List<Transform> enemyPositions;  // 적용 포지션
         private List<object> allCharacters; // 모든 캐릭터를 포함하는 리스트
         public Transform playerTargetPosition;
+        public EnemyWaveManager waveManager;
 
         public Text curTurnText;
         public Text curWaveText;
@@ -54,7 +55,9 @@ namespace Project1
 
         private void Start()
         {
-            // 모든 캐릭터를 가져와 리스트에 추가
+            RefreshCharacterLists(); // 캐릭터 재정렬
+
+            /*// 모든 캐릭터를 가져와 리스트에 추가
             playerCharacters = FindObjectsOfType<BaseCharacterControl>().ToList();
             enemyCharacters = FindObjectsOfType<BaseEnemyControl>().ToList();
             allUnits = FindObjectsOfType<BaseUnit>().ToList();
@@ -62,11 +65,11 @@ namespace Project1
             // 모든 캐릭터를 하나의 리스트에 추가
             allCharacters = new List<object>();
             allCharacters.AddRange(playerCharacters);
-            allCharacters.AddRange(enemyCharacters);
+            allCharacters.AddRange(enemyCharacters);*/
 
             UpdateTurnUI();
 
-            // unitSpeed를 기준으로 내림차순 정렬
+            /*// unitSpeed를 기준으로 내림차순 정렬
             allCharacters = allCharacters.OrderByDescending(character =>
             {
                 if (character is BaseCharacterControl player)
@@ -74,9 +77,9 @@ namespace Project1
                 else if (character is BaseEnemyControl enemy)
                     return enemy.unitSpeed;
                 return 0;
-            }).ToList();
+            }).ToList();*/
 
-            SortEnemiesByPosition();
+            //SortEnemiesByPosition();
 
             StartTurn(); // 첫 번째 턴 시작
         }
@@ -142,9 +145,21 @@ namespace Project1
         {
             if (enemyCharacters.Count <= 0)
             {
-                StartCoroutine(ShowWinText());
                 currentWave++;
                 Debug.Log($"웨이브 증가 : {currentWave}");
+                // 웨이브 시작 코드
+                // 웨이브가 남아 있으면 다음 웨이브 시작
+                if (currentWave < waveManager.TotalWaveCount)
+                {
+                    waveManager.SpawnWave(currentWave);
+                    RefreshCharacterLists();
+                }
+                else
+                {
+                    Debug.Log("모든 웨이브 완료! 전투 종료.");
+                    // 전체 전투 승리 처리
+                    StartCoroutine(ShowWinText());
+                }
             }
             // 현재 턴 캐릭터의 isTurn을 false로 설정
             if (allCharacters[currentTurnIndex] is BaseCharacterControl playerCharacter)
@@ -213,6 +228,31 @@ namespace Project1
                     return enemyControl.unitSpeed;
                 return 0;
             }).ToList();
+        }
+
+        // 캐릭터리스트 재정렬 함수
+        public void RefreshCharacterLists()
+        {
+            playerCharacters = FindObjectsOfType<BaseCharacterControl>().ToList();
+            enemyCharacters = FindObjectsOfType<BaseEnemyControl>().ToList();
+            allUnits = FindObjectsOfType<BaseUnit>().ToList();
+
+            allCharacters = new List<object>();
+            allCharacters.AddRange(playerCharacters);
+            allCharacters.AddRange(enemyCharacters);
+
+            // unitSpeed 기준으로 정렬
+            allCharacters = allCharacters.OrderByDescending(character =>
+            {
+                if (character is BaseCharacterControl player)
+                    return player.unitSpeed;
+                else if (character is BaseEnemyControl enemy)
+                    return enemy.unitSpeed;
+                return 0;
+            }).ToList();
+
+            SortEnemiesByPosition(); // 위치 정렬 유지
+            turnOrderUI.Initialize(allCharacters, currentTurnIndex); // 턴 UI 갱신
         }
 
         public void RandomPlayer()

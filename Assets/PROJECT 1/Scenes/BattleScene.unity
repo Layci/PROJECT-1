@@ -4840,6 +4840,7 @@ GameObject:
   - component: {fileID: 353701282}
   - component: {fileID: 353701283}
   - component: {fileID: 353701284}
+  - component: {fileID: 353701285}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -4886,6 +4887,7 @@ MonoBehaviour:
   playerPositions: []
   enemyPositions: []
   playerTargetPosition: {fileID: 0}
+  waveManager: {fileID: 0}
   curTurnText: {fileID: 493223848}
   curWaveText: {fileID: 0}
   winText: {fileID: 898246512}
@@ -4966,11 +4968,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94b1cfd6b9c7c074cadf6648201e9034, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waveManager: {fileID: 0}
+  enemySpawnPoints: []
   startPlayerPos: {x: -3, y: 0, z: 2}
   startEnemyPos: {x: -3, y: 0, z: 3}
   spacing: 2
   playerCharacters: []
   enemyCharacters: []
+--- !u!114 &353701285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 353701275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 198ff0d070becf447bd21bff64335df1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waves: []
+  spawnPoints: []
 --- !u!1 &362126467
 GameObject:
   m_ObjectHideFlags: 0
@@ -12656,6 +12674,7 @@ MonoBehaviour:
   unitSpacing: 2
   buffTrun: 0
   buff: 0
+  enemyData: {fileID: 0}
   initialPosition: {x: 0, y: 0, z: 0}
   enemyAttackPower: 30
   enemySkillAttackPower: 37
@@ -13474,6 +13493,7 @@ MonoBehaviour:
   unitSpacing: 2
   buffTrun: 0
   buff: 0
+  enemyData: {fileID: 0}
   initialPosition: {x: 0, y: 0, z: 0}
   enemyAttackPower: 40
   enemySkillAttackPower: 55
@@ -22905,6 +22925,7 @@ MonoBehaviour:
   unitSpacing: 2
   buffTrun: 0
   buff: 0
+  enemyData: {fileID: 0}
   initialPosition: {x: 0, y: 0, z: 0}
   enemyAttackPower: 18
   enemySkillAttackPower: 25
@@ -23898,6 +23919,7 @@ MonoBehaviour:
   unitSpacing: 2
   buffTrun: 0
   buff: 0
+  enemyData: {fileID: 0}
   initialPosition: {x: 0, y: 0, z: 0}
   enemyAttackPower: 28
   enemySkillAttackPower: 15
