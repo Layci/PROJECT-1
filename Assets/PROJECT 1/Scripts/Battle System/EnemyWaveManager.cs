@@ -25,6 +25,30 @@ namespace ProJect1
 
             for (int i = 0; i < wave.enemiesToSpawn.Count; i++)
             {
+                int spawnIndex = Mathf.Min(i, spawnPoints.Length - 1);
+                EnemySpawnInfo info = wave.enemiesToSpawn[i];
+
+                GameObject enemyGO = Instantiate(info.enemyPrefab, spawnPoints[spawnIndex].position, Quaternion.identity);
+                BaseEnemyControl control = enemyGO.GetComponent<BaseEnemyControl>();
+                control.enemyData = info.enemyData;
+                control.ApplyEnemyData();
+            }
+
+            currentWaveIndex = waveIndex;
+        }
+
+        /*public void SpawnWave(int waveIndex)
+        {
+            if (waveIndex >= waves.Count)
+            {
+                Debug.Log("모든 웨이브 완료!");
+                return;
+            }
+
+            WaveData wave = waves[waveIndex];
+
+            for (int i = 0; i < wave.enemiesToSpawn.Count; i++)
+            {
                 // 스폰 위치가 부족하면 마지막 위치 재사용
                 int spawnIndex = Mathf.Min(i, spawnPoints.Length - 1);
 
@@ -33,7 +57,7 @@ namespace ProJect1
             }
 
             currentWaveIndex = waveIndex;
-        }
+        }*/
 
         public void StartNextWave()
         {

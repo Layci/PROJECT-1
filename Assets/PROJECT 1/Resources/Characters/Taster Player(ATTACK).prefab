@@ -4156,7 +4156,7 @@ GameObject:
   - component: {fileID: 8222172670363613365}
   - component: {fileID: 8769298334096524020}
   m_Layer: 20
-  m_Name: Taster Player
+  m_Name: Taster Player(ATTACK)
   m_TagString: MeleePlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

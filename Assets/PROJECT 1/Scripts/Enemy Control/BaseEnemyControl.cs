@@ -60,7 +60,7 @@ namespace Project1
         {
             curHealth = maxHealth;
             turnSystem = FindObjectOfType<TurnSystem>();
-            ApplyEnemyData();
+            //ApplyEnemyData();
         }
 
         protected virtual void Update()
@@ -214,10 +214,8 @@ namespace Project1
             if (enemyData != null)
             {
                 unitName = enemyData.enemyName;
-                unitIcon = enemyData.enemyIcon;
                 maxHealth = enemyData.maxHealth;
                 curHealth = enemyData.maxHealth;
-                moveSpeed = enemyData.moveSpeed;
                 enemyAttackPower = enemyData.attackPower;
                 enemySkillAttackPower = enemyData.skillAttackPower;
                 unitSpeed = enemyData.unitSpeed;

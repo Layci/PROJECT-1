@@ -8,12 +8,11 @@ namespace ProJect1
     public class EnemyData : ScriptableObject
     {
         public string enemyName;
-        public Sprite enemyIcon;
         public float maxHealth;
-        public float moveSpeed;
+        public float unitSpeed;
         public float attackPower;
         public float skillAttackPower;
-        public float unitSpeed;
         public float attackRange;
+        public GameObject prefab;
     }
 }
