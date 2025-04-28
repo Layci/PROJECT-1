@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f76d75569b4a0024d8ea5d5649183995, type: 3}
   m_Name: Aki 1
   m_EditorClassIdentifier: 
-  enemyName: 
-  maxHealth: 0
-  unitSpeed: 0
-  attackPower: 0
-  skillAttackPower: 0
-  attackRange: 0
+  enemyName: Aki
+  maxHealth: 285
+  unitSpeed: 102
+  attackPower: 20
+  skillAttackPower: 28
+  attackRange: 1
+  prefab: {fileID: 9063518342876871782, guid: b6c5f92ed5777ed4a9d04fe055bc6501, type: 3}

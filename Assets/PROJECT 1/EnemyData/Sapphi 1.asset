@@ -12,12 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f76d75569b4a0024d8ea5d5649183995, type: 3}
   m_Name: Sapphi 1
   m_EditorClassIdentifier: 
-  enemyName: 
-  enemyIcon: {fileID: 0}
-  maxHealth: 0
-  moveSpeed: 0
-  attackPower: 0
-  skillAttackPower: 0
-  skillPoint: 0
-  unitSpeed: 0
-  attackRange: 0
+  enemyName: Sapphi
+  maxHealth: 240
+  unitSpeed: 109
+  attackPower: 45
+  skillAttackPower: 62
+  attackRange: 1
+  prefab: {fileID: 8138895244512721228, guid: efe62b6a77eeb3146ae8070432c47f0b, type: 3}

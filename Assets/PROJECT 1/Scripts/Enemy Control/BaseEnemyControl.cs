@@ -73,6 +73,7 @@ namespace Project1
                 {
                     if (isTurn)
                     {
+                        initialRotation = transform.rotation;
                         StartMove();
                     }
                 }

@@ -31,6 +31,7 @@ namespace ProJect1
                 GameObject enemyGO = Instantiate(info.enemyPrefab, spawnPoints[spawnIndex].position, Quaternion.identity);
                 BaseEnemyControl control = enemyGO.GetComponent<BaseEnemyControl>();
                 control.enemyData = info.enemyData;
+                control.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
                 control.ApplyEnemyData();
             }
 

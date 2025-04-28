@@ -14,7 +14,7 @@ namespace Project1
         public static TurnSystem instance; // 싱글톤 인스턴스
 
         public int currentTurn = 1; // 현재 진행중인 턴
-        public int currentWave = 1; // 현재 진행중인 웨이브
+        public int currentWave = 0; // 현재 진행중인 웨이브
         public int selectedEnemyIndex = 0; // 현재 선택된 적의 인덱스
         public int randomIndex; // 랜덤 캐릭터리스트 인덱스
         public int randomPoint; // 랜덤 적 스킬포인트
@@ -26,7 +26,7 @@ namespace Project1
         public List<Transform> enemyPositions;  // 적용 포지션
         private List<object> allCharacters; // 모든 캐릭터를 포함하는 리스트
         public Transform playerTargetPosition;
-        public EnemyWaveManager waveManager;
+        private EnemyWaveManager waveManager;
 
         public Text curTurnText;
         public Text curWaveText;
@@ -56,7 +56,7 @@ namespace Project1
         private void Start()
         {
             RefreshCharacterLists(); // 캐릭터 재정렬
-
+            waveManager = BattleManager.instance.waveManager;
             /*// 모든 캐릭터를 가져와 리스트에 추가
             playerCharacters = FindObjectsOfType<BaseCharacterControl>().ToList();
             enemyCharacters = FindObjectsOfType<BaseEnemyControl>().ToList();
@@ -153,6 +153,8 @@ namespace Project1
                 {
                     waveManager.SpawnWave(currentWave);
                     RefreshCharacterLists();
+                    currentTurnIndex = 0;
+                    UpdateTurnUI();
                 }
                 else
                 {

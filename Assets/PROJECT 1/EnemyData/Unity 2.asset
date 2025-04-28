@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f76d75569b4a0024d8ea5d5649183995, type: 3}
-  m_Name: Aki 3
+  m_Name: Unity 2
   m_EditorClassIdentifier: 
-  enemyName: 
-  maxHealth: 0
-  unitSpeed: 0
-  attackPower: 0
-  skillAttackPower: 0
-  attackRange: 0
+  enemyName: Unity
+  maxHealth: 380
+  unitSpeed: 94
+  attackPower: 35
+  skillAttackPower: 24
+  attackRange: 1
+  prefab: {fileID: 7987327555153608299, guid: 0b1a3a7cd0901ff49a6a7dd28e47dbfa, type: 3}
