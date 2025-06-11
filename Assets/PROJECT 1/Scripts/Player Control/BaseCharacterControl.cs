@@ -40,6 +40,7 @@ namespace Project1
         public bool skillAttack;              // 스킬공격을 할지 알리는 연산자
         public bool isTurn = false;           // 본인 턴인지 알려주는 연산자
         public bool isBlock = false;          // 본인이 방어 상태인지 알려주는 연산자
+        public bool isPreparingAOEAttack = false;
         public Slider hpBarSlider;            // HP바
         public Text hpText;                   // HP 텍스트
         public EnemySelection enemySelection; // 선택된 적 관리

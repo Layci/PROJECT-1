@@ -152,9 +152,12 @@ namespace Project1
                 if (currentWave < waveManager.TotalWaveCount)
                 {
                     waveManager.SpawnWave(currentWave);
-                    RefreshCharacterLists();
                     currentTurnIndex = 0;
+                    RefreshCharacterLists();
                     UpdateTurnUI();
+
+                    StartTurn();
+                    return;
                 }
                 else
                 {

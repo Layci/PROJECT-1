@@ -63,6 +63,11 @@ namespace Project1
             
         }
 
+        public int GetSelectedEnemyIndex()
+        {
+            return selectedEnemyIndex;
+        }
+
         private void UpdateSelectedEnemy()
         {
             // 선택된 적을 UI에 반영
