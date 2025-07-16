@@ -57,6 +57,16 @@ namespace Project1
             }
         }
 
+        public void ShowSingleTargetUI()
+        {
+            selectorUI.gameObject.SetActive(true);
+        }
+
+        public void HideSingleTargetUI()
+        {
+            selectorUI.gameObject.SetActive(false);
+        }
+
         public void ShowAOETargets(List<Transform> aoeTargets)
         {
             // ±âÁ¸ UI ¼û±è

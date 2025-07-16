@@ -3408,6 +3408,8 @@ MonoBehaviour:
   isTurn: 0
   yOffset: 75
   selectedEnemy: {fileID: 0}
+  multiSelectorUIs: []
+  selectedEnemies: []
 --- !u!114 &353701281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3735,6 +3737,7 @@ MonoBehaviour:
   skillAttack: 0
   isTurn: 0
   isBlock: 0
+  isPreparingAOEAttack: 0
   hpBarSlider: {fileID: 167503570}
   hpText: {fileID: 604680033}
   enemySelection: {fileID: 0}
@@ -4528,6 +4531,7 @@ MonoBehaviour:
   skillAttack: 0
   isTurn: 0
   isBlock: 0
+  isPreparingAOEAttack: 0
   hpBarSlider: {fileID: 125958548}
   hpText: {fileID: 1147271598}
   enemySelection: {fileID: 0}
@@ -6584,7 +6588,7 @@ MonoBehaviour:
   maxHealth: 250
   curHealth: 250
   moveSpeed: 3
-  unitSpeed: 97
+  unitSpeed: 9700
   attackRange: 1
   damageReduction: 1
   damageIncreased: 1
@@ -6599,6 +6603,7 @@ MonoBehaviour:
   skillAttack: 0
   isTurn: 0
   isBlock: 0
+  isPreparingAOEAttack: 0
   hpBarSlider: {fileID: 1910444911}
   hpText: {fileID: 493601028}
   enemySelection: {fileID: 0}
@@ -7458,6 +7463,7 @@ MonoBehaviour:
   skillAttack: 0
   isTurn: 0
   isBlock: 0
+  isPreparingAOEAttack: 0
   hpBarSlider: {fileID: 431315078}
   hpText: {fileID: 1719722252}
   enemySelection: {fileID: 0}

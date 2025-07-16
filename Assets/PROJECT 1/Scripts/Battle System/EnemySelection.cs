@@ -63,6 +63,23 @@ namespace Project1
             
         }
 
+        public List<int> GetAOETargetIndices(int range = 1)
+        {
+            List<int> indices = new List<int>();
+            int count = turnSystem.enemyCharacters.Count;
+
+            for (int i = -range; i <= range; i++)
+            {
+                int index = selectedEnemyIndex + i;
+                if (index >= 0 && index < count)
+                {
+                    indices.Add(index);
+                }
+            }
+
+            return indices;
+        }
+
         public int GetSelectedEnemyIndex()
         {
             return selectedEnemyIndex;
