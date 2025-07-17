@@ -1,5 +1,6 @@
 using Project1;
 using ProJect1;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Project1
@@ -64,6 +65,22 @@ namespace Project1
 
                         TotalDamageUI.Instance.ShowTotalDamage(totalDamage);
                     }
+                }
+            }
+        }
+
+        public void OnAOEDamageEvent() // 애니메이션 이벤트로 호출될 함수
+        {
+            List<Transform> aoeTargets = EnemySelectorUI.instance.GetAOETargets();
+
+            float damage = player.skillAttack ? player.playerSkillAttackPower : player.playerAttackPower;
+
+            foreach (Transform enemyTr in aoeTargets)
+            {
+                BaseEnemyControl enemy = enemyTr.GetComponent<BaseEnemyControl>();
+                if (enemy != null)
+                {
+                    enemy.TakeDamage(damage); // 범위 데미지 예시
                 }
             }
         }

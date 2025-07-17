@@ -1,6 +1,7 @@
 using Project1;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Project1
@@ -90,6 +91,30 @@ namespace Project1
             // 선택된 적을 UI에 반영
             BaseEnemyControl selectedEnemy = turnSystem.enemyCharacters[selectedEnemyIndex];
             enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
+        }
+
+        // 범위 내 적 객체(BaseEnemyControl) 리스트 반환 - 공격 처리용
+        public List<BaseEnemyControl> GetAOETargets(int range = 1)
+        {
+            List<BaseEnemyControl> targets = new List<BaseEnemyControl>();
+            var allEnemies = turnSystem.enemyCharacters;
+
+            for (int i = -range; i <= range; i++)
+            {
+                int index = selectedEnemyIndex + i;
+                if (index >= 0 && index < allEnemies.Count)
+                {
+                    targets.Add(allEnemies[index]);
+                }
+            }
+
+            return targets;
+        }
+        
+        // 범위 내 적 Transform 리스트 반환 - UI 처리용
+        public List<Transform> GetAOETargets()
+        {
+            return GetAOETargets(1).Select(enemy => enemy.transform).ToList();
         }
 
         /*public BaseEnemyControl GetSelectedEnemy()

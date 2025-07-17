@@ -13,6 +13,8 @@ namespace Project1
         public bool isTurn = false;
         public static EnemySelectorUI instance;
         public float yOffset = 50f;    // Y값을 올릴 오프셋 값
+        public List<Transform> allEnemies = new List<Transform>(); // 전투 중 등장한 모든 적
+        public int aoeRange = 1; // 양옆으로 몇 명까지 포함할지 (1이면 총 3명)
 
         public Transform selectedEnemy; // 현재 선택된 적의 Transform
         public List<RectTransform> multiSelectorUIs = new List<RectTransform>();
@@ -95,6 +97,29 @@ namespace Project1
                     multiSelectorUIs[i].gameObject.SetActive(false);
                 }
             }
+        }
+
+        public List<Transform> GetAOETargets()
+        {
+            List<Transform> aoeTargets = new List<Transform>();
+
+            if (selectedEnemy == null || allEnemies.Count == 0)
+                return aoeTargets;
+
+            int selectedIndex = allEnemies.IndexOf(selectedEnemy);
+            if (selectedIndex == -1)
+                return aoeTargets;
+
+            for (int i = -aoeRange; i <= aoeRange; i++)
+            {
+                int targetIndex = selectedIndex + i;
+                if (targetIndex >= 0 && targetIndex < allEnemies.Count)
+                {
+                    aoeTargets.Add(allEnemies[targetIndex]);
+                }
+            }
+
+            return aoeTargets;
         }
 
         public void HideAOEUI()
