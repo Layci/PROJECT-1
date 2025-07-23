@@ -43,7 +43,7 @@ namespace Project1
         {
             if (player != null && player.currentState == PlayerState.Attacking)
             {
-                // 적에게 피해를 입힘
+                // 적에게 피해를 입힘           
                 if (player.currentTarget != null)
                 {
                     BaseEnemyControl enemyControl = player.currentTarget.GetComponent<BaseEnemyControl>();
@@ -69,21 +69,33 @@ namespace Project1
             }
         }
 
-        public void OnAOEDamageEvent() // 애니메이션 이벤트로 호출될 함수
+        // 플레이어 범위공격 함수
+        public void OnAOEDamageEvent(int range = 1)
         {
-            List<Transform> aoeTargets = EnemySelectorUI.instance.GetAOETargets();
-
+            List<BaseEnemyControl> targets = EnemySelection.instance.GetAOETargets(range);
             float damage = player.skillAttack ? player.playerSkillAttackPower : player.playerAttackPower;
 
-            foreach (Transform enemyTr in aoeTargets)
+            foreach (var enemy in targets)
             {
-                BaseEnemyControl enemy = enemyTr.GetComponent<BaseEnemyControl>();
                 if (enemy != null)
                 {
-                    enemy.TakeDamage(damage); // 범위 데미지 예시
+                    enemy.TakeDamage(damage);
                 }
             }
         }
+        /*public void OnAOEDamageEvent(int range = 1) // 애니메이션 이벤트로 호출될 함수
+        {
+            List<BaseEnemyControl> targets = EnemySelection.instance.GetAOETargets(range);
+            float damage = player.skillAttack ? player.playerSkillAttackPower : player.playerAttackPower;
+
+            foreach (var enemy in targets)
+            {
+                if (enemy != null)
+                {
+                    enemy.TakeDamage(damage);
+                }
+            }
+        }*/
 
         public void EnemyMeleeAttack()
         {

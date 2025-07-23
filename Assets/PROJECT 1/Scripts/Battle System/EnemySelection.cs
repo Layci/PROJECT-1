@@ -36,8 +36,28 @@ namespace Project1
         private void Update()
         {
             if (turnSystem.enemyCharacters.Count == 0) return;
-
             if (EnemySelectorUI.instance.isTurn && !isMove)
+            {
+                if (Input.GetKeyDown(KeyCode.A))
+                {
+                    selectedEnemyIndex--;
+                    if (selectedEnemyIndex < 0)
+                        selectedEnemyIndex = turnSystem.enemyCharacters.Count - 1;
+
+                    UpdateSelectedEnemy(); // 중앙 타겟 시각적 갱신
+                }
+
+                if (Input.GetKeyDown(KeyCode.D))
+                {
+                    selectedEnemyIndex++;
+                    if (selectedEnemyIndex >= turnSystem.enemyCharacters.Count)
+                        selectedEnemyIndex = 0;
+
+                    UpdateSelectedEnemy(); // 중앙 타겟 시각적 갱신
+                }
+            }
+
+            /*if (EnemySelectorUI.instance.isTurn && !isMove)
             {
                 // 왼쪽으로 적 선택
                 if (Input.GetKeyDown(KeyCode.A))
@@ -60,8 +80,8 @@ namespace Project1
                     }
                     UpdateSelectedEnemy();
                 }
-            }
-            
+            }*/
+
         }
 
         public List<int> GetAOETargetIndices(int range = 1)
@@ -94,7 +114,21 @@ namespace Project1
         }
 
         // 범위 내 적 객체(BaseEnemyControl) 리스트 반환 - 공격 처리용
-        public List<BaseEnemyControl> GetAOETargets(int range = 1)
+        public List<BaseEnemyControl> GetAOETargets(int range)
+        {
+            List<BaseEnemyControl> targets = new List<BaseEnemyControl>();
+
+            int start = Mathf.Max(0, selectedEnemyIndex - range);
+            int end = Mathf.Min(turnSystem.enemyCharacters.Count - 1, selectedEnemyIndex + range);
+
+            for (int i = start; i <= end; i++)
+            {
+                targets.Add(turnSystem.enemyCharacters[i]);
+            }
+
+            return targets;
+        }
+        /*public List<BaseEnemyControl> GetAOETargets(int range = 1)
         {
             List<BaseEnemyControl> targets = new List<BaseEnemyControl>();
             var allEnemies = turnSystem.enemyCharacters;
@@ -109,8 +143,8 @@ namespace Project1
             }
 
             return targets;
-        }
-        
+        }*/
+
         // 범위 내 적 Transform 리스트 반환 - UI 처리용
         public List<Transform> GetAOETargets()
         {
