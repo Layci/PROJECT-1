@@ -3407,6 +3407,8 @@ MonoBehaviour:
   mainCamera: {fileID: 1029456351}
   isTurn: 0
   yOffset: 75
+  allEnemies: []
+  aoeRange: 1
   selectedEnemy: {fileID: 0}
   multiSelectorUIs: []
   selectedEnemies: []
@@ -3425,6 +3427,8 @@ MonoBehaviour:
   turnSystem: {fileID: 353701279}
   enemySelectorUI: {fileID: 353701280}
   isMove: 0
+  aoeSelectorPrefab: {fileID: 1056092454}
+  selectorParent: {fileID: 1902975643}
 --- !u!114 &353701282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3738,6 +3742,7 @@ MonoBehaviour:
   isTurn: 0
   isBlock: 0
   isPreparingAOEAttack: 0
+  isPreparingSingleAttack: 0
   hpBarSlider: {fileID: 167503570}
   hpText: {fileID: 604680033}
   enemySelection: {fileID: 0}
@@ -4532,6 +4537,7 @@ MonoBehaviour:
   isTurn: 0
   isBlock: 0
   isPreparingAOEAttack: 0
+  isPreparingSingleAttack: 0
   hpBarSlider: {fileID: 125958548}
   hpText: {fileID: 1147271598}
   enemySelection: {fileID: 0}
@@ -6604,6 +6610,7 @@ MonoBehaviour:
   isTurn: 0
   isBlock: 0
   isPreparingAOEAttack: 0
+  isPreparingSingleAttack: 0
   hpBarSlider: {fileID: 1910444911}
   hpText: {fileID: 493601028}
   enemySelection: {fileID: 0}
@@ -7464,6 +7471,7 @@ MonoBehaviour:
   isTurn: 0
   isBlock: 0
   isPreparingAOEAttack: 0
+  isPreparingSingleAttack: 0
   hpBarSlider: {fileID: 431315078}
   hpText: {fileID: 1719722252}
   enemySelection: {fileID: 0}

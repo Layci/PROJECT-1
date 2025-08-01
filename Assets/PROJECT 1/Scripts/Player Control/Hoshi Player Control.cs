@@ -19,6 +19,95 @@ namespace Project1
         {
             if (currentState != PlayerState.Idle || EnemySelection.instance.isMove) return;
 
+            // ----------------- 일반 공격 모드 진입 -----------------
+            if (!isPreparingSingleAttack && !isPreparingAOEAttack && Input.GetKeyDown(KeyCode.Q))
+            {
+                isPreparingSingleAttack = true;
+                skillAttack = false;
+
+                EnemySelection.instance.isPreparingAOEAttack = false;
+                EnemySelection.instance.UpdateSelectedEnemy();
+
+                EnemySelectorUI.instance.ShowSingleTargetUI();
+            }
+            // ----------------- 일반 공격 확정 -----------------
+            else if (isPreparingSingleAttack && Input.GetKeyDown(KeyCode.Q))
+            {
+                skillAttack = false;
+                isPreparingSingleAttack = false;
+                SkillPointManager.instance.SkillPointUp();
+                currentState = PlayerState.MovingToAttack;
+
+                EnemySelectorUI.instance.HideSingleTargetUI();
+
+                EnemySelection.instance.isPreparingAOEAttack = false;
+                EnemySelection.instance.UpdateSelectedEnemy();
+            }
+            // ----------------- 일반 → 범위 전환 -----------------
+            else if (isPreparingSingleAttack && Input.GetKeyDown(KeyCode.E))
+            {
+                isPreparingSingleAttack = false;
+                isPreparingAOEAttack = true;
+                skillAttack = false;
+
+                EnemySelection.instance.isPreparingAOEAttack = true;
+                EnemySelection.instance.UpdateSelectedEnemy();
+
+                var targets = GetAOETargetsAroundSelected();
+                var targetTransforms = targets.Select(t => t.transform).ToList();
+                EnemySelectorUI.instance.ShowAOETargets(targetTransforms);
+                EnemySelectorUI.instance.HideSingleTargetUI();
+            }
+
+            // ----------------- 범위 공격 모드 진입 -----------------
+            else if (!isPreparingAOEAttack && !isPreparingSingleAttack && Input.GetKeyDown(KeyCode.E))
+            {
+                if (SkillPointManager.instance.curSkillPoint > 0)
+                {
+                    isPreparingAOEAttack = true;
+                    skillAttack = false;
+
+                    EnemySelection.instance.isPreparingAOEAttack = true;
+                    EnemySelection.instance.UpdateSelectedEnemy();
+
+                    var targets = GetAOETargetsAroundSelected();
+                    var targetTransforms = targets.Select(t => t.transform).ToList();
+                    EnemySelectorUI.instance.ShowAOETargets(targetTransforms);
+                }
+            }
+            // ----------------- 범위 공격 확정 -----------------
+            else if (isPreparingAOEAttack && Input.GetKeyDown(KeyCode.E))
+            {
+                skillAttack = true;
+                isPreparingAOEAttack = false;
+
+                EnemySelection.instance.isPreparingAOEAttack = false;
+                EnemySelection.instance.UpdateSelectedEnemy();
+
+                SkillPointManager.instance.UseSkillPoint();
+                currentState = PlayerState.MovingToAttack;
+
+                EnemySelectorUI.instance.HideAOEUI();
+            }
+            // ----------------- 범위 → 단일 전환 -----------------
+            else if (isPreparingAOEAttack && Input.GetKeyDown(KeyCode.Q))
+            {
+                isPreparingAOEAttack = false;
+                isPreparingSingleAttack = true;
+                skillAttack = false;
+
+                EnemySelection.instance.isPreparingAOEAttack = false;
+                EnemySelection.instance.UpdateSelectedEnemy();
+
+                EnemySelectorUI.instance.HideAOEUI();
+                EnemySelectorUI.instance.ShowSingleTargetUI();
+            }
+        }
+
+        /*protected override void HandleAttackInput()
+        {
+            if (currentState != PlayerState.Idle || EnemySelection.instance.isMove) return;
+
             // ----------------- 일반 공격 모드 -----------------
             if (!isPreparingSingleAttack && !isPreparingAOEAttack && Input.GetKeyDown(KeyCode.Q))
             {
@@ -41,7 +130,7 @@ namespace Project1
 
                 var targets = GetAOETargetsAroundSelected();
                 var targetTransforms = targets.Select(t => t.transform).ToList();
-                EnemySelectorUI.instance.HighlightEnemies(targetTransforms);
+                EnemySelection.instance.UpdateSelectedEnemy(isPreparingAOEAttack);
                 EnemySelectorUI.instance.ShowAOETargets(targetTransforms);
                 EnemySelectorUI.instance.HideSingleTargetUI();
             }
@@ -55,7 +144,7 @@ namespace Project1
 
                     var targets = GetAOETargetsAroundSelected();
                     var targetTransforms = targets.Select(t => t.transform).ToList();
-                    EnemySelectorUI.instance.HighlightEnemies(targetTransforms);
+                    EnemySelection.instance.UpdateSelectedEnemy(isPreparingAOEAttack);
                     EnemySelectorUI.instance.ShowAOETargets(targetTransforms);
                 }
             }
@@ -77,7 +166,7 @@ namespace Project1
                 EnemySelectorUI.instance.HideAOEUI();
                 EnemySelectorUI.instance.ShowSingleTargetUI();
             }
-        }
+        }*/
 
         /*protected override void HandleAttackInput()
         {

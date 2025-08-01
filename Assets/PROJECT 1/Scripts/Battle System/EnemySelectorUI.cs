@@ -13,9 +13,9 @@ namespace Project1
         public bool isTurn = false;
         public static EnemySelectorUI instance;
         public float yOffset = 50f;    // Y값을 올릴 오프셋 값
-        public List<Transform> allEnemies = new List<Transform>(); // 전투 중 등장한 모든 적
-        public int aoeRange = 1; // 양옆으로 몇 명까지 포함할지 (1이면 총 3명)
+        //public List<Transform> allEnemies = new List<Transform>(); // 전투 중 등장한 모든 적
 
+        public int aoeRange = 1; // 양옆으로 몇 명까지 포함할지 (1이면 총 3명)
         public Transform selectedEnemy; // 현재 선택된 적의 Transform
         public List<RectTransform> multiSelectorUIs = new List<RectTransform>();
 
@@ -59,14 +59,48 @@ namespace Project1
             }
         }
 
+        public void SetSelectedEnemy(Transform enemyTransform)
+        {
+            selectedEnemy = enemyTransform;
+            if (selectedEnemy != null)
+            {
+                ShowSingleTargetUI();
+            }
+        }
+
         public void ShowSingleTargetUI()
         {
+            HideAOEUI();
             selectorUI.gameObject.SetActive(true);
         }
 
         public void HideSingleTargetUI()
         {
             selectorUI.gameObject.SetActive(false);
+        }
+
+        // 현재 선택된 적 기준 범위 대상 계산+표시
+        public void ShowCurrentAOERange()
+        {
+            HideSingleTargetUI();
+            List<Transform> aoeTargets = GetAOETargetsFromSelection();
+            ShowAOETargets(aoeTargets);
+        }
+
+        // EnemySelection에서 가져와서 transform 리스트로 만든 범위 대상
+        private List<Transform> GetAOETargetsFromSelection()
+        {
+            List<Transform> results = new List<Transform>();
+            if (EnemySelection.instance == null) return results;
+
+            var enemySelection = EnemySelection.instance;
+            var targets = enemySelection.GetAOETargets(aoeRange);
+            foreach (var e in targets)
+            {
+                if (e != null)
+                    results.Add(e.transform);
+            }
+            return results;
         }
 
         public void ShowAOETargets(List<Transform> aoeTargets)
@@ -99,7 +133,7 @@ namespace Project1
             }
         }
 
-        public List<Transform> GetAOETargets()
+        /*public List<Transform> GetAOETargets()
         {
             List<Transform> aoeTargets = new List<Transform>();
 
@@ -120,7 +154,7 @@ namespace Project1
             }
 
             return aoeTargets;
-        }
+        }*/
 
         public void HideAOEUI()
         {
@@ -130,7 +164,13 @@ namespace Project1
             }
         }
 
-        public List<Transform> selectedEnemies = new List<Transform>();
+        public void DeselectEnemy()
+        {
+            selectedEnemy = null;
+            HideSingleTargetUI();
+        }
+
+        /*public List<Transform> selectedEnemies = new List<Transform>();
 
         public void HighlightEnemies(List<Transform> targets)
         {
@@ -162,6 +202,6 @@ namespace Project1
         {
             selectedEnemy = null;
             selectorUI.gameObject.SetActive(false);
-        }
+        }*/
     }
 }

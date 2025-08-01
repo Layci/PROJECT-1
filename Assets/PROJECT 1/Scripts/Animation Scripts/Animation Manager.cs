@@ -14,7 +14,8 @@ namespace Project1
         public Transform target;
 
         public int totalDamage = 0;
-
+        // 현재 적용할 AOE 범위 (스킬 입력 시 설정)
+        public int currentAOERange = 1;
         private void Awake()
         {
             player = GetComponentInParent<BaseCharacterControl>();
@@ -69,8 +70,43 @@ namespace Project1
             }
         }
 
+        // 애니메이션 이벤트로 호출되는 범위 공격
+        public void OnAOEDamageEvent()
+        {
+            if (player == null) return;
+
+            // 범위 공격인지 판단 (예: 준비 플래그에 따라)
+            int range = currentAOERange;
+            var targets = EnemySelection.instance.GetAOETargets(range);
+
+            float damage = player.skillAttack ? player.playerSkillAttackPower : player.playerAttackPower;
+            damage *= player.damageIncreased;
+
+            totalDamage = 0;
+
+            foreach (var enemyControl in targets)
+            {
+                if (enemyControl == null) continue;
+
+                // 적의 피해 감소율 적용
+                float finalDamage = damage * enemyControl.damageReduction;
+                enemyControl.TakeDamage(finalDamage);
+                totalDamage += (int)finalDamage;
+
+                if (DamageTextSpawner.Instance != null)
+                {
+                    DamageTextSpawner.Instance.SpawnDamageText(enemyControl.transform.position + Vector3.up * 1.5f, (int)finalDamage);
+                }
+            }
+
+            if (TotalDamageUI.Instance != null)
+            {
+                TotalDamageUI.Instance.ShowTotalDamage(totalDamage);
+            }
+        }
+
         // 플레이어 범위공격 함수
-        public void OnAOEDamageEvent(int range = 1)
+        /*public void OnAOEDamageEvent(int range = 1)
         {
             List<BaseEnemyControl> targets = EnemySelection.instance.GetAOETargets(range);
             float damage = player.skillAttack ? player.playerSkillAttackPower : player.playerAttackPower;
@@ -82,7 +118,7 @@ namespace Project1
                     enemy.TakeDamage(damage);
                 }
             }
-        }
+        }*/
         /*public void OnAOEDamageEvent(int range = 1) // 애니메이션 이벤트로 호출될 함수
         {
             List<BaseEnemyControl> targets = EnemySelection.instance.GetAOETargets(range);
