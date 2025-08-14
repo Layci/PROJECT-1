@@ -17,10 +17,49 @@ namespace Project1
 
         protected override void HandleAttackInput()
         {
-            if (currentState != PlayerState.Idle || EnemySelection.instance.isMove) return;
+            HandleAttackModeInput(); // Q↔E 전환 공통 처리
+
+            // 공격 가능한 상태가 아니면 리턴
+            if (!CanAttack())
+                return;
 
             // ----------------- 일반 공격 모드 진입 -----------------
-            if (!isPreparingSingleAttack && !isPreparingAOEAttack && Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                prepareState = AttackPrepareState.Basic;
+                skillAttack = false;
+                EnemySelectorUI.instance.ShowSingleTargetUI();
+            }
+            else if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (SkillPointManager.instance.curSkillPoint > 0)
+                {
+                    prepareState = AttackPrepareState.Skill;
+                    EnemySelectorUI.instance.ShowAOETargets(GetAOETargets().Select(e => e.transform).ToList());
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.Return))
+            {
+                // 공격 확정 (Enter 키 예시)
+                if (prepareState == AttackPrepareState.Basic)
+                {
+                    prepareState = AttackPrepareState.None;
+                    currentState = PlayerState.MovingToAttack;
+                    skillAttack = false;
+                    isPreparingSingleAttack = false;
+                    EnemySelectorUI.instance.HideSingleTargetUI();
+                }
+                else if (prepareState == AttackPrepareState.Skill)
+                {
+                    prepareState = AttackPrepareState.None;
+                    currentState = PlayerState.MovingToAttack;
+
+                    SkillPointManager.instance.UseSkillPoint();
+                    EnemySelectorUI.instance.HideAOEUI();
+                }
+            }
+
+            /*if (!isPreparingSingleAttack && !isPreparingAOEAttack && Input.GetKeyDown(KeyCode.Q))
             {
                 isPreparingSingleAttack = true;
                 skillAttack = false;
@@ -101,7 +140,7 @@ namespace Project1
 
                 EnemySelectorUI.instance.HideAOEUI();
                 EnemySelectorUI.instance.ShowSingleTargetUI();
-            }
+            }*/
         }
 
         /*protected override void HandleAttackInput()

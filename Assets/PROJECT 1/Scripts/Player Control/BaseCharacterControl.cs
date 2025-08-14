@@ -4,6 +4,7 @@ using Project1;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using ProJect1;
+using System.Linq;
 
 namespace Project1
 {
@@ -15,6 +16,8 @@ namespace Project1
         Blocking,
         Returning
     }
+
+    public enum AttackPrepareState { None, Basic, Skill }
 
     public abstract class BaseCharacterControl : BaseUnit
     {
@@ -42,6 +45,10 @@ namespace Project1
         public bool isBlock = false;          // 본인이 방어 상태인지 알려주는 연산자
         public bool isPreparingAOEAttack = false;
         public bool isPreparingSingleAttack = false;
+        
+        protected AttackPrepareState prepareState = AttackPrepareState.None;
+        //public bool IsPreparingAttack => prepareState != AttackPrepareState.None;
+
         public Slider hpBarSlider;            // HP바
         public Text hpText;                   // HP 텍스트
         public EnemySelection enemySelection; // 선택된 적 관리
@@ -74,6 +81,37 @@ namespace Project1
                 TargetUpdate();
             }
         }
+
+        protected virtual List<BaseEnemyControl> GetAOETargets()
+        {
+            int range = EnemySelectorUI.instance.aoeRange;
+            return EnemySelection.instance.turnSystem.enemyCharacters
+                .Where(e => Vector3.Distance(currentTarget.position, e.transform.position) <= range)
+                .ToList();
+        }
+
+        protected virtual void HandleAttackModeInput()
+        {
+            if (prepareState == AttackPrepareState.Basic && Input.GetKeyDown(KeyCode.E))
+            {
+                prepareState = AttackPrepareState.Skill;
+                EnemySelectorUI.instance.HideSingleTargetUI();
+                EnemySelectorUI.instance.ShowAOETargets(GetAOETargets().Select(e => e.transform).ToList());
+            }
+            else if (prepareState == AttackPrepareState.Skill && Input.GetKeyDown(KeyCode.Q))
+            {
+                prepareState = AttackPrepareState.Basic;
+                EnemySelectorUI.instance.HideAOEUI();
+                EnemySelectorUI.instance.ShowSingleTargetUI();
+            }
+        }
+
+        protected bool CanAttack()
+        {
+            return currentState == PlayerState.Idle && prepareState == AttackPrepareState.None && !EnemySelection.instance.isMove;
+        }
+
+        protected abstract void HandleAttackInput(); // 자식에서 구현
 
         public void TargetUpdate()
         {
@@ -179,10 +217,10 @@ namespace Project1
         }
 
 
-        protected virtual void HandleAttackInput()
+        /*protected virtual void HandleAttackInput()
         {
             // 각 플레이어 HandleAttackInput 참조
-        }
+        }*/
 
 
         public void CheckHP()
