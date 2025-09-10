@@ -634,6 +634,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   totalDamage: 0
+  currentAOERange: 1
 --- !u!1 &617004094645460003
 GameObject:
   m_ObjectHideFlags: 0
@@ -5370,7 +5371,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 180}
+  m_AnchoredPosition: {x: 0, y: 190}
   m_SizeDelta: {x: 180, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &59994514611550352
@@ -8238,6 +8239,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 082b9757bf511854485f3a37e2e7142d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitName: Aki
+  unitIcon: {fileID: 21300000, guid: 7fdb76d2dd7251c4c9c37d64a7cf01bc, type: 3}
   maxHealth: 250
   curHealth: 250
   moveSpeed: 3
@@ -8246,6 +8249,8 @@ MonoBehaviour:
   damageReduction: 1
   damageIncreased: 1
   unitSpacing: 2
+  isDead: 0
+  aoeRange: 0
   buffTrun: 0
   buff: 0
   enemyData: {fileID: 0}
@@ -8258,8 +8263,6 @@ MonoBehaviour:
   isTurn: 0
   playerTransform: {fileID: 0}
   hpBarSlider: {fileID: 59994514611550352}
-  unitName: Aki
-  unitIcon: {fileID: 21300000, guid: 7fdb76d2dd7251c4c9c37d64a7cf01bc, type: 3}
   currentState: 0
 --- !u!136 &2189671518909502753
 CapsuleCollider:

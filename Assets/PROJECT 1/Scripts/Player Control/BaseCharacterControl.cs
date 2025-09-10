@@ -99,12 +99,12 @@ namespace Project1
             }
         }
 
-        protected virtual List<BaseEnemyControl> GetAOETargets()
+        /*protected virtual List<BaseEnemyControl> GetAOETargets()
         {
             return EnemySelection.instance.turnSystem.enemyCharacters
                 .Where(e => Vector3.Distance(currentTarget.position, e.transform.position) <= aoeRange)
                 .ToList();
-        }
+        }*/
 
         protected virtual void HandleAttackInput()
         {
@@ -144,10 +144,18 @@ namespace Project1
                 {
                     Debug.Log("스킬공격 준비 상태 진입");
                     Debug.Log("현재 prepareState2: " + prepareState);
+                    Debug.Log(aoeRange);
                     // 준비 상태 진입
                     prepareState = AttackPrepareState.Skill;
-                    EnemySelectorUI.instance.ShowAOETargets(GetAOETargets().Select(e => e.transform).ToList());
-                    EnemySelectorUI.instance.HideSingleTargetUI();  
+                    var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
+                    int range = cur != null ? cur.aoeRange : 0;
+
+                    // 인덱스 기반 AOE 대상 가져오기
+                    var targets = EnemySelection.instance.GetAOETargets(range);
+                    Debug.Log("AOE 대상 수: " + targets.Count);
+                    // UI 반영
+                    EnemySelectorUI.instance.ShowAOETargets(targets.Select(e => e.transform).ToList());
+                    EnemySelectorUI.instance.HideSingleTargetUI();
                 }
             }
 
@@ -233,12 +241,6 @@ namespace Project1
 
             return false;
         }
-        /*protected bool CanAttack()
-        {
-            return currentState == PlayerState.Idle && prepareState == AttackPrepareState.None && !EnemySelection.instance.isMove;
-        }*/
-
-        //protected abstract void HandleAttackInput(); // 자식에서 구현
 
         public void TargetUpdate()
         {

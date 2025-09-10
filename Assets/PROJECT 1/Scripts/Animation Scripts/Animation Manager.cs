@@ -15,7 +15,7 @@ namespace Project1
 
         public int totalDamage = 0;
         // 현재 적용할 AOE 범위 (스킬 입력 시 설정)
-        public int currentAOERange = 1;
+        //public int currentAOERange = 1;
         private void Awake()
         {
             player = GetComponentInParent<BaseCharacterControl>();
@@ -75,8 +75,11 @@ namespace Project1
         {
             if (player == null) return;
 
+            // 현재 턴 캐릭터 가져오기
+            var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
+            if (cur == null) return;
             // 범위 공격인지 판단 (예: 준비 플래그에 따라)
-            int range = currentAOERange;
+            int range = cur.aoeRange;
             var targets = EnemySelection.instance.GetAOETargets(range);
 
             float damage = player.skillAttack ? player.playerSkillAttackPower : player.playerAttackPower;

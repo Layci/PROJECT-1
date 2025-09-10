@@ -146,15 +146,6 @@ namespace Project1
             targets.Add(allEnemies[targetIndex]);
 
             // ÁÂ¿ì ¹üÀ§
-            /*for (int offset = 1; offset <= BaseCharacterControl.instance.aoeRange; offset++)
-            {
-                int left = targetIndex - offset;
-                int right = targetIndex + offset;
-
-                if (left >= 0) targets.Add(allEnemies[left]);
-                if (right < allEnemies.Count) targets.Add(allEnemies[right]);
-            }*/
-
             for (int offset = 1; offset <= (TurnSystem.instance.CurrentCharacter as BaseCharacterControl).aoeRange; offset++)
             {
                 int left = targetIndex - offset;
