@@ -24,7 +24,8 @@ namespace Project1
         public List<BaseEnemyControl> enemyCharacters; // 적 캐릭터 리스트
         public List<Transform> playerPositions; // 플레이어용 포지션
         public List<Transform> enemyPositions;  // 적용 포지션
-        private List<object> allCharacters; // 모든 캐릭터를 포함하는 리스트
+        //private List<object> allCharacters; // 모든 캐릭터를 포함하는 리스트
+        public List<BaseUnit> allCharacters; // 모든 캐릭터를 포함하는 리스트
         public Transform playerTargetPosition;
         private EnemyWaveManager waveManager;
 
@@ -37,6 +38,21 @@ namespace Project1
 
         public int currentTurnIndex = 0; // 현재 턴을 담당하는 캐릭터의 인덱스
         public TurnOrderUI turnOrderUI;  // 턴 순서 UI 관리 스크립트
+
+        public BaseUnit CurrentCharacter
+        {
+            get
+            {
+                if (allCharacters == null || allCharacters.Count == 0) return null;
+                if (currentTurnIndex < 0 || currentTurnIndex >= allCharacters.Count) return null;
+                return allCharacters[currentTurnIndex];
+            }
+            /*get
+            {
+                if (allCharacters.Count == 0) return null;
+                return allCharacters[currentTurnIndex];
+            }*/
+        }
 
         private void Awake()
         {
@@ -191,7 +207,7 @@ namespace Project1
             enemyCharacters = enemyCharacters.OrderBy(enemy => enemy.transform.position.x).ToList();
         }
 
-        public void RemoveCharacterFromTurnOrder(object character)
+        public void RemoveCharacterFromTurnOrder(BaseUnit character)
         {
             // 사망한 캐릭터를 전체 턴 리스트에서 제거
             allCharacters.Remove(character);
@@ -242,7 +258,8 @@ namespace Project1
             enemyCharacters = FindObjectsOfType<BaseEnemyControl>().ToList();
             allUnits = FindObjectsOfType<BaseUnit>().ToList();
 
-            allCharacters = new List<object>();
+            //allCharacters = new List<object>();
+            allCharacters = new List<BaseUnit>();
             allCharacters.AddRange(playerCharacters);
             allCharacters.AddRange(enemyCharacters);
 

@@ -1,4 +1,5 @@
 using Project1;
+using ProJect1;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,9 @@ namespace Project1
     {
         public TurnSystem turnSystem;  // 턴 시스템 참조
         public EnemySelectorUI enemySelectorUI; // 선택 UI 관리 스크립트
-        private int selectedEnemyIndex = 0;     // 현재 선택된 적의 인덱스
+        public int selectedEnemyIndex = 0;     // 현재 선택된 적의 인덱스
         public bool isMove = false;
-        public bool isPreparingAOEAttack = false;
+        //public bool isPreparingAOEAttack = false;
 
         // 범위 관련
         //public GameObject aoeSelectorPrefab;
@@ -137,8 +138,28 @@ namespace Project1
             }
         }*/
 
-        // 범위 기준 (center + 좌우 range) 적 객체 리스트 반환
+        // 인덱스 기반 AOE 타겟 반환
         public List<BaseEnemyControl> GetAOETargets(int range = 1)
+        {
+            List<BaseEnemyControl> targets = new List<BaseEnemyControl>();
+            var allEnemies = turnSystem.enemyCharacters;
+
+            // 현재 선택된 적 인덱스
+            if (selectedEnemyIndex < 0 || selectedEnemyIndex >= allEnemies.Count)
+                return targets;
+
+            int start = Mathf.Max(0, selectedEnemyIndex - range);
+            int end = Mathf.Min(allEnemies.Count - 1, selectedEnemyIndex + range);
+
+            for (int i = start; i <= end; i++)
+            {
+                targets.Add(allEnemies[i]);
+            }
+
+            return targets;
+        }
+
+        /*public List<BaseEnemyControl> GetAOETargets(int range = 1)
         {
             List<BaseEnemyControl> targets = new List<BaseEnemyControl>();
             var allEnemies = turnSystem.enemyCharacters;
@@ -152,7 +173,7 @@ namespace Project1
             }
 
             return targets;
-        }
+        }*/
 
         /*public List<int> GetAOETargetIndices(int range = 1)
         {
@@ -198,7 +219,7 @@ namespace Project1
             BaseEnemyControl selectedEnemy = turnSystem.enemyCharacters[selectedEnemyIndex];
             enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
 
-            if (isPreparingAOEAttack)
+            /*if (BaseCharacterControl.instance.isPreparingAOEAttack)
             {
                 enemySelectorUI.ShowCurrentAOERange(); // 범위 UI
             }
@@ -206,7 +227,7 @@ namespace Project1
             {
                 enemySelectorUI.HideAOEUI();
                 enemySelectorUI.ShowSingleTargetUI(); // 단일 UI
-            }
+            }*/
         }
 
         // 선택된 적 및 UI 갱신

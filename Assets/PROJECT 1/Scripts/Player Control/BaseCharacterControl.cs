@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using ProJect1;
 using System.Linq;
+using Unity.VisualScripting;
 
 namespace Project1
 {
@@ -14,16 +15,23 @@ namespace Project1
         MovingToAttack,
         Attacking,
         Blocking,
-        Returning
+        Returning,
+        Buffing
     }
 
-    public enum AttackPrepareState { None, Basic, Skill }
+    public enum AttackPrepareState
+    {
+        None,
+        Basic,   // 일반공격
+        Skill,   // 범위공격
+        Buff     // 자기강화 or 선택버프
+    }
 
     public abstract class BaseCharacterControl : BaseUnit
     {
         public static BaseCharacterControl instance;
 
-        protected Animator animator;
+        //protected Animator animator;
         public Vector3 initialPosition;
         protected Quaternion initialRotation;
 
@@ -44,7 +52,7 @@ namespace Project1
         public bool isTurn = false;           // 본인 턴인지 알려주는 연산자
         public bool isBlock = false;          // 본인이 방어 상태인지 알려주는 연산자
         public bool isPreparingAOEAttack = false;
-        public bool isPreparingSingleAttack = false;
+        //public bool isPreparingSingleAttack = false;
         
         protected AttackPrepareState prepareState = AttackPrepareState.None;
         //public bool IsPreparingAttack => prepareState != AttackPrepareState.None;
@@ -53,8 +61,8 @@ namespace Project1
         public Text hpText;                   // HP 텍스트
         public EnemySelection enemySelection; // 선택된 적 관리
         public Transform currentTarget;       // 현재 이동 중인 적의 Transform
-        public string unitName;               // 캐릭터 이름
-        public Sprite unitIcon;               // 캐릭터 아이콘
+        //public string unitName;               // 캐릭터 이름
+        //public Sprite unitIcon;               // 캐릭터 아이콘
 
 
         [Header("캐릭터 움직임")]
@@ -63,8 +71,9 @@ namespace Project1
 
         //private List<Buff> activeBuffs = new List<Buff>();
 
-        protected virtual void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             animator = GetComponentInChildren<Animator>();
             initialPosition = transform.position;
             initialRotation = transform.rotation;
@@ -79,18 +88,120 @@ namespace Project1
                 HandleState();
                 HandleAttackInput();
                 TargetUpdate();
+                /*if(aoeRange >= 1)
+                {
+                    isPreparingAOEAttack = true;
+                }
+                else
+                {
+                    isAttackExecuted = false;
+                }*/
             }
         }
 
         protected virtual List<BaseEnemyControl> GetAOETargets()
         {
-            int range = EnemySelectorUI.instance.aoeRange;
             return EnemySelection.instance.turnSystem.enemyCharacters
-                .Where(e => Vector3.Distance(currentTarget.position, e.transform.position) <= range)
+                .Where(e => Vector3.Distance(currentTarget.position, e.transform.position) <= aoeRange)
                 .ToList();
         }
 
-        protected virtual void HandleAttackModeInput()
+        protected virtual void HandleAttackInput()
+        {
+            if (!CanAttack())
+                return;
+
+            // Q → 기본 공격
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                Debug.Log("현재 prepareState: " + prepareState);
+                if (prepareState == AttackPrepareState.Basic)
+                {
+                    Debug.Log("기본공격 확정 실행!");
+                    // 이미 준비 상태 → 확정 실행
+                    ExecuteBasicAttack();
+                }
+                else
+                {
+                    Debug.Log("기본공격 준비 상태 진입");
+                    // 준비 상태 진입
+                    prepareState = AttackPrepareState.Basic;
+                    EnemySelectorUI.instance.ShowSingleTargetUI();
+                    EnemySelectorUI.instance.HideAOEUI();
+                }
+            }
+
+            // E → 스킬 공격
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (prepareState == AttackPrepareState.Skill)
+                {
+                    Debug.Log("현재 prepareState2: " + prepareState);
+                    // 이미 준비 상태 → 확정 실행
+                    ExecuteSkillAttack();
+                }
+                else
+                {
+                    Debug.Log("스킬공격 준비 상태 진입");
+                    Debug.Log("현재 prepareState2: " + prepareState);
+                    // 준비 상태 진입
+                    prepareState = AttackPrepareState.Skill;
+                    EnemySelectorUI.instance.ShowAOETargets(GetAOETargets().Select(e => e.transform).ToList());
+                    EnemySelectorUI.instance.HideSingleTargetUI();  
+                }
+            }
+
+            // R → 버프
+            /*if (Input.GetKeyDown(KeyCode.R))
+            {
+                if (prepareState == AttackPrepareState.Buff)
+                {
+                    // 이미 준비 상태 → 확정 실행
+                    ExecuteBuff();
+                }
+                else
+                {
+                    // 준비 상태 진입
+                    prepareState = AttackPrepareState.Buff;
+                    EnemySelectorUI.instance.HideSingleTargetUI();
+                    EnemySelectorUI.instance.HideAOEUI();
+                }
+            }*/
+        }
+
+        private void ExecuteBasicAttack()
+        {
+            prepareState = AttackPrepareState.None;
+            currentState = PlayerState.MovingToAttack;
+            skillAttack = false;
+            EnemySelectorUI.instance.HideSingleTargetUI();
+        }
+
+        private void ExecuteSkillAttack()
+        {
+            prepareState = AttackPrepareState.None;
+            currentState = PlayerState.MovingToAttack;
+            skillAttack = true;
+            SkillPointManager.instance.UseSkillPoint();
+            EnemySelectorUI.instance.HideAOEUI();
+        }
+
+        private void ExecuteBuff()
+        {
+            prepareState = AttackPrepareState.None;
+            currentState = PlayerState.Buffing; // 필요시 Idle로도 가능
+            ApplySelfBuff();
+        }
+
+        private void ApplySelfBuff()
+        {
+            // 예시: 공격력 +20%, 2턴 유지
+            Buff selfBuff = null;
+            selfBuff = new Buff("", 2, 0.2f, 0, typeof(This));
+            Debug.Log($"{unitName} 버프 발동!");
+        }
+
+        /*protected virtual void HandleAttackModeInput()
         {
             if (prepareState == AttackPrepareState.Basic && Input.GetKeyDown(KeyCode.E))
             {
@@ -104,14 +215,30 @@ namespace Project1
                 EnemySelectorUI.instance.HideAOEUI();
                 EnemySelectorUI.instance.ShowSingleTargetUI();
             }
-        }
+        }*/
 
         protected bool CanAttack()
         {
-            return currentState == PlayerState.Idle && prepareState == AttackPrepareState.None && !EnemySelection.instance.isMove;
-        }
+            // 기본 조건은 턴 중이어야 하고, 적 선택 중 이동 중이 아니어야 함
+            if (EnemySelection.instance.isMove)
+                return false;
 
-        protected abstract void HandleAttackInput(); // 자식에서 구현
+            // Idle일 때는 준비 상태 진입 가능
+            if (currentState == PlayerState.Idle && prepareState == AttackPrepareState.None)
+                return true;
+
+            // 이미 준비 상태일 때도 입력 허용 (확정 실행 위해)
+            if (prepareState != AttackPrepareState.None)
+                return true;
+
+            return false;
+        }
+        /*protected bool CanAttack()
+        {
+            return currentState == PlayerState.Idle && prepareState == AttackPrepareState.None && !EnemySelection.instance.isMove;
+        }*/
+
+        //protected abstract void HandleAttackInput(); // 자식에서 구현
 
         public void TargetUpdate()
         {
@@ -216,13 +343,6 @@ namespace Project1
             }
         }
 
-
-        /*protected virtual void HandleAttackInput()
-        {
-            // 각 플레이어 HandleAttackInput 참조
-        }*/
-
-
         public void CheckHP()
         {
             if (hpBarSlider != null)
@@ -240,9 +360,9 @@ namespace Project1
             currentState = PlayerState.Idle;
         }
 
-        public void TakeDamage(float damage)
+        public override void TakeDamage(float damage)
         {
-            if (maxHealth == 0 || curHealth == 0)
+            /*if (maxHealth == 0 || curHealth == 0)
                 return;
 
             if (!isBlock)
@@ -250,7 +370,8 @@ namespace Project1
                 animator.SetTrigger("Trigger Hit");
             }
 
-            curHealth -= damage;
+            curHealth -= damage;*/
+            base.TakeDamage(damage);
 
             CheckHP();
 
@@ -262,9 +383,9 @@ namespace Project1
         }
 
         // 아군 사망시 호출
-        public void Die()
+        public override void Die()
         {
-            Debug.Log("아군 사망");
+            base.Die();
             Destroy(gameObject);
             TurnSystem.instance.RemoveCharacterFromTurnOrder(this);            
         }

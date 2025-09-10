@@ -13,9 +13,8 @@ namespace Project1
         public bool isTurn = false;
         public static EnemySelectorUI instance;
         public float yOffset = 50f;    // Y값을 올릴 오프셋 값
+        public List<BaseEnemyControl> allEnemies = new List<BaseEnemyControl>(); // 전투 중 등장한 모든 적
         //public List<Transform> allEnemies = new List<Transform>(); // 전투 중 등장한 모든 적
-
-        public int aoeRange = 1; // 양옆으로 몇 명까지 포함할지 (1이면 총 3명)
         public Transform selectedEnemy; // 현재 선택된 적의 Transform
         public List<RectTransform> multiSelectorUIs = new List<RectTransform>();
 
@@ -93,6 +92,37 @@ namespace Project1
             List<Transform> results = new List<Transform>();
             if (EnemySelection.instance == null) return results;
 
+            // 현재 턴 주체의 aoeRange 사용 (BaseUnit에 aoeRange가 있다고 가정)
+            int range = 0;
+            var cur = TurnSystem.instance != null ? TurnSystem.instance.CurrentCharacter : null;
+            if (cur != null) range = Mathf.Max(0, cur.aoeRange);
+
+            var targets = EnemySelection.instance.GetAOETargets(range);
+            foreach (var e in targets)
+            {
+                if (e != null) results.Add(e.transform);
+            }
+            return results;
+
+            /*List<Transform> results = new List<Transform>();
+            if (EnemySelection.instance == null) return results;
+
+            // EnemySelection의 인덱스 기반 메서드 호출
+            // 현재 턴 플레이어의 aoeRange 사용
+            int range = TurnSystem.instance.currentCharacter.aoeRange;
+            var targets = EnemySelection.instance.GetAOETargets(range);
+            foreach (var e in targets)
+            {
+                if (e != null)
+                    results.Add(e.transform);
+            }
+            return results;*/
+        }
+        /*private List<Transform> GetAOETargetsFromSelection()
+        {
+            List<Transform> results = new List<Transform>();
+            if (EnemySelection.instance == null) return results;
+
             var enemySelection = EnemySelection.instance;
             var targets = enemySelection.GetAOETargets(aoeRange);
             foreach (var e in targets)
@@ -101,9 +131,96 @@ namespace Project1
                     results.Add(e.transform);
             }
             return results;
+        }*/
+
+        public List<BaseEnemyControl> GetAOETargets()
+        {
+            var allEnemies = TurnSystem.instance.enemyCharacters; // 턴시스템의 적 리스트
+            int targetIndex = EnemySelection.instance.selectedEnemyIndex; // 현재 선택 인덱스
+            List<BaseEnemyControl> targets = new List<BaseEnemyControl>();
+
+            if (targetIndex < 0 || targetIndex >= allEnemies.Count)
+                return targets;
+
+            // 중심 포함
+            targets.Add(allEnemies[targetIndex]);
+
+            // 좌우 범위
+            /*for (int offset = 1; offset <= BaseCharacterControl.instance.aoeRange; offset++)
+            {
+                int left = targetIndex - offset;
+                int right = targetIndex + offset;
+
+                if (left >= 0) targets.Add(allEnemies[left]);
+                if (right < allEnemies.Count) targets.Add(allEnemies[right]);
+            }*/
+
+            for (int offset = 1; offset <= (TurnSystem.instance.CurrentCharacter as BaseCharacterControl).aoeRange; offset++)
+            {
+                int left = targetIndex - offset;
+                int right = targetIndex + offset;
+
+                if (left >= 0) targets.Add(allEnemies[left]);
+                if (right < allEnemies.Count) targets.Add(allEnemies[right]);
+            }
+
+            return targets;
         }
 
+        /*public List<BaseEnemyControl> GetAOETargets()
+        {
+            var allEnemies = EnemySelectorUI.instance.allEnemies;
+            int targetIndex = EnemySelection.instance.GetSelectedEnemyIndex();
+            List<BaseEnemyControl> targets = new List<BaseEnemyControl>();
+
+            if (targetIndex < 0 || targetIndex >= allEnemies.Count)
+                return targets;
+
+            // 중심 포함
+            targets.Add(allEnemies[targetIndex]);
+
+            // 좌우 범위 포함
+            for (int offset = 1; offset <= EnemySelectorUI.instance.aoeRange; offset++)
+            {
+                int left = targetIndex - offset;
+                int right = targetIndex + offset;
+
+                if (left >= 0) targets.Add(allEnemies[left]);
+                if (right < allEnemies.Count) targets.Add(allEnemies[right]);
+            }
+
+            return targets;
+        }*/
+
         public void ShowAOETargets(List<Transform> aoeTargets)
+        {
+            selectorUI.gameObject.SetActive(false);
+
+            while (multiSelectorUIs.Count < aoeTargets.Count)
+            {
+                RectTransform newUI = Instantiate(selectorUI, selectorUI.transform.parent);
+                multiSelectorUIs.Add(newUI);
+            }
+
+            for (int i = 0; i < multiSelectorUIs.Count; i++)
+            {
+                if (i < aoeTargets.Count)
+                {
+                    Transform enemy = aoeTargets[i];
+                    Vector3 screenPos = mainCamera.WorldToScreenPoint(enemy.position);
+                    screenPos.y += yOffset;
+
+                    multiSelectorUIs[i].position = screenPos;
+                    multiSelectorUIs[i].gameObject.SetActive(true);
+                }
+                else
+                {
+                    multiSelectorUIs[i].gameObject.SetActive(false);
+                }
+            }
+        }
+
+        /*public void ShowAOETargets(List<Transform> aoeTargets)
         {
             // 기존 UI 숨김
             selectorUI.gameObject.SetActive(false);
@@ -131,7 +248,7 @@ namespace Project1
                     multiSelectorUIs[i].gameObject.SetActive(false);
                 }
             }
-        }
+        }*/
 
         /*public List<Transform> GetAOETargets()
         {
@@ -164,11 +281,11 @@ namespace Project1
             }
         }
 
-        public void DeselectEnemy()
+        /*public void DeselectEnemy()
         {
             selectedEnemy = null;
             HideSingleTargetUI();
-        }
+        }*/
 
         /*public List<Transform> selectedEnemies = new List<Transform>();
 

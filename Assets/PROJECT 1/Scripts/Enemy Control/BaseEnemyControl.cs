@@ -21,7 +21,7 @@ namespace Project1
         public static BaseEnemyControl instance;
         public EnemyData enemyData;
 
-        protected Animator animator;
+        //protected Animator animator;
         public Vector3 initialPosition;
         protected Quaternion initialRotation;
 
@@ -41,16 +41,17 @@ namespace Project1
         public bool isTurn = false;              // 본인 턴인지 알려주는 연산자
         public Transform playerTransform;        // 플레이어 참조
         public Slider hpBarSlider;               // HP바
-        public string unitName;                  // 캐릭터 이름
-        public Sprite unitIcon;                  // 캐릭터 아이콘
+        //public string unitName;                  // 캐릭터 이름
+        //public Sprite unitIcon;                  // 캐릭터 아이콘
 
         [Header("적 움직임")]
         public EnemyState currentState = EnemyState.Idle;
         protected bool isAttackExecuted = false;
         private TurnSystem turnSystem;
 
-        protected virtual void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             animator = GetComponentInChildren<Animator>();
             initialPosition = transform.position;
             initialRotation = transform.rotation;
@@ -225,13 +226,14 @@ namespace Project1
         }
 
         // TakeDamage 메서드 추가
-        public void TakeDamage(float damage)
+        public override void TakeDamage(float damage)
         {
-            if (curHealth <= 0)
+            base.TakeDamage(damage);
+            /*if (curHealth <= 0)
                 return;
 
             animator.SetTrigger("Trigger EnemyHit");
-            curHealth -= damage;
+            curHealth -= damage;*/
 
             if (hpBarSlider != null)
             {
@@ -245,9 +247,10 @@ namespace Project1
         }
 
         // 적이 죽었을 때 처리
-        protected virtual void Die()
+        public override void Die()
         {
-            Debug.Log("적 사망");
+            base.Die();
+            //Debug.Log("적 사망");
             Destroy(gameObject);
             TurnSystem.instance.RemoveCharacterFromTurnOrder(this);
 

@@ -1,3 +1,4 @@
+using ProJect1;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,11 +10,12 @@ namespace Project1
         public GameObject turnIconPrefab;     // 턴 아이콘 프리팹
         public Transform turnListParent;     // 턴 리스트 부모 오브젝트
 
-        private List<object> allCharacters;  // 모든 캐릭터 리스트
+        private List<BaseUnit> allCharacters;
+        //private List<object> allCharacters;  // 모든 캐릭터 리스트
         private int currentTurnIndex;        // 현재 턴 인덱스
 
         // 초기화 함수
-        public void Initialize(List<object> characters, int currentIndex)
+        public void Initialize(List<BaseUnit> characters, int currentIndex)
         {
             if (characters == null || characters.Count == 0)
             {
@@ -26,6 +28,19 @@ namespace Project1
 
             UpdateTurnOrderUI();
         }
+        /*public void Initialize(List<object> characters, int currentIndex)
+        {
+            if (characters == null || characters.Count == 0)
+            {
+                Debug.LogError("Characters list is null or empty in TurnOrderUI.Initialize.");
+                return;
+            }
+
+            allCharacters = characters;
+            currentTurnIndex = currentIndex;
+
+            UpdateTurnOrderUI();
+        }*/
 
         // 턴 순서 UI 갱신
         public void UpdateTurnOrderUI()

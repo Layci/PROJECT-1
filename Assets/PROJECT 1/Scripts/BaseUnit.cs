@@ -7,6 +7,9 @@ namespace ProJect1
 {
     public class BaseUnit : MonoBehaviour
     {
+        [Header("유닛 정보")]
+        public string unitName;               // 유닛 이름
+        public Sprite unitIcon;               // 유닛 아이콘
         public float maxHealth;               // 최대 체력
         public float curHealth;               // 현재 체력
         public float moveSpeed;               // 이동 속도
@@ -15,11 +18,55 @@ namespace ProJect1
         public float damageReduction = 1f;    // 피해 감소
         public float damageIncreased = 1;     // 피해 증가
         public float unitSpacing = 2f;        // 각 유닛마다 간격 조절 거리
+        public bool isDead = false;           // 사망 판정
 
+        [Header("범위 공격")]
+        [Tooltip("0이면 단일 대상, 1 이상이면 범위 공격")]
+        public int aoeRange = 0;
+
+        [Header("버프 정보")]
         public int buffTrun;                  // 남은 버프 턴
         public bool buff = false;             // 버프 적용 확인 연산자
 
         public List<Buff> activeBuffs = new List<Buff>();
+        protected Animator animator;
+
+        protected virtual void Awake()
+        {
+            animator = GetComponent<Animator>();
+            curHealth = maxHealth;
+        }
+
+        public virtual void TakeDamage(float damage)
+        {
+            if (isDead) return;
+
+            curHealth -= damage;
+
+            // Hit 애니메이션 처리 - 플레이어에서만 isBlock 고려
+            if (this is BaseCharacterControl player)
+            {
+                if (!player.isBlock)
+                    animator?.SetTrigger("Trigger Hit");
+            }
+            else
+            {
+                animator?.SetTrigger("Trigger EnemyHit");
+            }
+
+            if (curHealth <= 0)
+            {
+                Die();
+            }
+        }
+
+        public virtual void Die()
+        {
+            isDead = true;
+            Debug.Log($"{unitName} 사망");
+        }
+
+        // -------------------------------- 버프관련
 
         public void AddBuff(Buff newBuff)
         {
@@ -49,8 +96,6 @@ namespace ProJect1
             Debug.Log($"{newBuff.buffName} 버프가 적용되었습니다! (공격력 증가: {newBuff.attackBoost}, 방어력 증가: {newBuff.defenseBoost})");
             buff = true;
         }
-
-
 
         public void RemoveExpiredBuffs()
         {
@@ -82,39 +127,5 @@ namespace ProJect1
 
             RemoveExpiredBuffs();
         }
-
-        /*public void OnTurnStart()
-        {
-            if (BuffIconUI.instance != null)
-            {
-                foreach (var buff in activeBuffs)
-                {
-                    buff.remainingTurns--;
-                    buffTrun = buff.remainingTurns;
-                    Debug.Log($"{buff.remainingTurns} 남은버프턴");
-                    if (buff.remainingTurns <= 0)
-                    {
-                        BuffIconUI buffIconUI = GetComponent<BuffIconUI>();
-                        buffIconUI.buffPower = 0;
-                        buff.RemoveEffect(this);
-                    }
-                }
-            }
-            else
-            {
-                foreach (var buff in activeBuffs)
-                {
-                    buff.remainingTurns--;
-                    buffTrun = buff.remainingTurns;
-                    Debug.Log($"{buff.remainingTurns} 남은버프턴");
-                    if (buff.remainingTurns <= 0)
-                    {
-                        buff.RemoveEffect(this);
-                    }
-                }
-            }
-
-            RemoveExpiredBuffs();
-        }*/
     }
 }

@@ -1278,6 +1278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   totalDamage: 0
+  currentAOERange: 1
 --- !u!95 &157142830
 Animator:
   serializedVersion: 5
@@ -3384,6 +3385,7 @@ MonoBehaviour:
   enemyCharacters: []
   playerPositions: []
   enemyPositions: []
+  allCharacters: []
   playerTargetPosition: {fileID: 0}
   curTurnText: {fileID: 493223848}
   curWaveText: {fileID: 0}
@@ -3408,10 +3410,8 @@ MonoBehaviour:
   isTurn: 0
   yOffset: 75
   allEnemies: []
-  aoeRange: 1
   selectedEnemy: {fileID: 0}
   multiSelectorUIs: []
-  selectedEnemies: []
 --- !u!114 &353701281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3426,9 +3426,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turnSystem: {fileID: 353701279}
   enemySelectorUI: {fileID: 353701280}
+  selectedEnemyIndex: 0
   isMove: 0
-  aoeSelectorPrefab: {fileID: 1056092454}
-  selectorParent: {fileID: 1902975643}
 --- !u!114 &353701282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3723,14 +3722,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da3979d27093c3c499fc83d0eff2441e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitName: Taster
+  unitIcon: {fileID: 21300000, guid: 33bd4912a9f12c94d868d7848bdca7c8, type: 3}
   maxHealth: 260
   curHealth: 260
   moveSpeed: 3
-  unitSpeed: 1050
+  unitSpeed: 105
   attackRange: 1
   damageReduction: 1
   damageIncreased: 1
   unitSpacing: 2
+  isDead: 0
+  aoeRange: 0
   buffTrun: 0
   buff: 0
   initialPosition: {x: 0, y: 0, z: 0}
@@ -3742,13 +3745,10 @@ MonoBehaviour:
   isTurn: 0
   isBlock: 0
   isPreparingAOEAttack: 0
-  isPreparingSingleAttack: 0
   hpBarSlider: {fileID: 167503570}
   hpText: {fileID: 604680033}
   enemySelection: {fileID: 0}
   currentTarget: {fileID: 0}
-  unitName: Taster
-  unitIcon: {fileID: 21300000, guid: 33bd4912a9f12c94d868d7848bdca7c8, type: 3}
   currentState: 0
   buffIconUI: {fileID: 0}
 --- !u!4 &379531595
@@ -4518,6 +4518,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fb7fe56547a7c242a5258b447fb3981, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitName: Faye
+  unitIcon: {fileID: 21300000, guid: 809a6a65b705bea4fb70d6f7bffbfb1b, type: 3}
   maxHealth: 245
   curHealth: 245
   moveSpeed: 3
@@ -4526,6 +4528,8 @@ MonoBehaviour:
   damageReduction: 1
   damageIncreased: 1
   unitSpacing: 2
+  isDead: 0
+  aoeRange: 0
   buffTrun: 0
   buff: 0
   initialPosition: {x: 0, y: 0, z: 0}
@@ -4537,13 +4541,10 @@ MonoBehaviour:
   isTurn: 0
   isBlock: 0
   isPreparingAOEAttack: 0
-  isPreparingSingleAttack: 0
   hpBarSlider: {fileID: 125958548}
   hpText: {fileID: 1147271598}
   enemySelection: {fileID: 0}
   currentTarget: {fileID: 0}
-  unitName: Faye
-  unitIcon: {fileID: 21300000, guid: 809a6a65b705bea4fb70d6f7bffbfb1b, type: 3}
   currentState: 0
   buffTurnUI: {fileID: 0}
   buffIconUI: {fileID: 0}
@@ -6591,6 +6592,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae151309d13b6e5468fa6b1c7df4fb53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitName: Hoshi
+  unitIcon: {fileID: 21300000, guid: 516f60cdff05af34e811aab0ea8ff875, type: 3}
   maxHealth: 250
   curHealth: 250
   moveSpeed: 3
@@ -6599,6 +6602,8 @@ MonoBehaviour:
   damageReduction: 1
   damageIncreased: 1
   unitSpacing: 2
+  isDead: 0
+  aoeRange: 0
   buffTrun: 0
   buff: 0
   initialPosition: {x: 0, y: 0, z: 0}
@@ -6610,13 +6615,10 @@ MonoBehaviour:
   isTurn: 0
   isBlock: 0
   isPreparingAOEAttack: 0
-  isPreparingSingleAttack: 0
   hpBarSlider: {fileID: 1910444911}
   hpText: {fileID: 493601028}
   enemySelection: {fileID: 0}
   currentTarget: {fileID: 0}
-  unitName: Hoshi
-  unitIcon: {fileID: 21300000, guid: 516f60cdff05af34e811aab0ea8ff875, type: 3}
   currentState: 0
 --- !u!1 &678783200
 GameObject:
@@ -7452,6 +7454,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57be78652834fae48a864c5503e0c439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitName: Inugami
+  unitIcon: {fileID: 21300000, guid: 60f1e51f3592c5842966cda97fe3875b, type: 3}
   maxHealth: 220
   curHealth: 220
   moveSpeed: 3
@@ -7460,6 +7464,8 @@ MonoBehaviour:
   damageReduction: 1
   damageIncreased: 22
   unitSpacing: 2
+  isDead: 0
+  aoeRange: 0
   buffTrun: 0
   buff: 0
   initialPosition: {x: 0, y: 0, z: 0}
@@ -7471,13 +7477,10 @@ MonoBehaviour:
   isTurn: 0
   isBlock: 0
   isPreparingAOEAttack: 0
-  isPreparingSingleAttack: 0
   hpBarSlider: {fileID: 431315078}
   hpText: {fileID: 1719722252}
   enemySelection: {fileID: 0}
   currentTarget: {fileID: 0}
-  unitName: Inugami
-  unitIcon: {fileID: 21300000, guid: 60f1e51f3592c5842966cda97fe3875b, type: 3}
   currentState: 0
 --- !u!1 &814296136
 GameObject:
@@ -40783,6 +40786,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   totalDamage: 0
+  currentAOERange: 1
 --- !u!4 &4344081854671669935
 Transform:
   m_ObjectHideFlags: 0
@@ -48164,6 +48168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   totalDamage: 0
+  currentAOERange: 1
 --- !u!4 &4778133137713504908
 Transform:
   m_ObjectHideFlags: 0
@@ -68113,6 +68118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   totalDamage: 0
+  currentAOERange: 1
 --- !u!4 &8793183340989727066
 Transform:
   m_ObjectHideFlags: 0

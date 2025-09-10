@@ -17,7 +17,9 @@ namespace Project1
 
         protected override void HandleAttackInput()
         {
-            HandleAttackModeInput(); // Q↔E 전환 공통 처리
+            base.HandleAttackInput();
+
+            /*HandleAttackModeInput(); // Q↔E 전환 공통 처리
 
             // 공격 가능한 상태가 아니면 리턴
             if (!CanAttack())
@@ -57,7 +59,7 @@ namespace Project1
                     SkillPointManager.instance.UseSkillPoint();
                     EnemySelectorUI.instance.HideAOEUI();
                 }
-            }
+            }*/
 
             /*if (!isPreparingSingleAttack && !isPreparingAOEAttack && Input.GetKeyDown(KeyCode.Q))
             {
