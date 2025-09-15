@@ -70,6 +70,94 @@ namespace Project1
             }
         }
 
+        // 애니메이션 이벤트에서 호출
+        public void OnAttackEvent()
+        {
+            if (player == null) return;
+
+            var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
+            if (cur == null) return;
+
+            // 공격 종류별 범위 구분
+            int range = player.skillAttack ? cur.skillAttackRange : cur.normalAttackRange;
+
+            var targets = EnemySelection.instance.GetAOETargets(range);
+
+            float damage = player.skillAttack ? player.playerSkillAttackPower : player.playerAttackPower;
+            damage *= player.damageIncreased;
+
+            totalDamage = 0;
+
+            foreach (var enemyControl in targets)
+            {
+                if (enemyControl == null) continue;
+
+                float finalDamage = damage * enemyControl.damageReduction;
+                enemyControl.TakeDamage(finalDamage);
+                totalDamage += (int)finalDamage;
+
+                if (DamageTextSpawner.Instance != null)
+                    DamageTextSpawner.Instance.SpawnDamageText(enemyControl.transform.position + Vector3.up * 1.5f, (int)finalDamage);
+            }
+
+            if (TotalDamageUI.Instance != null)
+                TotalDamageUI.Instance.ShowTotalDamage(totalDamage);
+        }
+
+        // 백업 코드
+        /*public void OnDamageEvent()
+        {
+            if (player == null) return;
+
+            // 현재 턴 캐릭터 가져오기
+            var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
+            if (cur == null) return;
+
+            int range = cur.skillAttackRange;
+            List<BaseEnemyControl> targets;
+
+            if (range > 0)
+            {
+                // 범위 공격
+                targets = EnemySelection.instance.GetAOETargets(range);
+            }
+            else
+            {
+                // 단일 공격
+                targets = new List<BaseEnemyControl>();
+                if (player.currentTarget != null)
+                {
+                    BaseEnemyControl enemyControl = player.currentTarget.GetComponent<BaseEnemyControl>();
+                    if (enemyControl != null) targets.Add(enemyControl);
+                }
+            }
+
+            // 공격력 계산 (스킬 여부는 player.skillAttack으로 구분)
+            float damage = player.skillAttack ? player.playerSkillAttackPower : player.playerAttackPower;
+            damage *= player.damageIncreased;
+
+            totalDamage = 0;
+
+            foreach (var enemyControl in targets)
+            {
+                if (enemyControl == null) continue;
+
+                float finalDamage = damage * enemyControl.damageReduction;
+                enemyControl.TakeDamage(finalDamage);
+                totalDamage += (int)finalDamage;
+
+                if (DamageTextSpawner.Instance != null)
+                {
+                    DamageTextSpawner.Instance.SpawnDamageText(enemyControl.transform.position + Vector3.up * 1.5f, (int)finalDamage);
+                }
+            }
+
+            if (TotalDamageUI.Instance != null && totalDamage > 0)
+            {
+                TotalDamageUI.Instance.ShowTotalDamage(totalDamage);
+            }
+        }*/
+
         // 애니메이션 이벤트로 호출되는 범위 공격
         public void OnAOEDamageEvent()
         {
@@ -79,7 +167,7 @@ namespace Project1
             var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
             if (cur == null) return;
             // 범위 공격인지 판단 (예: 준비 플래그에 따라)
-            int range = cur.aoeRange;
+            int range = cur.skillAttackRange;
             var targets = EnemySelection.instance.GetAOETargets(range);
 
             float damage = player.skillAttack ? player.playerSkillAttackPower : player.playerAttackPower;
@@ -107,34 +195,6 @@ namespace Project1
                 TotalDamageUI.Instance.ShowTotalDamage(totalDamage);
             }
         }
-
-        // 플레이어 범위공격 함수
-        /*public void OnAOEDamageEvent(int range = 1)
-        {
-            List<BaseEnemyControl> targets = EnemySelection.instance.GetAOETargets(range);
-            float damage = player.skillAttack ? player.playerSkillAttackPower : player.playerAttackPower;
-
-            foreach (var enemy in targets)
-            {
-                if (enemy != null)
-                {
-                    enemy.TakeDamage(damage);
-                }
-            }
-        }*/
-        /*public void OnAOEDamageEvent(int range = 1) // 애니메이션 이벤트로 호출될 함수
-        {
-            List<BaseEnemyControl> targets = EnemySelection.instance.GetAOETargets(range);
-            float damage = player.skillAttack ? player.playerSkillAttackPower : player.playerAttackPower;
-
-            foreach (var enemy in targets)
-            {
-                if (enemy != null)
-                {
-                    enemy.TakeDamage(damage);
-                }
-            }
-        }*/
 
         public void EnemyMeleeAttack()
         {

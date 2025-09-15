@@ -20,9 +20,13 @@ namespace ProJect1
         public float unitSpacing = 2f;        // 각 유닛마다 간격 조절 거리
         public bool isDead = false;           // 사망 판정
 
+        [Header("공격 범위 설정")]
+        [Tooltip("기본 공격 범위 (0 = 단일, 1 = 양옆 1칸 포함)")]
+        public int normalAttackRange = 0;
+
         [Header("범위 공격")]
         [Tooltip("0이면 단일 대상, 1 이상이면 범위 공격")]
-        public int aoeRange = 0;
+        public int skillAttackRange = 0;
 
         [Header("버프 정보")]
         public int buffTrun;                  // 남은 버프 턴

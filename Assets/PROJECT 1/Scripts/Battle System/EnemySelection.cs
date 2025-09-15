@@ -32,7 +32,6 @@ namespace Project1
 
         private void Start()
         {
-            //EnemySelectorUI.instance.selectorUI.gameObject.SetActive(true);
             if (enemySelectorUI != null)
             {
                 enemySelectorUI.SetSelectedEnemy(GetSelectedEnemyTransform());
@@ -58,8 +57,6 @@ namespace Project1
                     if (selectedEnemyIndex < 0)
                         selectedEnemyIndex = turnSystem.enemyCharacters.Count - 1;
                     moved = true;
-                    /*UpdateSelectedEnemy(); // 중앙 타겟 시각적 갱신
-                    UpdateAOEIndicators(1); // 여기서 1은 범위*/
                 }
 
                 if (Input.GetKeyDown(KeyCode.D))
@@ -68,8 +65,6 @@ namespace Project1
                     if (selectedEnemyIndex >= turnSystem.enemyCharacters.Count)
                         selectedEnemyIndex = 0;
                     moved = true;
-                    /*UpdateSelectedEnemy(); // 중앙 타겟 시각적 갱신
-                    UpdateAOEIndicators(1); // 여기서 1은 범위*/
                 }
 
                 if (moved)
@@ -105,10 +100,10 @@ namespace Project1
 
         }
 
-        public int GetSelectedEnemyIndex()
+        /*public int GetSelectedEnemyIndex()
         {
             return selectedEnemyIndex;
-        }
+        }*/
 
         public Transform GetSelectedEnemyTransform()
         {
@@ -193,7 +188,7 @@ namespace Project1
         }*/
 
         // EnemySelection 쪽: 외부에서 범위 모드 여부를 주입
-        public void UpdateSelectedEnemy(bool isPreparingAOE)
+        /*public void UpdateSelectedEnemy(bool isPreparingAOE)
         {
             if (turnSystem.enemyCharacters.Count == 0) return;
 
@@ -209,26 +204,52 @@ namespace Project1
                 enemySelectorUI.HideAOEUI();
                 enemySelectorUI.ShowSingleTargetUI();
             }
-        }
+        }*/
 
-        // 오버로드 없이 이걸 쓰도록
         public void UpdateSelectedEnemy()
         {
             if (turnSystem.enemyCharacters.Count == 0) return;
 
             BaseEnemyControl selectedEnemy = turnSystem.enemyCharacters[selectedEnemyIndex];
-            enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
 
-            /*if (BaseCharacterControl.instance.isPreparingAOEAttack)
+            // 현재 캐릭터 가져오기
+            var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
+            int range = cur != null ? cur.skillAttackRange : 0;
+
+            // 공격 준비 상태 확인
+            if (cur is BaseCharacterControl player)
             {
-                enemySelectorUI.ShowCurrentAOERange(); // 범위 UI
+                if (player.prepareState == AttackPrepareState.Basic)
+                {
+                    // 단일 타겟 모드
+                    enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
+                    enemySelectorUI.ShowSingleTargetUI();
+                    enemySelectorUI.HideAOEUI();
+                }
+                else if (player.prepareState == AttackPrepareState.Skill)
+                {
+                    // 범위 타겟 모드
+                    var targets = GetAOETargets(range);
+                    enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
+                    enemySelectorUI.HideSingleTargetUI();
+                }
+                else
+                {
+                    // 아무 것도 준비 안된 상태 → 기본 단일
+                    enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
+                    enemySelectorUI.ShowSingleTargetUI();
+                    enemySelectorUI.HideAOEUI();
+                }
             }
-            else
-            {
-                enemySelectorUI.HideAOEUI();
-                enemySelectorUI.ShowSingleTargetUI(); // 단일 UI
-            }*/
         }
+        // 적 선택UI 업데이트 백업
+        /*public void UpdateSelectedEnemy()
+        {
+            if (turnSystem.enemyCharacters.Count == 0) return;
+
+            BaseEnemyControl selectedEnemy = turnSystem.enemyCharacters[selectedEnemyIndex];
+            enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
+        }*/
 
         // 선택된 적 및 UI 갱신
         /*public void UpdateSelectedEnemy()
@@ -294,10 +315,10 @@ namespace Project1
         }*/
 
         // 범위 내 적 Transform 리스트 반환 - UI 처리용
-        public List<Transform> GetAOETargets()
+        /*public List<Transform> GetAOETargets()
         {
             return GetAOETargets(1).Select(enemy => enemy.transform).ToList();
-        }
+        }*/
 
         /*public BaseEnemyControl GetSelectedEnemy()
         {

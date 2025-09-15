@@ -92,10 +92,10 @@ namespace Project1
             List<Transform> results = new List<Transform>();
             if (EnemySelection.instance == null) return results;
 
-            // 현재 턴 주체의 aoeRange 사용 (BaseUnit에 aoeRange가 있다고 가정)
+            // 현재 턴 주체의 skillAttackRange 사용 (BaseUnit에 aoeRange가 있다고 가정)
             int range = 0;
             var cur = TurnSystem.instance != null ? TurnSystem.instance.CurrentCharacter : null;
-            if (cur != null) range = Mathf.Max(0, cur.aoeRange);
+            if (cur != null) range = Mathf.Max(0, cur.skillAttackRange);
 
             var targets = EnemySelection.instance.GetAOETargets(range);
             foreach (var e in targets)
@@ -108,8 +108,8 @@ namespace Project1
             if (EnemySelection.instance == null) return results;
 
             // EnemySelection의 인덱스 기반 메서드 호출
-            // 현재 턴 플레이어의 aoeRange 사용
-            int range = TurnSystem.instance.currentCharacter.aoeRange;
+            // 현재 턴 플레이어의 skillAttackRange 사용
+            int range = TurnSystem.instance.currentCharacter.skillAttackRange;
             var targets = EnemySelection.instance.GetAOETargets(range);
             foreach (var e in targets)
             {
@@ -124,7 +124,7 @@ namespace Project1
             if (EnemySelection.instance == null) return results;
 
             var enemySelection = EnemySelection.instance;
-            var targets = enemySelection.GetAOETargets(aoeRange);
+            var targets = enemySelection.GetAOETargets(skillAttackRange);
             foreach (var e in targets)
             {
                 if (e != null)
@@ -146,7 +146,7 @@ namespace Project1
             targets.Add(allEnemies[targetIndex]);
 
             // 좌우 범위
-            for (int offset = 1; offset <= (TurnSystem.instance.CurrentCharacter as BaseCharacterControl).aoeRange; offset++)
+            for (int offset = 1; offset <= (TurnSystem.instance.CurrentCharacter as BaseCharacterControl).skillAttackRange; offset++)
             {
                 int left = targetIndex - offset;
                 int right = targetIndex + offset;
@@ -171,7 +171,7 @@ namespace Project1
             targets.Add(allEnemies[targetIndex]);
 
             // 좌우 범위 포함
-            for (int offset = 1; offset <= EnemySelectorUI.instance.aoeRange; offset++)
+            for (int offset = 1; offset <= EnemySelectorUI.instance.skillAttackRange; offset++)
             {
                 int left = targetIndex - offset;
                 int right = targetIndex + offset;
@@ -252,7 +252,7 @@ namespace Project1
             if (selectedIndex == -1)
                 return aoeTargets;
 
-            for (int i = -aoeRange; i <= aoeRange; i++)
+            for (int i = -skillAttackRange; i <= skillAttackRange; i++)
             {
                 int targetIndex = selectedIndex + i;
                 if (targetIndex >= 0 && targetIndex < allEnemies.Count)

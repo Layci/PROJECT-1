@@ -54,7 +54,7 @@ namespace Project1
         public bool isPreparingAOEAttack = false;
         //public bool isPreparingSingleAttack = false;
         
-        protected AttackPrepareState prepareState = AttackPrepareState.None;
+        public AttackPrepareState prepareState = AttackPrepareState.None;
         //public bool IsPreparingAttack => prepareState != AttackPrepareState.None;
 
         public Slider hpBarSlider;            // HP바
@@ -88,7 +88,7 @@ namespace Project1
                 HandleState();
                 HandleAttackInput();
                 TargetUpdate();
-                /*if(aoeRange >= 1)
+                /*if(skillAttackRange >= 1)
                 {
                     isPreparingAOEAttack = true;
                 }
@@ -102,7 +102,7 @@ namespace Project1
         /*protected virtual List<BaseEnemyControl> GetAOETargets()
         {
             return EnemySelection.instance.turnSystem.enemyCharacters
-                .Where(e => Vector3.Distance(currentTarget.position, e.transform.position) <= aoeRange)
+                .Where(e => Vector3.Distance(currentTarget.position, e.transform.position) <= skillAttackRange)
                 .ToList();
         }*/
 
@@ -144,11 +144,11 @@ namespace Project1
                 {
                     Debug.Log("스킬공격 준비 상태 진입");
                     Debug.Log("현재 prepareState2: " + prepareState);
-                    Debug.Log(aoeRange);
+                    Debug.Log(skillAttackRange);
                     // 준비 상태 진입
                     prepareState = AttackPrepareState.Skill;
                     var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
-                    int range = cur != null ? cur.aoeRange : 0;
+                    int range = cur != null ? cur.skillAttackRange : 0;
 
                     // 인덱스 기반 AOE 대상 가져오기
                     var targets = EnemySelection.instance.GetAOETargets(range);
