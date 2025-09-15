@@ -1278,7 +1278,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   totalDamage: 0
-  currentAOERange: 1
 --- !u!95 &157142830
 Animator:
   serializedVersion: 5
@@ -3839,7 +3838,8 @@ MonoBehaviour:
   damageIncreased: 1
   unitSpacing: 2
   isDead: 0
-  aoeRange: 0
+  normalAttackRange: 0
+  skillAttackRange: 0
   buffTrun: 0
   buff: 0
   initialPosition: {x: 0, y: 0, z: 0}
@@ -3851,6 +3851,7 @@ MonoBehaviour:
   isTurn: 0
   isBlock: 0
   isPreparingAOEAttack: 0
+  prepareState: 0
   hpBarSlider: {fileID: 167503570}
   hpText: {fileID: 604680033}
   enemySelection: {fileID: 0}
@@ -4635,7 +4636,8 @@ MonoBehaviour:
   damageIncreased: 1
   unitSpacing: 2
   isDead: 0
-  aoeRange: 0
+  normalAttackRange: 0
+  skillAttackRange: 0
   buffTrun: 0
   buff: 0
   initialPosition: {x: 0, y: 0, z: 0}
@@ -4647,6 +4649,7 @@ MonoBehaviour:
   isTurn: 0
   isBlock: 0
   isPreparingAOEAttack: 0
+  prepareState: 0
   hpBarSlider: {fileID: 125958548}
   hpText: {fileID: 1147271598}
   enemySelection: {fileID: 0}
@@ -6709,7 +6712,8 @@ MonoBehaviour:
   damageIncreased: 1
   unitSpacing: 2
   isDead: 0
-  aoeRange: 0
+  normalAttackRange: 0
+  skillAttackRange: 0
   buffTrun: 0
   buff: 0
   initialPosition: {x: 0, y: 0, z: 0}
@@ -6721,6 +6725,7 @@ MonoBehaviour:
   isTurn: 0
   isBlock: 0
   isPreparingAOEAttack: 0
+  prepareState: 0
   hpBarSlider: {fileID: 1910444911}
   hpText: {fileID: 493601028}
   enemySelection: {fileID: 0}
@@ -7677,7 +7682,8 @@ MonoBehaviour:
   damageIncreased: 22
   unitSpacing: 2
   isDead: 0
-  aoeRange: 0
+  normalAttackRange: 0
+  skillAttackRange: 0
   buffTrun: 0
   buff: 0
   initialPosition: {x: 0, y: 0, z: 0}
@@ -7689,6 +7695,7 @@ MonoBehaviour:
   isTurn: 0
   isBlock: 0
   isPreparingAOEAttack: 0
+  prepareState: 0
   hpBarSlider: {fileID: 431315078}
   hpText: {fileID: 1719722252}
   enemySelection: {fileID: 0}
@@ -17237,7 +17244,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8350505722130589247, guid: 08aecb816b6b4194a9c2897afa4f9148, type: 3}
+  - {fileID: 2100000, guid: 8da71c657054e144f8c8a23b3ff8cf3c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -41650,7 +41657,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   totalDamage: 0
-  currentAOERange: 1
 --- !u!4 &4344081854671669935
 Transform:
   m_ObjectHideFlags: 0
@@ -49032,7 +49038,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   totalDamage: 0
-  currentAOERange: 1
 --- !u!4 &4778133137713504908
 Transform:
   m_ObjectHideFlags: 0
@@ -68986,7 +68991,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   totalDamage: 0
-  currentAOERange: 1
 --- !u!4 &8793183340989727066
 Transform:
   m_ObjectHideFlags: 0
