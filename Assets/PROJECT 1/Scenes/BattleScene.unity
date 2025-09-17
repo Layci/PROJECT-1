@@ -6713,7 +6713,7 @@ MonoBehaviour:
   unitSpacing: 2
   isDead: 0
   normalAttackRange: 0
-  skillAttackRange: 0
+  skillAttackRange: 1
   buffTrun: 0
   buff: 0
   initialPosition: {x: 0, y: 0, z: 0}

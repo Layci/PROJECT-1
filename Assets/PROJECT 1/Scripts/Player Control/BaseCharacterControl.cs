@@ -120,6 +120,7 @@ namespace Project1
                     Debug.Log("기본공격 확정 실행!");
                     // 이미 준비 상태 → 확정 실행
                     ExecuteBasicAttack();
+                    SkillPointManager.instance.SkillPointUp();
                 }
                 else
                 {
@@ -132,13 +133,14 @@ namespace Project1
             }
 
             // E → 스킬 공격
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E) && SkillPointManager.instance.curSkillPoint > 0)
             {
                 if (prepareState == AttackPrepareState.Skill)
                 {
                     Debug.Log("현재 prepareState2: " + prepareState);
                     // 이미 준비 상태 → 확정 실행
                     ExecuteSkillAttack();
+                    SkillPointManager.instance.UseSkillPoint();
                 }
                 else
                 {
@@ -208,22 +210,6 @@ namespace Project1
             selfBuff = new Buff("", 2, 0.2f, 0, typeof(This));
             Debug.Log($"{unitName} 버프 발동!");
         }
-
-        /*protected virtual void HandleAttackModeInput()
-        {
-            if (prepareState == AttackPrepareState.Basic && Input.GetKeyDown(KeyCode.E))
-            {
-                prepareState = AttackPrepareState.Skill;
-                EnemySelectorUI.instance.HideSingleTargetUI();
-                EnemySelectorUI.instance.ShowAOETargets(GetAOETargets().Select(e => e.transform).ToList());
-            }
-            else if (prepareState == AttackPrepareState.Skill && Input.GetKeyDown(KeyCode.Q))
-            {
-                prepareState = AttackPrepareState.Basic;
-                EnemySelectorUI.instance.HideAOEUI();
-                EnemySelectorUI.instance.ShowSingleTargetUI();
-            }
-        }*/
 
         protected bool CanAttack()
         {
@@ -364,15 +350,6 @@ namespace Project1
 
         public override void TakeDamage(float damage)
         {
-            /*if (maxHealth == 0 || curHealth == 0)
-                return;
-
-            if (!isBlock)
-            {
-                animator.SetTrigger("Trigger Hit");
-            }
-
-            curHealth -= damage;*/
             base.TakeDamage(damage);
 
             CheckHP();

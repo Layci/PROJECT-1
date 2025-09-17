@@ -154,58 +154,6 @@ namespace Project1
             return targets;
         }
 
-        /*public List<BaseEnemyControl> GetAOETargets(int range = 1)
-        {
-            List<BaseEnemyControl> targets = new List<BaseEnemyControl>();
-            var allEnemies = turnSystem.enemyCharacters;
-
-            int start = Mathf.Max(0, selectedEnemyIndex - range);
-            int end = Mathf.Min(allEnemies.Count - 1, selectedEnemyIndex + range);
-
-            for (int i = start; i <= end; i++)
-            {
-                targets.Add(allEnemies[i]);
-            }
-
-            return targets;
-        }*/
-
-        /*public List<int> GetAOETargetIndices(int range = 1)
-        {
-            List<int> indices = new List<int>();
-            int count = turnSystem.enemyCharacters.Count;
-
-            for (int i = -range; i <= range; i++)
-            {
-                int index = selectedEnemyIndex + i;
-                if (index >= 0 && index < count)
-                {
-                    indices.Add(index);
-                }
-            }
-
-            return indices;
-        }*/
-
-        // EnemySelection 쪽: 외부에서 범위 모드 여부를 주입
-        /*public void UpdateSelectedEnemy(bool isPreparingAOE)
-        {
-            if (turnSystem.enemyCharacters.Count == 0) return;
-
-            BaseEnemyControl selectedEnemy = turnSystem.enemyCharacters[selectedEnemyIndex];
-            enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
-
-            if (isPreparingAOE)
-            {
-                enemySelectorUI.ShowCurrentAOERange();
-            }
-            else
-            {
-                enemySelectorUI.HideAOEUI();
-                enemySelectorUI.ShowSingleTargetUI();
-            }
-        }*/
-
         public void UpdateSelectedEnemy()
         {
             if (turnSystem.enemyCharacters.Count == 0) return;
@@ -229,6 +177,7 @@ namespace Project1
                 else if (player.prepareState == AttackPrepareState.Skill)
                 {
                     // 범위 타겟 모드
+                    enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
                     var targets = GetAOETargets(range);
                     enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
                     enemySelectorUI.HideSingleTargetUI();
