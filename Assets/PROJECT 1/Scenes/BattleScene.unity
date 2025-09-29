@@ -6712,7 +6712,7 @@ MonoBehaviour:
   damageIncreased: 1
   unitSpacing: 2
   isDead: 0
-  normalAttackRange: 0
+  normalAttackRange: 2
   skillAttackRange: 1
   buffTrun: 0
   buff: 0
