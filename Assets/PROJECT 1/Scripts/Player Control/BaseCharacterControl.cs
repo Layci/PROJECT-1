@@ -31,7 +31,6 @@ namespace Project1
     {
         public static BaseCharacterControl instance;
 
-        //protected Animator animator;
         public Vector3 initialPosition;
         protected Quaternion initialRotation;
 
@@ -88,23 +87,8 @@ namespace Project1
                 HandleState();
                 HandleAttackInput();
                 TargetUpdate();
-                /*if(skillAttackRange >= 1)
-                {
-                    isPreparingAOEAttack = true;
-                }
-                else
-                {
-                    isAttackExecuted = false;
-                }*/
             }
         }
-
-        /*protected virtual List<BaseEnemyControl> GetAOETargets()
-        {
-            return EnemySelection.instance.turnSystem.enemyCharacters
-                .Where(e => Vector3.Distance(currentTarget.position, e.transform.position) <= skillAttackRange)
-                .ToList();
-        }*/
 
         protected virtual void HandleAttackInput()
         {

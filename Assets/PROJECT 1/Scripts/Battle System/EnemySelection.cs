@@ -111,7 +111,7 @@ namespace Project1
 
             // 현재 캐릭터 가져오기
             var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
-            int range = cur != null ? cur.skillAttackRange : 0;
+            //int range = cur != null ? cur.skillAttackRange : 0;
 
             if (cur is BaseCharacterControl player)
             {
@@ -155,33 +155,53 @@ namespace Project1
                         enemySelectorUI.HideSingleTargetUI();
                     }
                 }
-                // 공격 준비 상태 확인
-                /*if (cur is BaseCharacterControl player)
+            }
+            
+            //빽업
+
+            /*if (cur is BaseCharacterControl player)
+            {
+                if (player.prepareState == AttackPrepareState.Basic)
                 {
-                    if (player.prepareState == AttackPrepareState.Basic)
+                    // 기본 공격 → normalAttackRange 사용
+                    int normalRange = player.normalAttackRange;
+
+                    enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
+
+                    if (normalRange == 0)
                     {
-                        // 단일 타겟 모드
-                        enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
+                        // 단일
                         enemySelectorUI.ShowSingleTargetUI();
                         enemySelectorUI.HideAOEUI();
-                    }
-                    else if (player.prepareState == AttackPrepareState.Skill)
-                    {
-                        // 범위 타겟 모드
-                        enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
-                        var targets = GetAOETargets(range);
-                        enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
-                        enemySelectorUI.HideSingleTargetUI();
                     }
                     else
                     {
-                        // 아무 것도 준비 안된 상태 → 기본 단일
-                        enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
+                        // 범위
+                        var targets = GetAOETargets(normalRange);
+                        enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
+                        enemySelectorUI.HideSingleTargetUI();
+                    }
+                }
+                else if (player.prepareState == AttackPrepareState.Skill)
+                {
+                    // 스킬 공격 → skillAttackRange 사용
+                    int skillRange = player.skillAttackRange;
+
+                    enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
+
+                    if (skillRange == 0)
+                    {
                         enemySelectorUI.ShowSingleTargetUI();
                         enemySelectorUI.HideAOEUI();
                     }
-                }*/
-            }
+                    else
+                    {
+                        var targets = GetAOETargets(skillRange);
+                        enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
+                        enemySelectorUI.HideSingleTargetUI();
+                    }
+                }
+            }*/
         }
     }
 }

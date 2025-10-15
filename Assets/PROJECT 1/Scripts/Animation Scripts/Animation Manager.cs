@@ -14,8 +14,7 @@ namespace Project1
         public Transform target;
 
         public int totalDamage = 0;
-        // 현재 적용할 AOE 범위 (스킬 입력 시 설정)
-        //public int currentAOERange = 1;
+
         private void Awake()
         {
             player = GetComponentInParent<BaseCharacterControl>();
@@ -75,6 +74,7 @@ namespace Project1
         {
             if (player == null) return;
 
+            // 현재 턴 캐릭터 가져오기
             var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
             if (cur == null) return;
 
@@ -83,6 +83,7 @@ namespace Project1
 
             var targets = EnemySelection.instance.GetAOETargets(range);
 
+            // 공격 종류별 데미지 구분
             float damage = player.skillAttack ? player.playerSkillAttackPower : player.playerAttackPower;
             damage *= player.damageIncreased;
 
@@ -91,7 +92,7 @@ namespace Project1
             foreach (var enemyControl in targets)
             {
                 if (enemyControl == null) continue;
-
+                // 적의 피해 감소율 적용
                 float finalDamage = damage * enemyControl.damageReduction;
                 enemyControl.TakeDamage(finalDamage);
                 totalDamage += (int)finalDamage;

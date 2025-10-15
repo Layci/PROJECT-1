@@ -154465,35 +154465,35 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.53333336
-    functionName: OnAOEDamageEvent
+    functionName: OnAttackEvent
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 1
     messageOptions: 0
   - time: 1.0666667
-    functionName: OnAOEDamageEvent
+    functionName: OnAttackEvent
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 1
     messageOptions: 0
   - time: 1.8333334
-    functionName: OnAOEDamageEvent
+    functionName: OnAttackEvent
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 1
     messageOptions: 0
   - time: 2.5666666
-    functionName: OnAOEDamageEvent
+    functionName: OnAttackEvent
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 1
     messageOptions: 0
   - time: 3.9
-    functionName: OnAOEDamageEvent
+    functionName: OnAttackEvent
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

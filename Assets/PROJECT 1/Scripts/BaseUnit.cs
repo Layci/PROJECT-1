@@ -12,12 +12,13 @@ namespace ProJect1
         public Sprite unitIcon;               // 유닛 아이콘
         public float maxHealth;               // 최대 체력
         public float curHealth;               // 현재 체력
-        public float moveSpeed;               // 이동 속도
+        public float moveSpeed = 3;           // 이동 속도
         public float unitSpeed;               // 유닛 속도(턴 순서 관련)
         public float attackRange;             // 공격 거리
         public float damageReduction = 1f;    // 피해 감소
         public float damageIncreased = 1;     // 피해 증가
         public float unitSpacing = 2f;        // 각 유닛마다 간격 조절 거리
+        public float animationSpeed = 1f;     // 애니메이션 스피드
         public bool isDead = false;           // 사망 판정
 
         [Header("공격 범위 설정")]
@@ -39,6 +40,11 @@ namespace ProJect1
         {
             animator = GetComponent<Animator>();
             curHealth = maxHealth;
+        }
+
+        public void AnimationSpeedCheck()
+        {
+            animator.speed = animationSpeed;
         }
 
         public virtual void TakeDamage(float damage)
