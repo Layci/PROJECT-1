@@ -1,6 +1,7 @@
 using Project1;
 using ProJect1;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Project1
@@ -30,45 +31,32 @@ namespace Project1
         protected override void Update()
         {
             base.Update();
+            HealBuff();
         }
 
         protected override void HandleAttackInput()
         {
-            if (currentState == PlayerState.Idle)
+            base.HandleAttackInput();
+
+            // E → 스킬 공격
+            if (Input.GetKeyDown(KeyCode.E) && SkillPointManager.instance.curSkillPoint > 0)
             {
-                if (Input.GetKeyDown(KeyCode.Q))
+                if (prepareState == AttackPrepareState.Skill)
                 {
-                    skillAttack = false;
-                    StartMove();
-                    SkillPointManager.instance.SkillPointUp();
-                    if (buffIconUI.buffPower >= 3)
-                    {
-                        buffIconUI.buffPower = 0;
-                        buffIconUI.UpdateBuffUI();
-                        HealManager.instance.PlayHealEffect();
-                    }
-                }
-                else if (SkillPointManager.instance.curSkillPoint > 0 && Input.GetKeyDown(KeyCode.E))
-                {
+                    // 이미 준비 상태 → 확정 실행
                     StartBlock();
-                    SkillPointManager.instance.UseSkillPoint();
-
-                    Debug.Log("E키 눌림");
-                    Debug.Log("버프 파워 현재 값: " + buffIconUI.buffPower);
-
-                    if (buffIconUI.buffPower >= 3)
-                    {
-                        buffIconUI.buffPower = 0;
-                        buffIconUI.UpdateBuffUI();
-                        HealManager.instance.PlayHealEffect();
-                    }
                 }
             }
         }
 
-        private void StartMove()    
+        void HealBuff()
         {
-            currentState = PlayerState.MovingToAttack;
+            if (buffIconUI.buffPower >= 3)
+            {
+                buffIconUI.buffPower = 0;
+                buffIconUI.UpdateBuffUI();
+                HealManager.instance.PlayHealEffect();
+            }
         }
 
         private void StartBlock()

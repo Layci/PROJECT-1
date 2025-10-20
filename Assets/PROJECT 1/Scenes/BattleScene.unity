@@ -1184,7 +1184,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 1384502650}
   m_HandleRect: {fileID: 0}
@@ -1492,7 +1492,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 1245602526}
   m_HandleRect: {fileID: 0}
@@ -3837,6 +3837,7 @@ MonoBehaviour:
   damageReduction: 1
   damageIncreased: 1
   unitSpacing: 2
+  animationSpeed: 1
   isDead: 0
   normalAttackRange: 0
   skillAttackRange: 0
@@ -4169,7 +4170,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 1532101951}
   m_HandleRect: {fileID: 0}
@@ -4635,6 +4636,7 @@ MonoBehaviour:
   damageReduction: 1
   damageIncreased: 1
   unitSpacing: 2
+  animationSpeed: 1
   isDead: 0
   normalAttackRange: 0
   skillAttackRange: 0
@@ -6711,6 +6713,7 @@ MonoBehaviour:
   damageReduction: 1
   damageIncreased: 1
   unitSpacing: 2
+  animationSpeed: 1
   isDead: 0
   normalAttackRange: 2
   skillAttackRange: 1
@@ -7681,6 +7684,7 @@ MonoBehaviour:
   damageReduction: 1
   damageIncreased: 22
   unitSpacing: 2
+  animationSpeed: 1
   isDead: 0
   normalAttackRange: 0
   skillAttackRange: 0
@@ -15966,7 +15970,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 1176340312}
   m_HandleRect: {fileID: 0}
@@ -68903,6 +68907,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6647074216177946758, guid: efe62b6a77eeb3146ae8070432c47f0b, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8138895244512721228, guid: efe62b6a77eeb3146ae8070432c47f0b, type: 3}
       propertyPath: m_Name
       value: Sapphi Enemy
@@ -68950,6 +68958,10 @@ PrefabInstance:
     - target: {fileID: 8595798891239541236, guid: efe62b6a77eeb3146ae8070432c47f0b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116886878553253504, guid: efe62b6a77eeb3146ae8070432c47f0b, type: 3}
+      propertyPath: m_Value
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

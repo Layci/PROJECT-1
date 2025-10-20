@@ -26,12 +26,6 @@ namespace Project1
 
         private void Start()
         {
-            if (enemySelectorUI != null)
-            {
-                enemySelectorUI.SetSelectedEnemy(GetSelectedEnemyTransform());
-                enemySelectorUI.ShowSingleTargetUI();
-            }
-
             // 처음 실행시 처음 적 타겟
             selectedEnemyIndex = 0;
             UpdateSelectedEnemy();
@@ -68,21 +62,6 @@ namespace Project1
             }
         }
 
-        public void CheckAOESelect()
-        {
-            // 아군 기본공격이 범위일 경우
-            if (enemySelectorUI != null && BaseCharacterControl.instance.normalAttackRange > 0)
-            {
-
-            }
-        }
-
-        public Transform GetSelectedEnemyTransform()
-        {
-            if (turnSystem.enemyCharacters.Count == 0) return null;
-            return turnSystem.enemyCharacters[selectedEnemyIndex].transform;
-        }
-
         public List<BaseEnemyControl> GetAOETargets(int range = 1)
         {
             List<BaseEnemyControl> targets = new List<BaseEnemyControl>();
@@ -115,6 +94,28 @@ namespace Project1
 
             if (cur is BaseCharacterControl player)
             {
+                if (player.prepareState == AttackPrepareState.None) 
+                {
+                    // 기본 공격 → normalAttackRange 사용
+                    int normalRange = player.normalAttackRange;
+
+                    enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
+
+                    if (normalRange == 0)
+                    {
+                        // 단일
+                        enemySelectorUI.ShowSingleTargetUI();
+                        enemySelectorUI.HideAOEUI();
+                    }
+                    else
+                    {
+                        // 범위
+                        var targets = GetAOETargets(normalRange);
+                        enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
+                        enemySelectorUI.HideSingleTargetUI();
+                    }
+                }
+
                 if (player.prepareState == AttackPrepareState.Basic)
                 {
                     // 기본 공격 → normalAttackRange 사용

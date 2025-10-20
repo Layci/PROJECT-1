@@ -13,8 +13,7 @@ namespace Project1
 
         protected override void Awake()
         {
-            base.Awake();  // 부모 클래스의 Awake()도 호출 (필요하지 않으면 삭제해도 됨)
-
+            base.Awake();
             if (instance != null && instance != this)
             {
                 Destroy(this.gameObject);
@@ -56,6 +55,11 @@ namespace Project1
 
         protected override void HandleAttackInput()
         {
+            base.HandleAttackInput();
+        }
+
+        /*protected override void HandleAttackInput()
+        {
             if (currentState == PlayerState.Idle)
             {
                 
@@ -73,11 +77,11 @@ namespace Project1
                     SkillPointManager.instance.UseSkillPoint();
                 }
             }
-        }
+        }*/
 
-        private void StartMove()
+        /*private void StartMove()
         {
             currentState = PlayerState.MovingToAttack;
-        }
+        }*/
     }
 }

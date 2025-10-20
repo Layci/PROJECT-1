@@ -51,10 +51,8 @@ namespace Project1
         public bool isTurn = false;           // 본인 턴인지 알려주는 연산자
         public bool isBlock = false;          // 본인이 방어 상태인지 알려주는 연산자
         public bool isPreparingAOEAttack = false;
-        //public bool isPreparingSingleAttack = false;
         
         public AttackPrepareState prepareState = AttackPrepareState.None;
-        //public bool IsPreparingAttack => prepareState != AttackPrepareState.None;
 
         public Slider hpBarSlider;            // HP바
         public Text hpText;                   // HP 텍스트
@@ -99,21 +97,48 @@ namespace Project1
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 Debug.Log("현재 prepareState: " + prepareState);
-                if (prepareState == AttackPrepareState.Basic)
+
+                if (prepareState != AttackPrepareState.Basic)
+                {
+                    prepareState = AttackPrepareState.Basic;
+
+                    int range = normalAttackRange;
+                    var targets = EnemySelection.instance.GetAOETargets(range);
+                    EnemySelectorUI.instance.ShowAOETargets(targets.Select(e => e.transform).ToList());
+                }
+                else
+                {
+                    ExecuteBasicAttack();
+                    SkillPointManager.instance.SkillPointUp();
+                }
+
+                /*if (prepareState == AttackPrepareState.Basic)
                 {
                     Debug.Log("기본공격 확정 실행!");
-                    // 이미 준비 상태 → 확정 실행
                     ExecuteBasicAttack();
                     SkillPointManager.instance.SkillPointUp();
                 }
                 else
                 {
                     Debug.Log("기본공격 준비 상태 진입");
-                    // 준비 상태 진입
                     prepareState = AttackPrepareState.Basic;
-                    EnemySelectorUI.instance.ShowSingleTargetUI();
-                    EnemySelectorUI.instance.HideAOEUI();
-                }
+
+                    int range = normalAttackRange;
+
+                    if (range == 0)
+                    {
+                        // 단일 공격 모드
+                        EnemySelectorUI.instance.ShowSingleTargetUI();
+                        EnemySelectorUI.instance.HideAOEUI();
+                    }
+                    else
+                    {
+                        // 범위 공격 모드
+                        var targets = EnemySelection.instance.GetAOETargets(range);
+                        EnemySelectorUI.instance.ShowAOETargets(targets.Select(e => e.transform).ToList());
+                        EnemySelectorUI.instance.HideSingleTargetUI();
+                    }
+                }*/
             }
 
             // E → 스킬 공격
@@ -168,7 +193,7 @@ namespace Project1
             prepareState = AttackPrepareState.None;
             currentState = PlayerState.MovingToAttack;
             skillAttack = false;
-            EnemySelectorUI.instance.HideSingleTargetUI();
+            EnemySelectorUI.instance.HideAOEUI();
         }
 
         private void ExecuteSkillAttack()
@@ -176,7 +201,6 @@ namespace Project1
             prepareState = AttackPrepareState.None;
             currentState = PlayerState.MovingToAttack;
             skillAttack = true;
-            SkillPointManager.instance.UseSkillPoint();
             EnemySelectorUI.instance.HideAOEUI();
         }
 

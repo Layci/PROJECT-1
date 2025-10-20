@@ -6,14 +6,7 @@ namespace Project1
 {
     public class InugamiPlayerControl : BaseCharacterControl
     {
-        private TurnSystem turnSystem;
-
-        private void Start()
-        {
-            turnSystem = FindObjectOfType<TurnSystem>();
-        }
-
-        protected override void HandleAttackInput()
+        /*protected override void HandleAttackInput()
         {
             if (currentState == PlayerState.Idle)
             {
@@ -32,11 +25,13 @@ namespace Project1
                     SkillPointManager.instance.UseSkillPoint();
                 }
             }
-        }
+        }*/
 
-        private void StartMove()
+        protected override void HandleAttackInput()
         {
-            currentState = PlayerState.MovingToAttack;
+            base.HandleAttackInput();
+            Buff attackBuff = new Buff("공격력 증가", 3, 0.2f, 0, typeof(InugamiPlayerControl));
+            AddBuff(attackBuff);
         }
     }
 }
