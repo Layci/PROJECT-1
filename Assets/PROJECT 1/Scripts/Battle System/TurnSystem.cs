@@ -73,29 +73,8 @@ namespace Project1
         {
             RefreshCharacterLists(); // 캐릭터 재정렬
             waveManager = BattleManager.instance.waveManager;
-            /*// 모든 캐릭터를 가져와 리스트에 추가
-            playerCharacters = FindObjectsOfType<BaseCharacterControl>().ToList();
-            enemyCharacters = FindObjectsOfType<BaseEnemyControl>().ToList();
-            allUnits = FindObjectsOfType<BaseUnit>().ToList();
-
-            // 모든 캐릭터를 하나의 리스트에 추가
-            allCharacters = new List<object>();
-            allCharacters.AddRange(playerCharacters);
-            allCharacters.AddRange(enemyCharacters);*/
 
             UpdateTurnUI();
-
-            /*// unitSpeed를 기준으로 내림차순 정렬
-            allCharacters = allCharacters.OrderByDescending(character =>
-            {
-                if (character is BaseCharacterControl player)
-                    return player.unitSpeed;
-                else if (character is BaseEnemyControl enemy)
-                    return enemy.unitSpeed;
-                return 0;
-            }).ToList();*/
-
-            //SortEnemiesByPosition();
 
             StartTurn(); // 첫 번째 턴 시작
         }
@@ -116,7 +95,7 @@ namespace Project1
             {
                 playerCharacter.isTurn = true;
                 EnemySelectorUI.instance.isTurn = true;
-
+                EnemySelection.instance.UpdateSelectedEnemy();
                 BaseUnit currentUnit = allCharacters[currentTurnIndex] as BaseUnit;
                 if (currentUnit != null)
                 {
@@ -305,6 +284,18 @@ namespace Project1
             curWaveText.text = $"Wave {currentWave} Start!";
             curWaveText.gameObject.SetActive(true);
             StartCoroutine(HideWaveTextAfterSeconds(2f)); // 2초 후 숨김
+        }
+
+        // 모든 플레이어 캐릭터 공격 상태 변경
+        public void SetAllPlayersPrepareState(AttackPrepareState state)
+        {
+            foreach (var unit in allCharacters)
+            {
+                if (unit is BaseCharacterControl player)
+                {
+                    player.prepareState = state;
+                }
+            }
         }
 
         IEnumerator HideWaveTextAfterSeconds(float seconds)

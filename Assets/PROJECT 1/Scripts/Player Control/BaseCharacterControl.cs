@@ -100,7 +100,7 @@ namespace Project1
 
                 if (prepareState != AttackPrepareState.Basic)
                 {
-                    prepareState = AttackPrepareState.Basic;
+                    TurnSystem.instance.SetAllPlayersPrepareState(AttackPrepareState.Basic);
 
                     int range = normalAttackRange;
                     var targets = EnemySelection.instance.GetAOETargets(range);
@@ -157,7 +157,7 @@ namespace Project1
                     Debug.Log("현재 prepareState2: " + prepareState);
                     Debug.Log(skillAttackRange);
                     // 준비 상태 진입
-                    prepareState = AttackPrepareState.Skill;
+                    TurnSystem.instance.SetAllPlayersPrepareState(AttackPrepareState.Skill);
                     var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
                     int range = cur != null ? cur.skillAttackRange : 0;
 
@@ -272,10 +272,19 @@ namespace Project1
                 animator.SetFloat("Speed", 1);
 
                 float distanceToTarget = Vector3.Distance(transform.position, EnemySelectorUI.instance.selectedEnemy.position);
-
-                if (distanceToTarget <= attackRange && !isBlock)
+                if (!skillAttack)
                 {
-                    currentState = PlayerState.Attacking;
+                    if (distanceToTarget <= attackRange && !isBlock)
+                    {
+                        currentState = PlayerState.Attacking;
+                    }
+                }
+                else if (skillAttack)
+                {
+                    if (distanceToTarget <= skillRange)
+                    {
+                        currentState = PlayerState.Attacking;
+                    }
                 }
             }
         }

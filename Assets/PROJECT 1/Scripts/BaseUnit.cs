@@ -15,6 +15,7 @@ namespace ProJect1
         public float moveSpeed = 3;           // 이동 속도
         public float unitSpeed;               // 유닛 속도(턴 순서 관련)
         public float attackRange;             // 공격 거리
+        public float skillRange;              // 스킬 거리
         public float damageReduction = 1f;    // 피해 감소
         public float damageIncreased = 1;     // 피해 증가
         public float unitSpacing = 2f;        // 각 유닛마다 간격 조절 거리

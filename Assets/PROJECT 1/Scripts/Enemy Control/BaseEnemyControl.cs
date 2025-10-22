@@ -229,20 +229,10 @@ namespace Project1
         public override void TakeDamage(float damage)
         {
             base.TakeDamage(damage);
-            /*if (curHealth <= 0)
-                return;
-
-            animator.SetTrigger("Trigger EnemyHit");
-            curHealth -= damage;*/
 
             if (hpBarSlider != null)
             {
                 hpBarSlider.value = curHealth / maxHealth;
-            }
-
-            if (curHealth <= 0)
-            {
-                Die();
             }
         }
 
@@ -250,10 +240,9 @@ namespace Project1
         public override void Die()
         {
             base.Die();
-            //Debug.Log("적 사망");
             Destroy(gameObject);
             TurnSystem.instance.RemoveCharacterFromTurnOrder(this);
-
+            Debug.Log("faye 포인트 증가");
             BattleManager.instance.RefreshUnitLists();
             BattleManager.instance.RepositionEnemyUnits();
 

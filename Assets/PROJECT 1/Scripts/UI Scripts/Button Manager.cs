@@ -11,6 +11,8 @@ namespace Project1
     public class ButtonManager : MonoBehaviour
     {
         public Sprite[] sprites;
+        public RectTransform attackBtn;
+        public RectTransform skillBtn;
         public Image image;
 
         public bool isPause = false;
@@ -35,6 +37,33 @@ namespace Project1
         {
             BaseCharacterControl.instance.OnClickSkillAttackBtn();
         }*/
+
+        // 공격 버튼 하이라이트
+        public void HighlightBtn()
+        {
+            // 현재 캐릭터 가져오기
+            var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
+
+            if (cur is BaseCharacterControl player)
+            {
+                if (player.prepareState == AttackPrepareState.Basic)
+                {
+                    attackBtn.sizeDelta = new Vector2(400, 400);
+                    skillBtn.sizeDelta = new Vector2(300, 300);
+                }
+                else if (player.prepareState == AttackPrepareState.Skill)
+                {
+                    skillBtn.sizeDelta = new Vector2(400, 400);
+                    attackBtn.sizeDelta = new Vector2(300, 300);
+                }
+                else if (player.prepareState == AttackPrepareState.None)
+                {
+                    attackBtn.sizeDelta = new Vector2(300, 300);
+                    skillBtn.sizeDelta = new Vector2(300, 300);
+                }
+
+            }
+        }
 
         public void OnClickHighSpeedBtn()
         {
@@ -73,24 +102,5 @@ namespace Project1
                 unit.AnimationSpeedCheck();
             }
         }
-        /*public void OnClickHighSpeedBtn()
-        {
-            if (!isPause)
-            {
-                isFastSpeed = !isFastSpeed;
-                if (isFastSpeed)
-                {
-                    image.sprite = sprites[1];
-                    baseUnit.animationSpeed *= 1.5f;
-                    baseUnit.AnimationSpeedCheck();
-                }
-                else
-                {
-                    image.sprite = sprites[0];
-                    baseUnit.animationSpeed /= 1.5f;
-                    baseUnit.AnimationSpeedCheck();
-                }
-            }
-        }*/
     }
 }

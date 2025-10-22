@@ -49,6 +49,15 @@ namespace Project1
             }
         }
 
+        public void StartBlock()
+        {
+            isBlock = true;
+            startBlocking = true;
+            currentState = PlayerState.Blocking;
+            Buff defance = new Buff("방어력증가 + 도발", 1, 0, 0.3f, typeof(TasterPlayerControl));
+            AddBuff(defance);
+        }
+
         void HealBuff()
         {
             if (buffIconUI.buffPower >= 3)
@@ -57,15 +66,6 @@ namespace Project1
                 buffIconUI.UpdateBuffUI();
                 HealManager.instance.PlayHealEffect();
             }
-        }
-
-        private void StartBlock()
-        {
-            isBlock = true;
-            startBlocking = true;
-            currentState = PlayerState.Blocking;
-            Buff defance = new Buff("방어력증가 + 도발", 1, 0, 0.3f, typeof(TasterPlayerControl));
-            AddBuff(defance);
         }
     }
 }
