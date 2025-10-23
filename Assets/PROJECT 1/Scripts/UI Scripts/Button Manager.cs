@@ -14,6 +14,7 @@ namespace Project1
         public RectTransform attackBtn;
         public RectTransform skillBtn;
         public Image image;
+        public static ButtonManager instance;
 
         public bool isPause = false;
         public bool isFastSpeed = false;
@@ -21,6 +22,7 @@ namespace Project1
         private void Awake()
         {
             image.sprite = sprites[0];
+            instance = this;
         }
 
         private void Start()

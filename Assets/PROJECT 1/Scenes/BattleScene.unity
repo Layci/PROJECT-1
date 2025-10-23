@@ -6036,8 +6036,8 @@ MonoBehaviour:
   sprites:
   - {fileID: 21300000, guid: 59ac067a14910f04c9270265d0c84d12, type: 3}
   - {fileID: 21300000, guid: d6095e8b1b856de42a505d05247263bb, type: 3}
-  attackBtn: {fileID: 0}
-  skillBtn: {fileID: 0}
+  attackBtn: {fileID: 557746696}
+  skillBtn: {fileID: 548926076}
   image: {fileID: 590928728}
   isPause: 0
   isFastSpeed: 0

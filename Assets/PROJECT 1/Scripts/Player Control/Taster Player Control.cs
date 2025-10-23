@@ -36,8 +36,6 @@ namespace Project1
 
         protected override void HandleAttackInput()
         {
-            base.HandleAttackInput();
-
             // E → 스킬 공격
             if (Input.GetKeyDown(KeyCode.E) && SkillPointManager.instance.curSkillPoint > 0)
             {
@@ -46,6 +44,11 @@ namespace Project1
                     // 이미 준비 상태 → 확정 실행
                     StartBlock();
                 }
+            }
+            // 방어 중일때 상태 머신 스테이트가 skill로 바귀는걸 방지 
+            if (currentState != PlayerState.Blocking)
+            {
+                base.HandleAttackInput();
             }
         }
 

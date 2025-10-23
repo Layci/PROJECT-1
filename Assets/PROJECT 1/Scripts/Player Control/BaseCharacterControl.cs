@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using ProJect1;
 using System.Linq;
 using Unity.VisualScripting;
+//using DG.Tweening;
 
 namespace Project1
 {
@@ -105,6 +106,7 @@ namespace Project1
                     int range = normalAttackRange;
                     var targets = EnemySelection.instance.GetAOETargets(range);
                     EnemySelectorUI.instance.ShowAOETargets(targets.Select(e => e.transform).ToList());
+                    ButtonManager.instance.HighlightBtn();
                 }
                 else
                 {
