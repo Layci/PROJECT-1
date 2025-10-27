@@ -88,6 +88,7 @@ namespace Project1
                 currentTurn++;        // 진행중인 턴 상승
                 UpdateTurnUI();
             }
+            ButtonManager.instance.HighlightBtn();
 
             Debug.Log($"[StartTurn] 현재 턴 인덱스: {currentTurnIndex}");
 
@@ -150,7 +151,7 @@ namespace Project1
                     currentTurnIndex = 0;
                     RefreshCharacterLists();
                     UpdateTurnUI();
-
+                    ShowWaveStart();
                     StartTurn();
                     return;
                 }

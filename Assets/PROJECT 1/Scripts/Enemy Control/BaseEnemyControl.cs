@@ -245,6 +245,21 @@ namespace Project1
             Debug.Log("faye 포인트 증가");
             BattleManager.instance.RefreshUnitLists();
             BattleManager.instance.RepositionEnemyUnits();
+            if (EnemySelection.instance.selectedEnemyIndex == TurnSystem.instance.enemyCharacters.Count)
+            {
+                if (TurnSystem.instance.enemyCharacters.Count > 0)
+                {
+                    EnemySelection.instance.selectedEnemyIndex = TurnSystem.instance.enemyCharacters.Count - 1;
+                    return;
+                }
+                EnemySelection.instance.selectedEnemyIndex = 0;
+                Debug.Log("선택적 맨 오른쪽임");
+            }
+            else if (EnemySelection.instance.selectedEnemyIndex == 0)
+            {
+                EnemySelection.instance.selectedEnemyIndex = 0;
+                Debug.Log("선택적 맨 왼쪽임");
+            }
 
             // FayePlayerControl 인스턴스를 찾아 버프 파워 증가 및 UI 업데이트
             FayePlayerControl faye = FayePlayerControl.instance;

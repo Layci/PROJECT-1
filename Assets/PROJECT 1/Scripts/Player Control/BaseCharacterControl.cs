@@ -169,6 +169,8 @@ namespace Project1
                     // UI ¹Ý¿µ
                     EnemySelectorUI.instance.ShowAOETargets(targets.Select(e => e.transform).ToList());
                     EnemySelectorUI.instance.HideSingleTargetUI();
+
+                    ButtonManager.instance.HighlightBtn();
                 }
             }
 

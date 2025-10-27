@@ -55,7 +55,7 @@ public class TotalDamageUI : MonoBehaviour
 
         timer = displayDuration; // 표시 시간을 초기화
         isVisible = true;
-        totalDamage = 0;
+        //totalDamage = 0;
     }
 
     // UI를 숨기는 메서드

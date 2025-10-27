@@ -49,16 +49,16 @@ namespace Project1
             if (cur is BaseCharacterControl player)
             {
                 Vector3 normalScale = Vector3.one;
-                Vector3 highlightedScale = Vector3.one * 1.5f;
+                Vector3 highlightedScale = Vector3.one * 1.2f;
 
                 if (player.prepareState == AttackPrepareState.Basic)
                 {
-                    attackBtn.DOScale(highlightedScale, 0.2f).SetEase(Ease.OutBack);
+                    attackBtn.DOScale(highlightedScale, 0.2f).SetEase(Ease.Linear);
                     skillBtn.DOScale(normalScale, 0.2f);
                 }
                 else if (player.prepareState == AttackPrepareState.Skill)
                 {
-                    skillBtn.DOScale(highlightedScale, 0.2f).SetEase(Ease.OutBack);
+                    skillBtn.DOScale(highlightedScale, 0.2f).SetEase(Ease.Linear);
                     attackBtn.DOScale(normalScale, 0.2f);
                 }
                 else
@@ -67,33 +67,24 @@ namespace Project1
                     skillBtn.DOScale(normalScale, 0.2f);
                 }
             }
-        }
-        /*public void HighlightBtn()
-        {
-            // 현재 캐릭터 가져오기
-            var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
 
-            if (cur is BaseCharacterControl player)
+            if (cur is BaseEnemyControl enemy)
             {
-                if (player.prepareState == AttackPrepareState.Basic)
-                {
-                    attackBtn.sizeDelta = new Vector2(400, 400);
-                    skillBtn.sizeDelta = new Vector2(300, 300);
-                }
-                else if (player.prepareState == AttackPrepareState.Skill)
-                {
-                    skillBtn.sizeDelta = new Vector2(400, 400);
-                    attackBtn.sizeDelta = new Vector2(300, 300);
-                }
-                else if (player.prepareState == AttackPrepareState.None)
-                {
-                    attackBtn.sizeDelta = new Vector2(300, 300);
-                    skillBtn.sizeDelta = new Vector2(300, 300);
-                }
-
+                Vector3 normalScale = Vector3.one;
+                attackBtn.DOScale(normalScale, 0.2f);
+                skillBtn.DOScale(normalScale, 0.2f);
             }
-        }*/
+        }
 
+        public void ResetHighlightBtn()
+        {
+            Vector3 normalScale = Vector3.one;
+
+            attackBtn.DOScale(normalScale, 0.2f);
+            skillBtn.DOScale(normalScale, 0.2f);
+        }
+
+        // 배속 버튼
         public void OnClickHighSpeedBtn()
         {
             if (!isPause)
@@ -120,15 +111,6 @@ namespace Project1
 
                     unit.AnimationSpeedCheck(); // 갱신
                 }
-            }
-        }
-
-        private void ApplyAnimationSpeed(float multiplier)
-        {
-            foreach (var unit in TurnSystem.instance.allCharacters)
-            {
-                unit.animationSpeed *= multiplier;
-                unit.AnimationSpeedCheck();
             }
         }
     }
