@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Project1;
 using ProJect1;
 using System;
@@ -43,6 +44,32 @@ namespace Project1
         // 공격 버튼 하이라이트
         public void HighlightBtn()
         {
+            var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
+
+            if (cur is BaseCharacterControl player)
+            {
+                Vector3 normalScale = Vector3.one;
+                Vector3 highlightedScale = Vector3.one * 1.5f;
+
+                if (player.prepareState == AttackPrepareState.Basic)
+                {
+                    attackBtn.DOScale(highlightedScale, 0.2f).SetEase(Ease.OutBack);
+                    skillBtn.DOScale(normalScale, 0.2f);
+                }
+                else if (player.prepareState == AttackPrepareState.Skill)
+                {
+                    skillBtn.DOScale(highlightedScale, 0.2f).SetEase(Ease.OutBack);
+                    attackBtn.DOScale(normalScale, 0.2f);
+                }
+                else
+                {
+                    attackBtn.DOScale(normalScale, 0.2f);
+                    skillBtn.DOScale(normalScale, 0.2f);
+                }
+            }
+        }
+        /*public void HighlightBtn()
+        {
             // 현재 캐릭터 가져오기
             var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
 
@@ -65,7 +92,7 @@ namespace Project1
                 }
 
             }
-        }
+        }*/
 
         public void OnClickHighSpeedBtn()
         {
