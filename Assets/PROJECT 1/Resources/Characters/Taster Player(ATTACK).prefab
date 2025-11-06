@@ -3376,7 +3376,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: cd81d5052b637f144b1407548e8bbdfb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4190,25 +4190,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da3979d27093c3c499fc83d0eff2441e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitName: Taster
+  unitIcon: {fileID: 21300000, guid: 33bd4912a9f12c94d868d7848bdca7c8, type: 3}
   maxHealth: 260
   curHealth: 260
   moveSpeed: 3
   unitSpeed: 105
+  attackRange: 1
+  skillRange: 0
+  damageReduction: 0
+  damageIncreased: 1
+  unitSpacing: 2
+  animationSpeed: 1
+  isDead: 0
+  normalAttackRange: 0
+  skillAttackRange: 0
+  buffTrun: 0
+  buff: 0
+  initialPosition: {x: 0, y: 0, z: 0}
   playerAttackPower: 30
   playerSkillAttackPower: 12
-  attackRange: 1
-  damageReduction: 0
   startAttacking: 0
   startBlocking: 0
   skillAttack: 0
   isTurn: 0
   isBlock: 0
+  isPreparingAOEAttack: 0
+  prepareState: 0
   hpBarSlider: {fileID: 0}
+  hpText: {fileID: 0}
   enemySelection: {fileID: 0}
   currentTarget: {fileID: 0}
-  unitName: Taster
-  unitIcon: {fileID: 21300000, guid: 33bd4912a9f12c94d868d7848bdca7c8, type: 3}
   currentState: 0
+  buffIconUI: {fileID: 0}
 --- !u!1 &5445862030706884569
 GameObject:
   m_ObjectHideFlags: 0
@@ -5542,7 +5556,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: cd81d5052b637f144b1407548e8bbdfb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6080,7 +6094,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4882409427184243362
 Transform:
   m_ObjectHideFlags: 0

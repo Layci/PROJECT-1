@@ -16,6 +16,7 @@ namespace Project1
         public int currentTurn = 1; // 현재 진행중인 턴
         public int currentWave = 0; // 현재 진행중인 웨이브
         public int selectedEnemyIndex = 0; // 현재 선택된 적의 인덱스
+        public int currentPlayerTargetIndex = 0; // 현재 선택된 플레이어 인덱스
         public int randomIndex; // 랜덤 캐릭터리스트 인덱스
         public int randomPoint; // 랜덤 적 스킬포인트
         public float textDuration = 2f;
@@ -187,6 +188,11 @@ namespace Project1
             enemyCharacters = enemyCharacters.OrderBy(enemy => enemy.transform.position.x).ToList();
         }
 
+        private void SortPlayersByPosition()
+        {
+            playerCharacters = playerCharacters.OrderBy(player => player.transform.position.x).ToList();
+        }
+
         public void RemoveCharacterFromTurnOrder(BaseUnit character)
         {
             // 사망한 캐릭터를 전체 턴 리스트에서 제거
@@ -254,6 +260,7 @@ namespace Project1
             }).ToList();
 
             SortEnemiesByPosition(); // 위치 정렬 유지
+            SortPlayersByPosition();
             turnOrderUI.Initialize(allCharacters, currentTurnIndex); // 턴 UI 갱신
         }
 
