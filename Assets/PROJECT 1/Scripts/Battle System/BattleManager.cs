@@ -35,8 +35,20 @@ namespace ProJect1
 
         private void Start()
         {
+            // 편성 정보가 있다면 생성
+            if (PartyFormationManager.Instance != null && PartyFormationManager.Instance.currentParty.Count > 0)
+            {
+                SpawnPlayerUnitsFromFormation();
+            }
+
+            // 기존대로 유닛 리스트 갱신
             RefreshUnitLists();
         }
+
+        /*private void Start()
+        {
+            RefreshUnitLists();
+        }*/
 
         public void RefreshUnitLists()
         {
@@ -70,19 +82,6 @@ namespace ProJect1
             }
         }
 
-        /*public void RepositionPlayerUnits()
-        {   
-            List<BaseCharacterControl> alivePlayers = playerCharacters
-                .Where(p => p.curHealth > 0)
-                .ToList();
-
-            for (int i = 0; i < alivePlayers.Count; i++)
-            {
-                Vector3 newPos = startPlayerPos + new Vector3(spacing * i, 0, 0);
-                alivePlayers[i].transform.position = newPos;
-            }
-        }*/
-
         public void RepositionEnemyUnits()
         {
             List<BaseEnemyControl> aliveEnemies = enemyCharacters
@@ -101,6 +100,32 @@ namespace ProJect1
                 // 다음 유닛 간격 누적
                 currentPos += new Vector3(aliveEnemies[i].unitSpacing, 0, 0);
             }
+        }
+
+        private void SpawnPlayerUnitsFromFormation()
+        {
+            Vector3 currentPos = startPlayerPos;
+
+            foreach (var member in PartyFormationManager.Instance.currentParty)
+            {
+                if (member.prefab == null) continue;
+
+                // 프리팹 생성
+                GameObject player = Instantiate(member.prefab, currentPos, Quaternion.identity);
+
+                // BaseCharacterControl 등록
+                var control = player.GetComponent<BaseCharacterControl>();
+                if (control != null)
+                {
+                    playerCharacters.Add(control);
+                    control.initialPosition = currentPos;
+                }
+
+                // 간격 적용
+                currentPos += new Vector3(control.unitSpacing, 0, 0);
+            }
+
+            Debug.Log($"[BattleManager] 편성된 {playerCharacters.Count}명의 플레이어 생성 완료");
         }
     }
 }
