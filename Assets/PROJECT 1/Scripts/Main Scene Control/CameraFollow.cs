@@ -8,7 +8,9 @@ namespace ProJect1
     {
         [Header("타겟 설정")]
         public Transform target;
+        public List<Renderer> playerRenderers = new List<Renderer>(); // 여러 렌더러 지원
         public Vector3 offset = new Vector3(0, 6, -6);
+        public float zoomYOffset = 2f; // 줌인할 때 Y를 얼마나 낮출지
 
         [Header("카메라 회전 설정")]
         public float mouseSensitivity = 120f;
@@ -35,10 +37,17 @@ namespace ProJect1
         public float collisionOffset = 0.2f;   // 벽에서 살짝 띄워주는 거리
         public float collisionSmooth = 10f;    // 충돌 시 부드러운 이동 정도
 
+        [Header("캐릭터 투명화 설정")]
+        public float fadeStartDistance = 2.5f;  // 이 거리 이하로 가까워지면 서서히 투명
+        public float fadeEndDistance = 1.2f;    // 완전히 투명해지는 거리
+        public float fadeSpeed = 8f;            // 페이드 속도
+
+        private float currentDistance;
+        private float targetDistance; // 보간용 거리
         private float yaw;   // 마우스 X
         private float pitch; // 마우스 Y
-        private float targetDistance; // 보간용 거리
-        private Vector3 currentCameraPos;
+        //private Vector3 currentCameraPos;
+        private float currentAlpha = 1f;
 
         void Start()
         {
@@ -52,6 +61,12 @@ namespace ProJect1
 
             // 줌 초기화
             targetDistance = distance;
+
+            // 자동으로 자식 오브젝트에서 모든 Renderer를 찾기
+            if (target != null && playerRenderers.Count == 0)
+            {
+                playerRenderers.AddRange(target.GetComponentsInChildren<Renderer>());
+            }
         }
 
         void LateUpdate()
@@ -61,8 +76,8 @@ namespace ProJect1
             HandleCursorLock();
             HandleCameraRotation();
             HandleCameraZoom();
-            //FollowTarget();
             FollowTargetWithCollision();
+            HandleTransparency();
         }
 
         void HandleCursorLock()
@@ -100,7 +115,6 @@ namespace ProJect1
 
         void HandleCameraZoom()
         {
-            // 마우스 휠 입력 (-값은 줌인, +값은 줌아웃)
             float scroll = Input.GetAxis("Mouse ScrollWheel");
 
             if (Mathf.Abs(scroll) > 0.01f)
@@ -109,52 +123,133 @@ namespace ProJect1
                 targetDistance = Mathf.Clamp(targetDistance, minDistance, maxDistance);
             }
 
-            // 부드럽게 거리 보간
             distance = Mathf.Lerp(distance, targetDistance, Time.deltaTime * zoomSmoothness);
 
-            // 카메라 줌 보정
-            float t = Mathf.InverseLerp(minDistance, maxDistance, distance);
-
-            // 거리 비율 기반으로 각도/높이 보간
-            float targetPitch = Mathf.Lerp(minPitch, maxPitch, t);
-            float targetHeight = Mathf.Lerp(minHeight, maxHeight, t);
-
-            // 부드럽게 적용
-            pitch = Mathf.Lerp(pitch, targetPitch, Time.deltaTime * 2f);
-            offset.y = Mathf.Lerp(offset.y, targetHeight, Time.deltaTime * 5f);
+            // 줌 중일 때만 offset.y 변경
+            if (Mathf.Abs(scroll) > 0.01f)
+            {
+                float t = Mathf.InverseLerp(minDistance, maxDistance, distance);
+                float targetHeight = Mathf.Lerp(minHeight, maxHeight, t);
+                offset.y = Mathf.Lerp(offset.y, targetHeight, Time.deltaTime * 5f);
+            }
         }
         void FollowTargetWithCollision()
         {
             Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
-
-            // 원래 카메라 목표 위치 계산
+            Vector3 castStart = target.position + Vector3.up * 1.5f;
             Vector3 desiredPos = target.position - rotation * Vector3.forward * distance + Vector3.up * offset.y;
-            Vector3 dir = desiredPos - target.position;
+            Vector3 dir = desiredPos - castStart;
             float finalDistance = distance;
 
-            // 카메라 충돌 감지 (SphereCast)
-            if (Physics.SphereCast(target.position, cameraRadius, dir.normalized, out RaycastHit hit, distance, collisionMask))
+            bool isHit = Physics.SphereCast(castStart, cameraRadius, dir.normalized, out RaycastHit hit, distance, collisionMask);
+
+            if (isHit)
             {
-                finalDistance = Mathf.Clamp(hit.distance - collisionOffset, minDistance, distance);
+                finalDistance = Mathf.Clamp(hit.distance - collisionOffset, 0.5f, distance);
             }
 
-            // 최종 카메라 위치 계산
-            Vector3 correctedPos = target.position - rotation * Vector3.forward * finalDistance + Vector3.up * offset.y;
+            currentDistance = Mathf.Lerp(currentDistance, finalDistance, Time.deltaTime * collisionSmooth);
 
-            // 부드럽게 이동
-            currentCameraPos = Vector3.Lerp(currentCameraPos, correctedPos, Time.deltaTime * collisionSmooth);
-
-            transform.position = currentCameraPos;
+            // 충돌 시 벽 위로 튀지 않게 자연스럽게 캐릭터 쪽으로 이동
+            Vector3 correctedPos = target.position - rotation * Vector3.forward * currentDistance + Vector3.up * offset.y;
+            transform.position = correctedPos;
             transform.rotation = rotation;
+
+            /*Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
+            Vector3 castStart = target.position + Vector3.up * 1.5f;
+            Vector3 desiredPos = target.position - rotation * Vector3.forward * distance + Vector3.up * offset.y;
+            Vector3 dir = desiredPos - castStart;
+            float finalDistance = distance;
+
+            // ===== 충돌 감지 =====
+            bool isHit = Physics.SphereCast(castStart, cameraRadius, dir.normalized, out RaycastHit hit, distance, collisionMask);
+
+            if (isHit)
+            {
+                finalDistance = Mathf.Min(hit.distance - collisionOffset, distance);
+            }
+            else if (Physics.CheckSphere(desiredPos, cameraRadius, collisionMask))
+            {
+                finalDistance = Mathf.Max(0.2f, distance - 0.5f);
+            }
+            else
+            {
+                finalDistance = distance;
+            }
+
+            // ===== 거리 보간 =====
+            if (isHit)
+                currentDistance = Mathf.MoveTowards(currentDistance, finalDistance, Time.deltaTime * collisionSmooth * 10f);
+            else
+                currentDistance = Mathf.Lerp(currentDistance, finalDistance, Time.deltaTime * collisionSmooth);
+
+            // ===== 카메라 최종 위치 =====
+            Vector3 correctedPos = target.position - rotation * Vector3.forward * currentDistance + Vector3.up * offset.y;
+            transform.position = correctedPos;
+            transform.rotation = rotation;*/
         }
-        /*void FollowTarget()
-        {
-            Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
 
-            // 오프셋 + 거리 반영
-            Vector3 desiredPosition = target.position - rotation * Vector3.forward * distance + Vector3.up * offset.y;
-            transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
-            transform.rotation = rotation;
-        }*/
+        void HandleTransparency()
+        {
+            if (playerRenderers == null || playerRenderers.Count == 0) return;
+
+            float targetAlpha = 1f;
+
+            // 카메라가 너무 가까워지면 투명도 적용
+            if (currentDistance < fadeStartDistance)
+            {
+                targetAlpha = Mathf.InverseLerp(fadeEndDistance, fadeStartDistance, currentDistance);
+            }
+
+            currentAlpha = Mathf.Lerp(currentAlpha, targetAlpha, Time.deltaTime * fadeSpeed);
+
+            foreach (var renderer in playerRenderers)
+            {
+                foreach (var mat in renderer.materials)
+                {
+                    if (mat.HasProperty("_Color"))
+                    {
+                        Color color = mat.color;
+                        color.a = currentAlpha;
+                        mat.color = color;
+
+                        // 만약 투명도가 적용 안 된다면 아래 코드로 RenderMode 변경 필요
+                        if (currentAlpha < 0.99f)
+                        {
+                            SetMaterialTransparent(mat);
+                        }
+                        else
+                        {
+                            SetMaterialOpaque(mat);
+                        }
+                    }
+                }
+            }
+        }
+
+        // 머티리얼 모드 전환 함수 추가
+        void SetMaterialTransparent(Material mat)
+        {
+            mat.SetFloat("_Mode", 3);
+            mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            mat.SetInt("_ZWrite", 0);
+            mat.DisableKeyword("_ALPHATEST_ON");
+            mat.EnableKeyword("_ALPHABLEND_ON");
+            mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            mat.renderQueue = 3000;
+        }
+
+        void SetMaterialOpaque(Material mat)
+        {
+            mat.SetFloat("_Mode", 0);
+            mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+            mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+            mat.SetInt("_ZWrite", 1);
+            mat.DisableKeyword("_ALPHATEST_ON");
+            mat.DisableKeyword("_ALPHABLEND_ON");
+            mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            mat.renderQueue = -1;
+        }
     }
 }

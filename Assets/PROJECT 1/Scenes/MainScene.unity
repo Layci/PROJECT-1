@@ -8474,6 +8474,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 901705813}
+  playerRenderers:
+  - {fileID: 786349533}
+  - {fileID: 786349527}
+  - {fileID: 786349499}
+  - {fileID: 786349525}
+  - {fileID: 786349509}
+  - {fileID: 786349523}
+  - {fileID: 786349507}
+  - {fileID: 786349529}
+  - {fileID: 786349501}
+  - {fileID: 786349517}
+  - {fileID: 786349505}
+  - {fileID: 786349531}
+  - {fileID: 786349535}
+  - {fileID: 786349519}
   offset: {x: 0, y: 2, z: -4.5}
   mouseSensitivity: 180
   minYAngle: -30
@@ -8490,10 +8505,13 @@ MonoBehaviour:
   maxHeight: 3.5
   collisionMask:
     serializedVersion: 2
-    m_Bits: 2097153
-  cameraRadius: 0.3
-  collisionOffset: 0.2
+    m_Bits: 2097152
+  cameraRadius: 0.1
+  collisionOffset: 0.3
   collisionSmooth: 10
+  fadeStartDistance: 2.5
+  fadeEndDistance: 1.2
+  fadeSpeed: 8
 --- !u!1 &1703293553
 GameObject:
   m_ObjectHideFlags: 0
