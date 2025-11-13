@@ -8,9 +8,9 @@ namespace ProJect1
     {
         [Header("타겟 설정")]
         public Transform target;
-        public List<Renderer> playerRenderers = new List<Renderer>(); // 여러 렌더러 지원
+        public Transform characterRoot; // 캐릭터 MeshRoot (투명 처리용)
         public Vector3 offset = new Vector3(0, 6, -6);
-        public float zoomYOffset = 2f; // 줌인할 때 Y를 얼마나 낮출지
+        public float pivotHeight = 1.0f; // 회전 중심 위치 (허리 정도 높이)
 
         [Header("카메라 회전 설정")]
         public float mouseSensitivity = 120f;
@@ -24,6 +24,7 @@ namespace ProJect1
         public float maxDistance = 10f;        // 최대 줌아웃
         public float zoomSensitivity = 2f;     // 마우스 휠 민감도
         public float zoomSmoothness = 10f;     // 거리 보간 속도
+        public float zoomYOffset = 2f; // 줌 시 카메라 높이 변화량
 
         [Header("줌 보정")]
         public float minPitch = 10f;           // 줌인 시 카메라 각도 (낮음)
@@ -38,16 +39,18 @@ namespace ProJect1
         public float collisionSmooth = 10f;    // 충돌 시 부드러운 이동 정도
 
         [Header("캐릭터 투명화 설정")]
-        public float fadeStartDistance = 2.5f;  // 이 거리 이하로 가까워지면 서서히 투명
-        public float fadeEndDistance = 1.2f;    // 완전히 투명해지는 거리
-        public float fadeSpeed = 8f;            // 페이드 속도
+        public float fadeDistance = 3.5f; // 카메라가 이 거리보다 가까워지면 투명 처리
+        public float fadeSpeed = 5f;
+        public float fadedAlpha = 0.4f;
 
-        private float currentDistance;
-        private float targetDistance; // 보간용 거리
         private float yaw;   // 마우스 X
         private float pitch; // 마우스 Y
-        //private Vector3 currentCameraPos;
-        private float currentAlpha = 1f;
+        private float targetDistance; // 보간용 거리
+        private float currentDistance;
+
+        private List<Renderer> characterRenderers = new List<Renderer>();
+        private Dictionary<Renderer, Color[]> originalColors = new Dictionary<Renderer, Color[]>();
+        private bool isFaded = false;
 
         void Start()
         {
@@ -61,12 +64,10 @@ namespace ProJect1
 
             // 줌 초기화
             targetDistance = distance;
+            currentDistance = distance;
 
-            // 자동으로 자식 오브젝트에서 모든 Renderer를 찾기
-            if (target != null && playerRenderers.Count == 0)
-            {
-                playerRenderers.AddRange(target.GetComponentsInChildren<Renderer>());
-            }
+            if (characterRoot)
+                CacheCharacterRenderers();
         }
 
         void LateUpdate()
@@ -77,7 +78,7 @@ namespace ProJect1
             HandleCameraRotation();
             HandleCameraZoom();
             FollowTargetWithCollision();
-            HandleTransparency();
+            HandleCharacterFade();
         }
 
         void HandleCursorLock()
@@ -124,6 +125,19 @@ namespace ProJect1
             }
 
             distance = Mathf.Lerp(distance, targetDistance, Time.deltaTime * zoomSmoothness);
+        }
+
+        /*void HandleCameraZoom()
+        {
+            float scroll = Input.GetAxis("Mouse ScrollWheel");
+
+            if (Mathf.Abs(scroll) > 0.01f)
+            {
+                targetDistance -= scroll * zoomSensitivity;
+                targetDistance = Mathf.Clamp(targetDistance, minDistance, maxDistance);
+            }
+
+            distance = Mathf.Lerp(distance, targetDistance, Time.deltaTime * zoomSmoothness);
 
             // 줌 중일 때만 offset.y 변경
             if (Mathf.Abs(scroll) > 0.01f)
@@ -132,8 +146,33 @@ namespace ProJect1
                 float targetHeight = Mathf.Lerp(minHeight, maxHeight, t);
                 offset.y = Mathf.Lerp(offset.y, targetHeight, Time.deltaTime * 5f);
             }
-        }
+        }*/
+
         void FollowTargetWithCollision()
+        {
+            // 줌 비율에 따라 카메라 높이 자동 보정
+            float zoomT = Mathf.InverseLerp(minDistance, maxDistance, distance);
+            float adjustedYOffset = Mathf.Lerp(offset.y - zoomYOffset, offset.y, zoomT);
+
+            Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
+            Vector3 pivot = target.position + Vector3.up * pivotHeight;
+            Vector3 desiredPos = pivot - rotation * Vector3.forward * distance + Vector3.up * adjustedYOffset;
+
+            Vector3 dir = desiredPos - pivot;
+            float finalDistance = distance;
+
+            bool isHit = Physics.SphereCast(pivot, cameraRadius, dir.normalized, out RaycastHit hit, distance, collisionMask);
+            if (isHit)
+                finalDistance = Mathf.Min(hit.distance - collisionOffset, distance);
+
+            currentDistance = Mathf.Lerp(currentDistance, finalDistance, Time.deltaTime * collisionSmooth);
+
+            Vector3 correctedPos = pivot - rotation * Vector3.forward * currentDistance + Vector3.up * adjustedYOffset;
+            transform.position = correctedPos;
+            transform.rotation = rotation;
+        }
+
+        /*void FollowTargetWithCollision()
         {
             Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
             Vector3 castStart = target.position + Vector3.up * 1.5f;
@@ -154,102 +193,72 @@ namespace ProJect1
             Vector3 correctedPos = target.position - rotation * Vector3.forward * currentDistance + Vector3.up * offset.y;
             transform.position = correctedPos;
             transform.rotation = rotation;
+        }*/
 
-            /*Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
-            Vector3 castStart = target.position + Vector3.up * 1.5f;
-            Vector3 desiredPos = target.position - rotation * Vector3.forward * distance + Vector3.up * offset.y;
-            Vector3 dir = desiredPos - castStart;
-            float finalDistance = distance;
-
-            // ===== 충돌 감지 =====
-            bool isHit = Physics.SphereCast(castStart, cameraRadius, dir.normalized, out RaycastHit hit, distance, collisionMask);
-
-            if (isHit)
-            {
-                finalDistance = Mathf.Min(hit.distance - collisionOffset, distance);
-            }
-            else if (Physics.CheckSphere(desiredPos, cameraRadius, collisionMask))
-            {
-                finalDistance = Mathf.Max(0.2f, distance - 0.5f);
-            }
-            else
-            {
-                finalDistance = distance;
-            }
-
-            // ===== 거리 보간 =====
-            if (isHit)
-                currentDistance = Mathf.MoveTowards(currentDistance, finalDistance, Time.deltaTime * collisionSmooth * 10f);
-            else
-                currentDistance = Mathf.Lerp(currentDistance, finalDistance, Time.deltaTime * collisionSmooth);
-
-            // ===== 카메라 최종 위치 =====
-            Vector3 correctedPos = target.position - rotation * Vector3.forward * currentDistance + Vector3.up * offset.y;
-            transform.position = correctedPos;
-            transform.rotation = rotation;*/
-        }
-
-        void HandleTransparency()
+        // ===== 캐릭터 투명 처리 =====
+        void HandleCharacterFade()
         {
-            if (playerRenderers == null || playerRenderers.Count == 0) return;
+            if (!characterRoot) return;
 
-            float targetAlpha = 1f;
+            float targetAlpha = (currentDistance < fadeDistance) ? fadedAlpha : 1f;
 
-            // 카메라가 너무 가까워지면 투명도 적용
-            if (currentDistance < fadeStartDistance)
+            foreach (var rend in characterRenderers)
             {
-                targetAlpha = Mathf.InverseLerp(fadeEndDistance, fadeStartDistance, currentDistance);
-            }
+                if (rend == null) continue;
 
-            currentAlpha = Mathf.Lerp(currentAlpha, targetAlpha, Time.deltaTime * fadeSpeed);
-
-            foreach (var renderer in playerRenderers)
-            {
-                foreach (var mat in renderer.materials)
+                var mats = rend.materials;
+                for (int i = 0; i < mats.Length; i++)
                 {
-                    if (mat.HasProperty("_Color"))
-                    {
-                        Color color = mat.color;
-                        color.a = currentAlpha;
-                        mat.color = color;
+                    if (!originalColors.ContainsKey(rend)) continue;
 
-                        // 만약 투명도가 적용 안 된다면 아래 코드로 RenderMode 변경 필요
-                        if (currentAlpha < 0.99f)
-                        {
-                            SetMaterialTransparent(mat);
-                        }
-                        else
-                        {
-                            SetMaterialOpaque(mat);
-                        }
+                    Color baseColor = originalColors[rend][i];
+                    float currentAlpha = mats[i].color.a;
+
+                    // 부드럽게 알파 보간 (양방향)
+                    float newAlpha = Mathf.Lerp(currentAlpha, targetAlpha, Time.deltaTime * fadeSpeed);
+
+                    baseColor.a = newAlpha;
+                    mats[i].color = baseColor;
+
+                    // 렌더링 모드 자동 전환
+                    if (newAlpha < 0.99f)
+                    {
+                        mats[i].SetFloat("_Mode", 3); // Transparent
+                        mats[i].SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                        mats[i].SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                        mats[i].SetInt("_ZWrite", 0);
+                        mats[i].DisableKeyword("_ALPHATEST_ON");
+                        mats[i].EnableKeyword("_ALPHABLEND_ON");
+                        mats[i].DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                        mats[i].renderQueue = 3000;
+                    }
+                    else
+                    {
+                        mats[i].SetFloat("_Mode", 0); // Opaque
+                        mats[i].SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                        mats[i].SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+                        mats[i].SetInt("_ZWrite", 1);
+                        mats[i].DisableKeyword("_ALPHABLEND_ON");
+                        mats[i].renderQueue = -1;
                     }
                 }
             }
+
+            isFaded = (targetAlpha < 0.99f);
         }
 
-        // 머티리얼 모드 전환 함수 추가
-        void SetMaterialTransparent(Material mat)
+        void CacheCharacterRenderers()
         {
-            mat.SetFloat("_Mode", 3);
-            mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-            mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-            mat.SetInt("_ZWrite", 0);
-            mat.DisableKeyword("_ALPHATEST_ON");
-            mat.EnableKeyword("_ALPHABLEND_ON");
-            mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-            mat.renderQueue = 3000;
-        }
-
-        void SetMaterialOpaque(Material mat)
-        {
-            mat.SetFloat("_Mode", 0);
-            mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-            mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-            mat.SetInt("_ZWrite", 1);
-            mat.DisableKeyword("_ALPHATEST_ON");
-            mat.DisableKeyword("_ALPHABLEND_ON");
-            mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-            mat.renderQueue = -1;
+            var renderers = characterRoot.GetComponentsInChildren<Renderer>();
+            foreach (var rend in renderers)
+            {
+                characterRenderers.Add(rend);
+                var mats = rend.materials;
+                Color[] colors = new Color[mats.Length];
+                for (int i = 0; i < mats.Length; i++)
+                    colors[i] = mats[i].color;
+                originalColors.Add(rend, colors);
+            }
         }
     }
 }
