@@ -299,7 +299,7 @@ namespace Project1
             {
                 // 공격 로직
                 animator.SetFloat("Speed", 0);
-                animator.SetTrigger("Trigger Attack");
+                animator.SetTrigger("Trigger PlayerAttack");
                 isAttackExecuted = true;
             }
             else if (!isAttackExecuted && skillAttack)
