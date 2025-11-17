@@ -16,13 +16,20 @@ namespace ProJect1
         public bool run = false;
         public bool holdRun = true;
         public bool isAttack = false;
+        public bool isAttacking = false;
 
         [Header("카메라 참조")]
         public Transform cameraTransform; // 3인칭 카메라의 Transform
         public Animator anim;
 
         CharacterController cr;
+        public static MainPlayerControl instance;
         private float verticalVelocity;
+
+        private void Awake()
+        {
+            instance = this;
+        }
 
         private void Start()
         {
@@ -32,8 +39,11 @@ namespace ProJect1
 
         void Update()
         {
-            MovePlayer();
-            PlayerAttack();
+            if (!isAttacking)
+                MovePlayer();
+
+            if (Input.GetMouseButtonDown(0))
+                TryAttack();
         }
 
         void MovePlayer()
@@ -98,12 +108,110 @@ namespace ProJect1
             anim.SetFloat("Speed", animSpeed);
         }
 
-        void PlayerAttack()
+        void TryAttack()
         {
-            if (Input.GetKeyDown(KeyCode.Mouse0) && !isAttack)
-            {
-                Debug.Log("rrr");
-            }
+            if (isAttacking) return;
+
+            MainSenceEnemy enemy = PlayerCombat.instance.currentTarget;
+
+            if (enemy != null)
+                StartCoroutine(DashAndAttack(enemy));
+            else
+                anim.SetTrigger("Attack");
         }
+
+        IEnumerator DashAndAttack(MainSenceEnemy enemy)
+        {
+            isAttacking = true;
+            anim.SetTrigger("Attack");
+
+            // 적의 Transform
+            Transform target = enemy.transform;
+
+            float dashSpeed = 12f;
+            float stopDistance = 1.2f;
+
+            // 적 방향 바라보기
+            Vector3 targetDir = (target.position - transform.position).normalized;
+            targetDir.y = 0;
+            Quaternion targetRot = Quaternion.LookRotation(targetDir);
+            transform.rotation = targetRot;
+
+            while (true)
+            {
+                if (target == null) break;
+
+                Vector3 dir = (target.position - transform.position).normalized;
+                float dist = Vector3.Distance(transform.position, target.position);
+
+                // 도착하면 공격 판정
+                if (dist <= stopDistance)
+                    break;
+
+                // XZ 평면 이동
+                Vector3 move = new Vector3(dir.x, 0, dir.z);
+                transform.position += move * dashSpeed * Time.deltaTime;
+
+                yield return null;
+            }
+
+            // TODO: 적에게 실제 데미지 적용
+            Debug.Log("Hit enemy: " + enemy.name);
+
+            isAttacking = false;
+        }
+
+        /*void TryAttack()
+        {
+            if (isAttacking) return;
+
+            Transform target = PlayerCombat.instance.currentTarget.transform;
+
+            if (target != null)
+            {
+                StartCoroutine(DashAndAttack(target));
+            }
+            else
+            {
+                anim.SetTrigger("Attack");
+            }
+        }*/
+
+        /*IEnumerator DashAndAttack(Transform target)
+        {
+            if (target == null) yield break;
+
+            isAttacking = true;
+            cr.enabled = false; // 이동충돌 방지 (돌진 시 필수)
+
+            Vector3 dir = (target.position - transform.position).normalized;
+            dir.y = 0;
+
+            // 적 방향 바라보기
+            Quaternion targetRot = Quaternion.LookRotation(dir);
+            transform.rotation = targetRot;
+
+            float dashTime = 0.1f;      // 돌진 시간
+            float dashSpeed = 12f;      // 돌진 속도
+            float timer = 0f;
+
+            // ★ 빠르게 앞으로 슬라이드해 들어감
+            while (timer < dashTime)
+            {
+                transform.position += dir * dashSpeed * Time.deltaTime;
+
+                timer += Time.deltaTime;
+                yield return null;
+            }
+
+            // ★ 공격 애니메이션
+            anim.SetTrigger("Attack");
+
+            // 공격 애니 끝날 때까지 대기 (애니 길이에 맞춰 조절)
+            yield return new WaitForSeconds(0.5f);
+
+            cr.enabled = true;
+            isAttacking = false;
+        }*/
     }
 }

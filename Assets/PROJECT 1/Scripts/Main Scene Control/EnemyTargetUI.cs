@@ -20,7 +20,7 @@ namespace ProJect1
         {
             if (target == null) return;
 
-            Vector3 screenPos = cam.WorldToScreenPoint(target.position + Vector3.up * 2f);
+            Vector3 screenPos = cam.WorldToScreenPoint(target.position);
             uiTransform.position = screenPos;
         }
 

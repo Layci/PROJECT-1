@@ -10,8 +10,14 @@ namespace ProJect1
         public LayerMask enemyMask;              // Enemy 레이어
         public MainSenceEnemy currentTarget;     // 현재 타겟
         public EnemyTargetUI targetUI;           // UI 프리팹 참조
+        public static PlayerCombat instance;
 
         Camera cam;
+
+        private void Awake()
+        {
+            instance = this;
+        }
 
         void Start()
         {
