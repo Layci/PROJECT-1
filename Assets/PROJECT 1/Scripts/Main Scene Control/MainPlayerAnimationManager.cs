@@ -8,7 +8,16 @@ namespace ProJect1
     {
         public void PlayerAttack()
         {
-            Debug.Log("메인 플레이어 공격!");
+            MainSenceEnemy mainSenceEnemy = PlayerCombat.instance.currentTarget.GetComponent<MainSenceEnemy>();
+            if (mainSenceEnemy != null)
+            {
+                Debug.Log(mainSenceEnemy.name);
+            }
+        }
+
+        public void PlayerAttackEnd()
+        {
+            MainPlayerControl.instance.isAttacking = false;
         }
     }
 }

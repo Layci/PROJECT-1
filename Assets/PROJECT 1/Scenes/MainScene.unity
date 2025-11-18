@@ -8143,6 +8143,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5a1a576b62288d4eb280fe99e75f70c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waves:
+  - enemiesToSpawn:
+    - enemyPrefab: {fileID: 0}
+      enemyData: {fileID: 0}
+    - enemyPrefab: {fileID: 0}
+      enemyData: {fileID: 0}
+    - enemyPrefab: {fileID: 0}
+      enemyData: {fileID: 0}
+    - enemyPrefab: {fileID: 0}
+      enemyData: {fileID: 0}
 --- !u!1 &901705812
 GameObject:
   m_ObjectHideFlags: 0
@@ -8665,6 +8675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5a1a576b62288d4eb280fe99e75f70c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waves: []
 --- !u!136 &1423896283
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -8771,7 +8782,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1446536720
 RectTransform:
   m_ObjectHideFlags: 0

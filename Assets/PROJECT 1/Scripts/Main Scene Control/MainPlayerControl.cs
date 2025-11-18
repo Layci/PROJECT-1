@@ -113,7 +113,7 @@ namespace ProJect1
             if (isAttacking) return;
 
             MainSenceEnemy enemy = PlayerCombat.instance.currentTarget;
-
+            isAttacking = true;
             if (enemy != null)
                 StartCoroutine(DashAndAttack(enemy));
             else
@@ -122,7 +122,7 @@ namespace ProJect1
 
         IEnumerator DashAndAttack(MainSenceEnemy enemy)
         {
-            isAttacking = true;
+            //isAttacking = true;
             anim.SetTrigger("Attack");
 
             // 적의 Transform
@@ -136,6 +136,7 @@ namespace ProJect1
             targetDir.y = 0;
             Quaternion targetRot = Quaternion.LookRotation(targetDir);
             transform.rotation = targetRot;
+            cr.enabled = false; // 이동충돌 방지 (돌진 시 필수)
 
             while (true)
             {
@@ -158,7 +159,8 @@ namespace ProJect1
             // TODO: 적에게 실제 데미지 적용
             Debug.Log("Hit enemy: " + enemy.name);
 
-            isAttacking = false;
+            //isAttacking = false;
+            cr.enabled = true;
         }
 
         /*void TryAttack()
