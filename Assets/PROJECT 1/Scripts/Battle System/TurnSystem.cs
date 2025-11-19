@@ -72,12 +72,15 @@ namespace Project1
 
         private void Start()
         {
-            RefreshCharacterLists(); // 캐릭터 재정렬
+            //RefreshCharacterLists(); // 캐릭터 재정렬
             waveManager = BattleManager.instance.waveManager;
 
             UpdateTurnUI();
 
-            StartTurn(); // 첫 번째 턴 시작
+            // 웨이브 스폰 완료 시 초기화 진행
+            EnemyWaveManager.OnWaveSpawned += InitializeBattle;
+
+            //StartTurn(); // 첫 번째 턴 시작
         }
 
         // 맨 처음 실행
@@ -304,6 +307,27 @@ namespace Project1
                     player.prepareState = state;
                 }
             }
+        }
+
+        private void InitializeBattle()
+        {
+            // 이제 스폰이 끝났으니 캐릭터들 새로 불러오기
+            RefreshCharacterLists();
+
+            currentTurnIndex = 0;
+            currentTurn = 1;
+
+            UpdateTurnUI();
+
+            // 마우스 잠금 해제 (전투 UI 조작 위해)
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            // 첫 턴 시작
+            StartTurn();
+
+            // 이벤트 중복 방지
+            EnemyWaveManager.OnWaveSpawned -= InitializeBattle;
         }
 
         IEnumerator HideWaveTextAfterSeconds(float seconds)

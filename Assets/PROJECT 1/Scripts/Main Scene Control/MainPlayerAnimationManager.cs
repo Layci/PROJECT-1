@@ -12,6 +12,7 @@ namespace ProJect1
             if (mainSenceEnemy != null)
             {
                 Debug.Log(mainSenceEnemy.name);
+                mainSenceEnemy.OnPlayerEnterBattle();
             }
         }
 

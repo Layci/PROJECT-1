@@ -2205,7 +2205,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waveManager: {fileID: 353701285}
   enemySpawnPoints: []
-  startPlayerPos: {x: -3, y: 0, z: 2}
+  startPlayerPos: {x: -3, y: 0, z: -2}
   startEnemyPos: {x: -3, y: 0, z: 3}
   spacing: 2
   playerCharacters: []
@@ -14624,6 +14624,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Taster Player
       objectReference: {fileID: 0}
+    - target: {fileID: 6137447632712536868, guid: f3147ed369d7a74409c75fd7a24d8ec7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14771,6 +14775,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Faye Player
       objectReference: {fileID: 0}
+    - target: {fileID: 6505999207909017065, guid: 1c33d09449cf9bc45b5dc0b9cda47110, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7897445234911187022, guid: 1c33d09449cf9bc45b5dc0b9cda47110, type: 3}
       propertyPath: hpText
       value: 
@@ -14834,11 +14842,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3638533944475312032, guid: b6c5f92ed5777ed4a9d04fe055bc6501, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3638533944475312032, guid: b6c5f92ed5777ed4a9d04fe055bc6501, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4125607128556157321, guid: b6c5f92ed5777ed4a9d04fe055bc6501, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -14855,6 +14863,10 @@ PrefabInstance:
     - target: {fileID: 9063518342876871782, guid: b6c5f92ed5777ed4a9d04fe055bc6501, type: 3}
       propertyPath: m_Name
       value: Aki Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 9063518342876871782, guid: b6c5f92ed5777ed4a9d04fe055bc6501, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9063518342876871782, guid: b6c5f92ed5777ed4a9d04fe055bc6501, type: 3}
       propertyPath: m_TagString
@@ -19680,11 +19692,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2097500582632191625, guid: 0b1a3a7cd0901ff49a6a7dd28e47dbfa, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2097500582632191625, guid: 0b1a3a7cd0901ff49a6a7dd28e47dbfa, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2139878536848379128, guid: 0b1a3a7cd0901ff49a6a7dd28e47dbfa, type: 3}
       propertyPath: m_IsActive
@@ -19701,6 +19713,10 @@ PrefabInstance:
     - target: {fileID: 7987327555153608299, guid: 0b1a3a7cd0901ff49a6a7dd28e47dbfa, type: 3}
       propertyPath: m_Name
       value: Unity Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 7987327555153608299, guid: 0b1a3a7cd0901ff49a6a7dd28e47dbfa, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7987327555153608299, guid: 0b1a3a7cd0901ff49a6a7dd28e47dbfa, type: 3}
       propertyPath: m_TagString
@@ -19879,6 +19895,10 @@ PrefabInstance:
     - target: {fileID: 8886643203085043590, guid: 47fa46e5008c7b64c858f4eeed68fb71, type: 3}
       propertyPath: m_Name
       value: Inugami Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8886643203085043590, guid: 47fa46e5008c7b64c858f4eeed68fb71, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -29622,6 +29642,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hoshi Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4296464342933810020, guid: d0f06ad2c6775d643942c5f439884561, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4358585387873974833, guid: d0f06ad2c6775d643942c5f439884561, type: 3}
       propertyPath: hpText
       value: 
@@ -34710,16 +34734,20 @@ PrefabInstance:
       value: AI Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 3703020108176700387, guid: 0678bb7cf73a1434c94e2453e291c709, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3703020108176700387, guid: 0678bb7cf73a1434c94e2453e291c709, type: 3}
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5668440086728762742, guid: 0678bb7cf73a1434c94e2453e291c709, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5668440086728762742, guid: 0678bb7cf73a1434c94e2453e291c709, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6313993780946287632, guid: 0678bb7cf73a1434c94e2453e291c709, type: 3}
       propertyPath: m_LocalPosition.x
@@ -34817,11 +34845,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6647074216177946758, guid: efe62b6a77eeb3146ae8070432c47f0b, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6647074216177946758, guid: efe62b6a77eeb3146ae8070432c47f0b, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6647074216177946758, guid: efe62b6a77eeb3146ae8070432c47f0b, type: 3}
       propertyPath: m_AnchorMin.x
@@ -34830,6 +34858,10 @@ PrefabInstance:
     - target: {fileID: 8138895244512721228, guid: efe62b6a77eeb3146ae8070432c47f0b, type: 3}
       propertyPath: m_Name
       value: Sapphi Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 8138895244512721228, guid: efe62b6a77eeb3146ae8070432c47f0b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8138895244512721228, guid: efe62b6a77eeb3146ae8070432c47f0b, type: 3}
       propertyPath: m_TagString

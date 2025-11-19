@@ -12,7 +12,7 @@ namespace ProJect1
 
         public EnemyWaveManager waveManager;
         public Transform[] enemySpawnPoints; // 원래 적들 위치
-        public Vector3 startPlayerPos = new Vector3(-3, 0, 2); // 기준 위치
+        public Vector3 startPlayerPos = new Vector3(-3, 0, -2); // 기준 위치
         public Vector3 startEnemyPos = new Vector3(-3, 0, 3);
         public float spacing = 2f; // 유닛 간 간격
 
