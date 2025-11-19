@@ -6470,10 +6470,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentParty:
-  - prefab: {fileID: 6505999207909017065, guid: 1c33d09449cf9bc45b5dc0b9cda47110, type: 3}
-    characterName: Faye
   - prefab: {fileID: 8886643203085043590, guid: 47fa46e5008c7b64c858f4eeed68fb71, type: 3}
     characterName: Inugami
+  - prefab: {fileID: 6505999207909017065, guid: 1c33d09449cf9bc45b5dc0b9cda47110, type: 3}
+    characterName: Faye
   - prefab: {fileID: 6137447632712536868, guid: f3147ed369d7a74409c75fd7a24d8ec7, type: 3}
     characterName: Taster
   - prefab: {fileID: 4296464342933810020, guid: d0f06ad2c6775d643942c5f439884561, type: 3}

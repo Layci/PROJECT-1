@@ -1,11 +1,12 @@
-using UnityEngine;
-using System.Collections;
 using Project1;
-using System.Collections.Generic;
-using UnityEngine.UI;
 using ProJect1;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.TextCore.Text;
+using UnityEngine.UI;
 //using DG.Tweening;
 
 namespace Project1
@@ -34,6 +35,11 @@ namespace Project1
 
         public Vector3 initialPosition;
         protected Quaternion initialRotation;
+
+        [Header("UI Prefab")]
+        public GameObject uiPrefab;   // 캐릭터 UI 프리팹
+
+        [HideInInspector] public CharacterUI ui; // 런타임 생성되는 UI
 
         [Header("캐릭터 정보")]
         //public float maxHealth;               // 최대 체력

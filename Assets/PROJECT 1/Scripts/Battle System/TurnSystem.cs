@@ -28,6 +28,7 @@ namespace Project1
         //private List<object> allCharacters; // 모든 캐릭터를 포함하는 리스트
         public List<BaseUnit> allCharacters; // 모든 캐릭터를 포함하는 리스트
         public Transform playerTargetPosition;
+        public Transform uiParent; // Canvas > CharacterUIContainer
         private EnemyWaveManager waveManager;
 
         public Text curTurnText;
@@ -81,6 +82,10 @@ namespace Project1
             EnemyWaveManager.OnWaveSpawned += InitializeBattle;
 
             //StartTurn(); // 첫 번째 턴 시작
+            foreach (var character in playerCharacters)
+            {
+                CreateUIForCharacter(character);
+            }
         }
 
         // 맨 처음 실행
@@ -328,6 +333,15 @@ namespace Project1
 
             // 이벤트 중복 방지
             EnemyWaveManager.OnWaveSpawned -= InitializeBattle;
+        }
+
+        public void CreateUIForCharacter(BaseCharacterControl character)
+        {
+            GameObject uiObj = Instantiate(character.uiPrefab, uiParent);
+            CharacterUI ui = uiObj.GetComponent<CharacterUI>();
+
+            ui.Init(character);
+            character.ui = ui;
         }
 
         IEnumerator HideWaveTextAfterSeconds(float seconds)

@@ -5207,6 +5207,8 @@ MonoBehaviour:
   buffTrun: 0
   buff: 0
   initialPosition: {x: 0, y: 0, z: 0}
+  uiPrefab: {fileID: 2355529397156989603, guid: d851fa78abdba124fb410da417539565, type: 3}
+  ui: {fileID: 0}
   playerAttackPower: 50
   playerSkillAttackPower: 33
   startAttacking: 0
