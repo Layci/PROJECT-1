@@ -1,4 +1,5 @@
 using Project1;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -78,8 +79,51 @@ namespace ProJect1
         }
 
         // -------------------------------- 버프관련
-
         public void AddBuff(Buff newBuff)
+        {
+            // 기존 버프 중 이름이 같은 것 찾기
+            Buff existingBuff = activeBuffs.Find(buff => buff.buffName == newBuff.buffName);
+
+            // 기존 버프가 있을 경우
+            if (existingBuff != null)
+            {
+                // 새 버프가 기존 버프보다 약하면 적용하지 않음
+                if (newBuff.attackBoost <= existingBuff.attackBoost &&
+                    newBuff.defenseBoost <= existingBuff.defenseBoost)
+                {
+                    Debug.Log($"{newBuff.buffName} 는 기존 버프보다 약해 적용되지 않음.");
+                    return;
+                }
+
+                // 새 버프가 더 강하면 기존 버프 제거 후 갱신
+                existingBuff.RemoveEffect(this);
+                activeBuffs.Remove(existingBuff);
+            }
+
+            // 버프 턴 수 적용
+            buffTrun = newBuff.remainingTurns;
+
+            // UI 업데이트 (아군만)
+            BaseCharacterControl player = this as BaseCharacterControl;
+            if (player != null && player.ui != null)
+            {
+                player.ui.UpdateBuff();
+            }
+
+            // 적 UI는 나중에 필요하면 동일하게 적용 가능
+            // 적은 UI가 나중에 필요하면 여기서
+            // BaseEnemyControl enemy = this as BaseEnemyControl;
+
+            // 새 버프 추가 및 적용
+            activeBuffs.Add(newBuff);
+            newBuff.ApplyEffect(this);
+
+            Debug.Log($"{newBuff.buffName} 버프 적용됨! (ATK {newBuff.attackBoost}, DEF {newBuff.defenseBoost})");
+        }
+
+        
+        // if(enemy != null && enemy.enemyUI != null) enemy.enemyUI.UpdateBuff();
+        /*public void AddBuff(Buff newBuff)
         {
             Buff existingBuff = activeBuffs.Find(buff => buff.buffName == newBuff.buffName);
 
@@ -96,7 +140,7 @@ namespace ProJect1
                 activeBuffs.Remove(existingBuff);
             }
 
-            buffTrun = newBuff.remainingTurns;
+            buffTrun = newBuff.remainingTurns;;
             BuffTurnUI.instance.curbuff = newBuff.remainingTurns;
             
             Debug.Log("버프 활성화 턴 반영");
@@ -106,7 +150,7 @@ namespace ProJect1
             newBuff.ApplyEffect(this);
             Debug.Log($"{newBuff.buffName} 버프가 적용되었습니다! (공격력 증가: {newBuff.attackBoost}, 방어력 증가: {newBuff.defenseBoost})");
             buff = true;
-        }
+        }*/
 
         public void RemoveExpiredBuffs()
         {
@@ -119,15 +163,15 @@ namespace ProJect1
             {
                 buff.remainingTurns--;
                 buffTrun = buff.remainingTurns;
+
                 Debug.Log($"{buff.remainingTurns} 남은버프턴");
 
                 if (buff.remainingTurns <= 0)
                 {
-                    // BuffTurnUI와 BuffIconUI가 있을 경우만 buffPower를 0으로 초기화
-                    BuffTurnUI buffTurnUI = GetComponent<BuffTurnUI>();
+                    // Buff의 설정에 따라 BuffPower 초기화
                     BuffIconUI buffIconUI = GetComponent<BuffIconUI>();
 
-                    if (buffTurnUI != null && buffIconUI != null)
+                    if (buffIconUI != null && buff.resetPowerOnExpire)
                     {
                         buffIconUI.buffPower = 0;
                     }

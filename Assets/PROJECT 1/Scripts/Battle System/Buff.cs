@@ -13,7 +13,9 @@ namespace Project1
         public float defenseBoost;     // 방어력 증가량
         public Type exclusiveCharacter;  // 특정 캐릭터 전용 (없으면 null)
 
-        public Buff(string name, int duration, float atkBoost, float defBoost, Type exclusiveCharacter = null)
+        public bool resetPowerOnExpire;
+
+        public Buff(string name, int duration, float atkBoost, float defBoost, Type exclusiveCharacter = null, bool resetPowerOnExpire = true)
         {
             buffName = name;
             remainingTurns = duration;
@@ -46,12 +48,34 @@ namespace Project1
                 }
             }
 
-            // BuffUI 업데이트
+            // 아군이면 BaseCharacterControl로 캐스팅
+            BaseCharacterControl player = unit as BaseCharacterControl;
+            if (player != null && player.ui != null)
+            {
+                // 버프 턴 0으로 감소
+                player.buffTrun = 0;
+
+                // UI 업데이트
+                player.ui.UpdateBuff();
+            }
+
+            // 적 UI는 아직 없다면 건드릴 필요 없음
+            // 필요 시 enemy UI 생성되면 아래처럼 추가하면 됨:
+            /*
+            BaseEnemyControl enemy = unit as BaseEnemyControl;
+            if (enemy != null && enemy.ui != null)
+                enemy.ui.UpdateBuff();
+            */
+
+
+
+
+            /*// BuffUI 업데이트
             BuffTurnUI buffUI = unit.GetComponent<BuffTurnUI>();
             if (buffUI != null)
             {
                 buffUI.UpdateBuffTurn(0); // 버프가 없어지면 0으로 초기화
-            }
+            }*/
         }
     }
 }

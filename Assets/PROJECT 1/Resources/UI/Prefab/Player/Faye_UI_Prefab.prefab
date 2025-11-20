@@ -468,7 +468,7 @@ Transform:
   m_GameObject: {fileID: 2355529397156989603}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.3265047, y: 1.8208823, z: -1.2667549}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -522,9 +522,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 732bd6b449a6c714ead504303d7cf78b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  portrait: {fileID: 0}
-  hpBarSlider: {fileID: 0}
-  buffTurnText: {fileID: 0}
+  portrait: {fileID: 8309042694081279529}
+  hpBarSlider: {fileID: 8237073408223103624}
+  buffTurnText: {fileID: 3106726604882099297}
 --- !u!1 &3624598901096565515
 GameObject:
   m_ObjectHideFlags: 0

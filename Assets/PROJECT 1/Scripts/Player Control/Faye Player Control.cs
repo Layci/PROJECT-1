@@ -8,7 +8,6 @@ namespace Project1
     public class FayePlayerControl : BaseCharacterControl
     {
         public static new FayePlayerControl instance;
-        public BuffTurnUI buffTurnUI;
         public BuffIconUI buffIconUI;
 
         protected override void Awake()
@@ -30,27 +29,23 @@ namespace Project1
             switch (buffIconUI.buffPower)
             {
                 case 1:
-                    FayeAttackBuff = new Buff("Faye공격력 증가", 2, 0.2f, 0, typeof(FayePlayerControl));
+                    FayeAttackBuff = new Buff("Faye공격력 증가", 2, 0.2f, 0, typeof(FayePlayerControl), resetPowerOnExpire : true);
                     break;
                 case 2:
-                    FayeAttackBuff = new Buff("Faye공격력 증가", 2, 0.4f, 0, typeof(FayePlayerControl));
+                    FayeAttackBuff = new Buff("Faye공격력 증가", 2, 0.4f, 0, typeof(FayePlayerControl), resetPowerOnExpire : true);
                     break;
                 case 3:
-                    FayeAttackBuff = new Buff("Faye공격력 증가", 2, 0.6f, 0, typeof(FayePlayerControl));
+                    FayeAttackBuff = new Buff("Faye공격력 증가", 2, 0.6f, 0, typeof(FayePlayerControl), resetPowerOnExpire : true);
                     break;
             }
 
             if (FayeAttackBuff != null)
             {
                 AddBuff(FayeAttackBuff);
-                buffTurnUI.UpdateBuffTurn(buffTrun);
-            }
-        }
 
-        private void Start()
-        {
-            buffTurnUI = GetComponent<BuffTurnUI>();
-            buffIconUI = GetComponent<BuffIconUI>();
+                if (ui != null)
+                    ui.UpdateBuff();
+            }
         }
 
         protected override void HandleAttackInput()

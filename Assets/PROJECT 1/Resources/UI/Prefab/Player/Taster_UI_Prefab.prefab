@@ -623,8 +623,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 732bd6b449a6c714ead504303d7cf78b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  portrait: {fileID: 0}
-  hpBarSlider: {fileID: 0}
+  portrait: {fileID: 5502902676856668314}
+  hpBarSlider: {fileID: 6157719837206825572}
   buffTurnText: {fileID: 0}
 --- !u!1 &6136303960169988801
 GameObject:

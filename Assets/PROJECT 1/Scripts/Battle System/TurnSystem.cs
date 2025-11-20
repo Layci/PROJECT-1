@@ -82,10 +82,6 @@ namespace Project1
             EnemyWaveManager.OnWaveSpawned += InitializeBattle;
 
             //StartTurn(); // 첫 번째 턴 시작
-            foreach (var character in playerCharacters)
-            {
-                CreateUIForCharacter(character);
-            }
         }
 
         // 맨 처음 실행
@@ -113,12 +109,10 @@ namespace Project1
                     currentUnit.OnTurnStart(); // 현재 턴 유닛의 버프 지속 턴만 감소
                 }
 
-                // BuffUI 컴포넌트 찾기
-                BuffTurnUI buffUI = FindObjectOfType<BuffTurnUI>();
-                if (buffUI != null)
+                if (playerCharacter.ui != null)
                 {
-                    buffUI.UpdateBuffTurn(playerCharacter.buffTrun); // 남은 버프 턴 업데이트
-                    Debug.Log($"{playerCharacter.name}의 BuffUI 업데이트 완료! (남은 턴: {playerCharacter.buffTrun})");
+                    playerCharacter.ui.UpdateBuff();   // UI 갱신
+                    Debug.Log($"{playerCharacter.name}의 캐릭터 UI에서 Buff 표시 갱신됨!");
                 }
 
                 if (playerCharacter.isBlock)
@@ -322,12 +316,20 @@ namespace Project1
             currentTurnIndex = 0;
             currentTurn = 1;
 
-            UpdateTurnUI();
-
             // 마우스 잠금 해제 (전투 UI 조작 위해)
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            Debug.Log($"플레이어 캐릭터 수: {playerCharacters.Count}");
+            foreach (var ch in playerCharacters)
+            {
+                Debug.Log($"플레이어 발견: {ch.name}");
+            }
+            foreach (var character in playerCharacters)
+            {
+                CreateUIForCharacter(character);
+            }
 
+            UpdateTurnUI();
             // 첫 턴 시작
             StartTurn();
 
@@ -337,11 +339,31 @@ namespace Project1
 
         public void CreateUIForCharacter(BaseCharacterControl character)
         {
+            /*Debug.Log($"➡ UI 생성 시도: {character.name}");
+            if (character.uiPrefab == null)
+            {
+                Debug.LogError($" {character.name} 의 uiPrefab 이 NULL 입니다!");
+                return;
+            }
+            if (uiParent == null)
+            {
+                Debug.LogError(" uiParent 가 NULL 입니다! UI를 생성할 부모가 없습니다.");
+                return;
+            }*/
             GameObject uiObj = Instantiate(character.uiPrefab, uiParent);
-            CharacterUI ui = uiObj.GetComponent<CharacterUI>();
-
+            RectTransform rt = uiObj.GetComponentInChildren<RectTransform>();
+            rt.anchoredPosition = Vector2.zero;
+            //Debug.Log($"Instantiate 완료: {uiObj.name}");
+            CharacterUI ui = uiObj.GetComponentInChildren<CharacterUI>();
+            /*if (ui == null)
+            {
+                Debug.LogError($"CharacterUI 컴포넌트 없음! {uiObj.name}");
+                return;
+            }*/
+            //Debug.Log("UI실행");
             ui.Init(character);
             character.ui = ui;
+            //Debug.Log($"➡ UI Init 완료: {character.name}");
         }
 
         IEnumerator HideWaveTextAfterSeconds(float seconds)

@@ -12,15 +12,15 @@ namespace ProJect1
         public Slider hpBarSlider;
         public Text buffTurnText;
 
-        private BaseCharacterControl owner;
+        private BaseCharacterControl owner; 
 
         public void Init(BaseCharacterControl character)
         {
             owner = character;
 
             // Portrait은 캐릭터에 따라 다를 경우 BaseCharacterControl에 sprite 넣어두고 적용
-            if (portrait != null)
-                portrait.sprite = character.unitIcon;
+            /*if (portrait != null)
+                portrait.sprite = character.unitIcon;*/
 
             UpdateHP();
             UpdateBuff();

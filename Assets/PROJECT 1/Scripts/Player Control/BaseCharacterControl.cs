@@ -225,7 +225,7 @@ namespace Project1
         {
             // 예시: 공격력 +20%, 2턴 유지
             Buff selfBuff = null;
-            selfBuff = new Buff("", 2, 0.2f, 0, typeof(This));
+            selfBuff = new Buff("본인 강화", 2, 0.2f, 0, typeof(This));
             Debug.Log($"{unitName} 버프 발동!");
         }
 
@@ -360,11 +360,13 @@ namespace Project1
 
         public void CheckHP()
         {
-            if (hpBarSlider != null)
+            /*if (hpBarSlider != null)
             {
                 hpBarSlider.value = curHealth / maxHealth;
                 hpText.text = Mathf.RoundToInt(curHealth).ToString(); // 반올림해서 정수로 표시
-            }
+            }*/
+            if (ui != null)
+                ui.UpdateHP();
         }
 
         public void DoneBlock()

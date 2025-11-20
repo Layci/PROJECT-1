@@ -6,21 +6,21 @@ using UnityEngine.UI;
 
 namespace ProJect1
 {
-    public class BuffTurnUI : MonoBehaviour
+    /*public class BuffTurnUI : MonoBehaviour
     {
         
-        public Text buffText;     // 버프 남은 턴 텍스트
-        public int curbuff;       // 버프 남은 턴 정수
+        //public Text buffText;     // 버프 남은 턴 텍스트
+        //public int curbuff;       // 버프 남은 턴 정수
 
-        public static BuffTurnUI instance;
+        //public static BuffTurnUI instance;
 
         private void Awake()
         {
             // 싱글턴 초기화
-            if (instance == null)
+            *//*if (instance == null)
             {
                 instance = this;
-            }
+            }*//*
         }
 
         private void Start()
@@ -30,11 +30,11 @@ namespace ProJect1
 
         
 
-        public void UpdateBuffTurn(int characterBuff)
+        *//*public void UpdateBuffTurn(int characterBuff)
         {
             curbuff = characterBuff;
             buffText.text = characterBuff.ToString();
             Debug.Log("버프 턴 UI 업데이트: " + characterBuff);
-        }
-    }
+        }*//*
+    }*/
 }
