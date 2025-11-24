@@ -63,10 +63,10 @@ namespace Project1
 
         void HealBuff()
         {
-            if (buffIconUI.buffPower >= 3)
+            if (buffPower >= 3)
             {
-                buffIconUI.buffPower = 0;
-                buffIconUI.UpdateBuffUI();
+                buffPower = 0;
+                ui.UpdateBuff();
                 HealManager.instance.PlayHealEffect();
             }
         }

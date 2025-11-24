@@ -397,5 +397,21 @@ namespace Project1
             Destroy(gameObject);
             TurnSystem.instance.RemoveCharacterFromTurnOrder(this);            
         }
+
+        public override void IncreaseBuffPower()
+        {
+            base.IncreaseBuffPower();
+
+            if (ui != null)
+                ui.UpdateBuffPower(buffPower);
+        }
+
+        public override void ResetBuffPower()
+        {
+            base.ResetBuffPower();
+
+            if (ui != null)
+                ui.UpdateBuffPower(0);
+        }
     }
 }

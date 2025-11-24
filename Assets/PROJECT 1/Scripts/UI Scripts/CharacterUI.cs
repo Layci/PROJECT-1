@@ -11,6 +11,8 @@ namespace ProJect1
         public Image portrait;
         public Slider hpBarSlider;
         public Text buffTurnText;
+        public BuffIconUI buffIconUI;
+        public Text buffPowerText;
 
         private BaseCharacterControl owner; 
 
@@ -36,6 +38,15 @@ namespace ProJect1
         {
             if (buffTurnText != null)
                 buffTurnText.text = owner.buffTrun.ToString();
+        }
+
+        public void UpdateBuffPower(int buffPower)
+        {
+            if (buffIconUI != null)
+                buffIconUI.UpdateBuffUI(buffPower);
+
+            if (buffPowerText != null)
+                buffPowerText.text = buffPower.ToString();
         }
     }
 }

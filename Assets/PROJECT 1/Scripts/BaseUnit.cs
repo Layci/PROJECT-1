@@ -33,6 +33,8 @@ namespace ProJect1
 
         [Header("버프 정보")]
         public int buffTrun;                  // 남은 버프 턴
+        public int buffPower;                 // 버프 파워
+        public int maxBuffPower = 3;          // 최대로 증가할 파워
         public bool buff = false;             // 버프 적용 확인 연산자
 
         public List<Buff> activeBuffs = new List<Buff>();
@@ -121,37 +123,6 @@ namespace ProJect1
             Debug.Log($"{newBuff.buffName} 버프 적용됨! (ATK {newBuff.attackBoost}, DEF {newBuff.defenseBoost})");
         }
 
-        
-        // if(enemy != null && enemy.enemyUI != null) enemy.enemyUI.UpdateBuff();
-        /*public void AddBuff(Buff newBuff)
-        {
-            Buff existingBuff = activeBuffs.Find(buff => buff.buffName == newBuff.buffName);
-
-            if (existingBuff != null)
-            {
-                // 새 버프가 기존 버프보다 약하면 적용하지 않음
-                if (newBuff.attackBoost <= existingBuff.attackBoost && newBuff.defenseBoost <= existingBuff.defenseBoost)
-                {
-                    Debug.Log($"{newBuff.buffName} 버프가 이미 더 강력하게 적용 중이므로 무시됨.");
-                    return;
-                }
-                // 기존 버프 제거 (리스트에서도 삭제)
-                existingBuff.RemoveEffect(this);
-                activeBuffs.Remove(existingBuff);
-            }
-
-            buffTrun = newBuff.remainingTurns;;
-            BuffTurnUI.instance.curbuff = newBuff.remainingTurns;
-            
-            Debug.Log("버프 활성화 턴 반영");
-
-            // 새로운 버프 추가
-            activeBuffs.Add(newBuff);
-            newBuff.ApplyEffect(this);
-            Debug.Log($"{newBuff.buffName} 버프가 적용되었습니다! (공격력 증가: {newBuff.attackBoost}, 방어력 증가: {newBuff.defenseBoost})");
-            buff = true;
-        }*/
-
         public void RemoveExpiredBuffs()
         {
             activeBuffs.RemoveAll(buff => buff.remainingTurns <= 0);
@@ -169,11 +140,18 @@ namespace ProJect1
                 if (buff.remainingTurns <= 0)
                 {
                     // Buff의 설정에 따라 BuffPower 초기화
-                    BuffIconUI buffIconUI = GetComponent<BuffIconUI>();
+                    BaseCharacterControl player = this as BaseCharacterControl;
 
-                    if (buffIconUI != null && buff.resetPowerOnExpire)
+                    if (player != null && player.ui != null)
                     {
-                        buffIconUI.buffPower = 0;
+                        BuffIconUI iconUI = player.ui.buffIconUI;
+
+                        // resetPowerOnExpire 옵션이 있을 때만 초기화
+                        if (iconUI != null && buff.resetPowerOnExpire)
+                        {
+                            buffPower = 0;
+                            player.ui.UpdateBuffPower(0);
+                        }
                     }
 
                     buff.RemoveEffect(this);
@@ -181,6 +159,16 @@ namespace ProJect1
             }
 
             RemoveExpiredBuffs();
+        }
+        public virtual void IncreaseBuffPower()
+        {
+            if (buffPower < maxBuffPower)
+                buffPower++;
+        }
+
+        public virtual void ResetBuffPower()
+        {
+            buffPower = 0;
         }
     }
 }

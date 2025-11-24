@@ -321,10 +321,10 @@ namespace Project1
             }
         }*/
 
-        // Taster 캐릭터가 피격 시 버프 파워상승
+        // Taster 캐릭터가 피격 시 버프 파워상승 ((((안씀
         public void TasterTakeDamaged()
         {
-            BuffIconUI.instance.IncreaseBuffPower();
+            //BuffIconUI.instance.IncreaseBuffPower();
         }
 
         public void EndAttack()

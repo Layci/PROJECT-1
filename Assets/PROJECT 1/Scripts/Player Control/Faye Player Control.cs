@@ -8,7 +8,6 @@ namespace Project1
     public class FayePlayerControl : BaseCharacterControl
     {
         public static new FayePlayerControl instance;
-        public BuffIconUI buffIconUI;
 
         protected override void Awake()
         {
@@ -26,7 +25,7 @@ namespace Project1
             base.Update();
 
             Buff FayeAttackBuff = null;
-            switch (buffIconUI.buffPower)
+            switch (buffPower)
             {
                 case 1:
                     FayeAttackBuff = new Buff("Faye공격력 증가", 2, 0.2f, 0, typeof(FayePlayerControl), resetPowerOnExpire : true);

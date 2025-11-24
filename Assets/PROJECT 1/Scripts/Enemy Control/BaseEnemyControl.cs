@@ -168,8 +168,9 @@ namespace Project1
             TasterPlayerControl taster = target.GetComponent<TasterPlayerControl>();
             if (taster != null)
             {
-                BuffIconUI buffIcon = taster.GetComponent<BuffIconUI>();
-                buffIcon?.IncreaseBuffPower();
+                taster.IncreaseBuffPower();
+                //BuffIconUI buffIcon = taster.GetComponent<BuffIconUI>();
+                //buffIcon?.IncreaseBuffPower();
             }
         }
 
@@ -285,7 +286,7 @@ namespace Project1
             FayePlayerControl faye = FayePlayerControl.instance;
             if (faye != null)
             {
-                BuffIconUI.instance.IncreaseBuffPower();
+                faye.IncreaseBuffPower();
             }
         }
     }
