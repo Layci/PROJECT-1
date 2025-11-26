@@ -2024,6 +2024,7 @@ GameObject:
   - component: {fileID: 353701285}
   - component: {fileID: 353701286}
   - component: {fileID: 353701287}
+  - component: {fileID: 353701288}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -2224,6 +2225,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerList: []
+--- !u!114 &353701288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 353701275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a869f2860541e04f9ec6f62d08d9c24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &407173790
 GameObject:
   m_ObjectHideFlags: 0

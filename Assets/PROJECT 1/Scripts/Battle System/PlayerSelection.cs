@@ -68,7 +68,6 @@ namespace ProJect1
             }
             Debug.Log($"[Enemy] centerIndex = {centerIndex}, range = {range}, leftBound~rightBound = {leftBound}~{rightBound}");
             Debug.Log($"[PlayerSelection] 타겟 인덱스 {centerIndex}, 범위 {range}, 결과 대상 수: {targets.Count}");
-            Debug.Log($"[DEBUG AOE] centerIndex={centerIndex}, leftBound={leftBound}, rightBound={rightBound}, playerCount={turnSystem.playerCharacters.Count}");
             return targets;
         }
 

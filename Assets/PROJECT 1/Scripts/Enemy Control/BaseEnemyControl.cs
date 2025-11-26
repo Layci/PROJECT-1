@@ -128,7 +128,7 @@ namespace Project1
             // 플레이어를 향해 움직이기
             if (playerTransform != null)
             {
-                Debug.Log($"[TEST] playerTransform = {playerTransform}, has BaseCharacterControl? = {playerTransform.GetComponent<BaseCharacterControl>() != null}");
+                
                 transform.position = Vector3.MoveTowards(transform.position, playerTransform.position, moveSpeed * Time.deltaTime);
                 animator.SetFloat("Speed", 1);
 
@@ -137,13 +137,8 @@ namespace Project1
                 // 현재 적의 인덱스를 턴시스템에서 찾기
                 var turnSystem = FindObjectOfType<TurnSystem>();
                 Debug.Log($"[DEBUG] playerCount={turnSystem.playerCharacters.Count}");
-                for (int i = 0; i < turnSystem.playerCharacters.Count; i++)
-                {
-                    Debug.Log($"[DEBUG] player[{i}] = {turnSystem.playerCharacters[i]}");
-                }
                 int playerIndex = turnSystem.playerCharacters.IndexOf(playerTransform.GetComponent<BaseCharacterControl>());
                 //int enemyIndex = turnSystem.enemyCharacters.IndexOf(this);
-
                 // 인덱스 기반으로 AOE 범위 계산
                 var targets = PlayerSelection.instance.GetAOETargetsFromEnemy(range, playerIndex);
                 TargetIndicatorManager.Instance.ShowTargetIndicators(targets);
@@ -151,19 +146,13 @@ namespace Project1
 
                 // 외곽선 표시
                 //EnemyAOEHighlighter.Instance.ShowAOETargets(targets);
+                
+                float distanceToTarget = Vector3.Distance(transform.position, playerTransform.position);               
                 Debug.Log($"[Enemy] 이동 전 AOE 표시됨, 대상 수: {targets.Count}");
-                float distanceToTarget = Vector3.Distance(transform.position, playerTransform.position);
-                Debug.Log($"playerTransform = {playerTransform.name}");
-                Debug.Log($"distance={distanceToTarget}, attackRange={attackRange}");
                 if (distanceToTarget <= attackRange)
                 {
-                    Debug.Log("ㅇㅇㅇㅇㅇ");
                     currentState = EnemyState.Attacking;
                 }
-            }
-            else
-            {
-                Debug.Log("MoveToAttack 문제");
             }
         }
 
@@ -183,12 +172,10 @@ namespace Project1
             if (taster != null)
             {
                 taster.IncreaseBuffPower();
-                //BuffIconUI buffIcon = taster.GetComponent<BuffIconUI>();
-                //buffIcon?.IncreaseBuffPower();
             }
         }
 
-        private void ShowAOEPreview()
+        /*private void ShowAOEPreview()
         {
             if (isAttackExecuted) return;
 
@@ -206,10 +193,10 @@ namespace Project1
 
             if (EnemyAOEHighlighter.Instance != null)
                 EnemyAOEHighlighter.Instance.ShowAOETargets(targets);
-        }
+        }*/
 
         // 현재 타겟 플레이어 인덱스 찾기
-        private int GetTargetPlayerIndex()
+        /*private int GetTargetPlayerIndex()
         {
             if (turnSystem == null || playerTransform == null)
                 return -1;
@@ -219,7 +206,7 @@ namespace Project1
                 return -1;
 
             return turnSystem.playerCharacters.IndexOf(playerControl);
-        }
+        }*/
 
         protected virtual void ReturnToInitialPosition()
         {
