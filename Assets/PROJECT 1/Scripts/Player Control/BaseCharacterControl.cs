@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 //using DG.Tweening;
@@ -286,6 +287,7 @@ namespace Project1
                 {
                     if (distanceToTarget <= attackRange && !isBlock)
                     {
+                        Debug.Log("일반공격 준비중.......................");
                         currentState = PlayerState.Attacking;
                     }
                 }
@@ -293,6 +295,7 @@ namespace Project1
                 {
                     if (distanceToTarget <= skillRange)
                     {
+                        Debug.Log("스킬공격 준비중.......................");
                         currentState = PlayerState.Attacking;
                     }
                 }
@@ -303,13 +306,15 @@ namespace Project1
         {
             if (!isAttackExecuted && !skillAttack)
             {
+                Debug.Log("일반공격 실행중.......................");
                 // 공격 로직
                 animator.SetFloat("Speed", 0);
-                animator.SetTrigger("Trigger PlayerAttack");
+                animator.SetTrigger("Trigger Attack");
                 isAttackExecuted = true;
             }
             else if (!isAttackExecuted && skillAttack)
             {
+                Debug.Log("스킬공격 실행중.......................");
                 // 스킬 공격 로직
                 animator.SetFloat("Speed", 0);
                 animator.SetTrigger("Trigger SkillAttack");

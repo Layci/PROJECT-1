@@ -6242,7 +6242,7 @@ MonoBehaviour:
   moveSpeed: 3
   unitSpeed: 90
   attackRange: 1
-  skillRange: 0
+  skillRange: 1
   damageReduction: 1
   damageIncreased: 1
   unitSpacing: 2
@@ -6251,6 +6251,8 @@ MonoBehaviour:
   normalAttackRange: 0
   skillAttackRange: 0
   buffTrun: 0
+  buffPower: 0
+  maxBuffPower: 3
   buff: 0
   enemyData: {fileID: 0}
   initialPosition: {x: 0, y: 0, z: 0}

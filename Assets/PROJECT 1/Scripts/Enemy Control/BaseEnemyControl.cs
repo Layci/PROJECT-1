@@ -62,6 +62,8 @@ namespace Project1
             curHealth = maxHealth;
             turnSystem = FindObjectOfType<TurnSystem>();
             //ApplyEnemyData();
+            Debug.Log($"{name} Animator 체크: {animator}");
+            Debug.Log(playerTransform);
         }
 
         protected virtual void Update()
@@ -126,6 +128,7 @@ namespace Project1
             // 플레이어를 향해 움직이기
             if (playerTransform != null)
             {
+                Debug.Log($"[TEST] playerTransform = {playerTransform}, has BaseCharacterControl? = {playerTransform.GetComponent<BaseCharacterControl>() != null}");
                 transform.position = Vector3.MoveTowards(transform.position, playerTransform.position, moveSpeed * Time.deltaTime);
                 animator.SetFloat("Speed", 1);
 
@@ -133,6 +136,11 @@ namespace Project1
 
                 // 현재 적의 인덱스를 턴시스템에서 찾기
                 var turnSystem = FindObjectOfType<TurnSystem>();
+                Debug.Log($"[DEBUG] playerCount={turnSystem.playerCharacters.Count}");
+                for (int i = 0; i < turnSystem.playerCharacters.Count; i++)
+                {
+                    Debug.Log($"[DEBUG] player[{i}] = {turnSystem.playerCharacters[i]}");
+                }
                 int playerIndex = turnSystem.playerCharacters.IndexOf(playerTransform.GetComponent<BaseCharacterControl>());
                 //int enemyIndex = turnSystem.enemyCharacters.IndexOf(this);
 
@@ -144,12 +152,18 @@ namespace Project1
                 // 외곽선 표시
                 //EnemyAOEHighlighter.Instance.ShowAOETargets(targets);
                 Debug.Log($"[Enemy] 이동 전 AOE 표시됨, 대상 수: {targets.Count}");
-
                 float distanceToTarget = Vector3.Distance(transform.position, playerTransform.position);
+                Debug.Log($"playerTransform = {playerTransform.name}");
+                Debug.Log($"distance={distanceToTarget}, attackRange={attackRange}");
                 if (distanceToTarget <= attackRange)
                 {
+                    Debug.Log("ㅇㅇㅇㅇㅇ");
                     currentState = EnemyState.Attacking;
                 }
+            }
+            else
+            {
+                Debug.Log("MoveToAttack 문제");
             }
         }
 

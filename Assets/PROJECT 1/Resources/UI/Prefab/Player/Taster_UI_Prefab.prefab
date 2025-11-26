@@ -626,6 +626,8 @@ MonoBehaviour:
   portrait: {fileID: 5502902676856668314}
   hpBarSlider: {fileID: 6157719837206825572}
   buffTurnText: {fileID: 0}
+  buffIconUI: {fileID: 6158835543715791842}
+  buffPowerText: {fileID: 0}
 --- !u!1 &6136303960169988801
 GameObject:
   m_ObjectHideFlags: 0
@@ -636,6 +638,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6827978952894902822}
   - component: {fileID: 7215589543969062266}
+  - component: {fileID: 6158835543715791842}
   m_Layer: 5
   m_Name: Taster Buff UI
   m_TagString: Untagged
@@ -691,6 +694,22 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &6158835543715791842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6136303960169988801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecdbddbef5d3cef4a82a048ad63e4114, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buffIcons:
+  - {fileID: 4244147355540896105}
+  - {fileID: 5140689949176459530}
+  - {fileID: 1681488721064988356}
 --- !u!1 &6369793301730260162
 GameObject:
   m_ObjectHideFlags: 0

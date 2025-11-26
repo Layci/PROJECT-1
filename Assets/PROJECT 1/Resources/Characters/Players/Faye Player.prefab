@@ -5151,7 +5151,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2994497333034160086}
   - component: {fileID: 7897445234911187022}
-  - component: {fileID: 1823101394063359880}
   m_Layer: 20
   m_Name: Faye Player
   m_TagString: Untagged
@@ -5204,6 +5203,8 @@ MonoBehaviour:
   normalAttackRange: 0
   skillAttackRange: 0
   buffTrun: 0
+  buffPower: 0
+  maxBuffPower: 3
   buff: 0
   initialPosition: {x: 0, y: 0, z: 0}
   uiPrefab: {fileID: 2355529397156989603, guid: d851fa78abdba124fb410da417539565, type: 3}
@@ -5222,24 +5223,6 @@ MonoBehaviour:
   enemySelection: {fileID: 0}
   currentTarget: {fileID: 0}
   currentState: 0
-  buffIconUI: {fileID: 0}
---- !u!114 &1823101394063359880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6505999207909017065}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecdbddbef5d3cef4a82a048ad63e4114, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buffPower: 0
-  buffIcons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!1 &6510582209531054195
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,7 +9,6 @@ namespace Project1
     public class TasterPlayerControl : BaseCharacterControl
     {
         public static new TasterPlayerControl instance;
-        public BuffIconUI buffIconUI;
 
         protected override void Awake()
         {
@@ -25,7 +24,7 @@ namespace Project1
 
         private void Start()
         {
-            buffIconUI = GetComponent<BuffIconUI>();
+            
         }
 
         protected override void Update()
@@ -63,7 +62,7 @@ namespace Project1
 
         void HealBuff()
         {
-            if (buffPower >= 3)
+            if (buffPower >= maxBuffPower)
             {
                 buffPower = 0;
                 ui.UpdateBuff();
