@@ -162,6 +162,7 @@ namespace Project1
                 {
                     Debug.Log("모든 웨이브 완료! 전투 종료.");
                     // 전체 전투 승리 처리
+                    SaveBattleResult();
                     StartCoroutine(ShowWinText());
                 }
             }
@@ -339,31 +340,27 @@ namespace Project1
 
         public void CreateUIForCharacter(BaseCharacterControl character)
         {
-            /*Debug.Log($"➡ UI 생성 시도: {character.name}");
-            if (character.uiPrefab == null)
-            {
-                Debug.LogError($" {character.name} 의 uiPrefab 이 NULL 입니다!");
-                return;
-            }
-            if (uiParent == null)
-            {
-                Debug.LogError(" uiParent 가 NULL 입니다! UI를 생성할 부모가 없습니다.");
-                return;
-            }*/
             GameObject uiObj = Instantiate(character.uiPrefab, uiParent);
             RectTransform rt = uiObj.GetComponentInChildren<RectTransform>();
             rt.anchoredPosition = Vector2.zero;
-            //Debug.Log($"Instantiate 완료: {uiObj.name}");
             CharacterUI ui = uiObj.GetComponentInChildren<CharacterUI>();
-            /*if (ui == null)
-            {
-                Debug.LogError($"CharacterUI 컴포넌트 없음! {uiObj.name}");
-                return;
-            }*/
-            //Debug.Log("UI실행");
             ui.Init(character);
             character.ui = ui;
-            //Debug.Log($"➡ UI Init 완료: {character.name}");
+        }
+
+        // 전투 결과 저장
+        public void SaveBattleResult()
+        {
+            PartyFormationManager.Instance.partyStates.Clear();
+
+            foreach (var player in TurnSystem.instance.playerCharacters)
+            {
+                var unit = player.GetComponent<BaseCharacterControl>();
+
+                PartyFormationManager.Instance.partyStates.Add(
+                    new PartyMemberState(unit.unitName, ((int)unit.curHealth), ((int)unit.maxHealth))
+                );
+            }
         }
 
         IEnumerator HideWaveTextAfterSeconds(float seconds)

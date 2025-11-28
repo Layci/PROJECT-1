@@ -27,7 +27,6 @@ namespace ProJect1
         void Update()
         {
             DetectNearestEnemy();
-            HandleAttackInput();
         }
 
         void DetectNearestEnemy()
@@ -69,14 +68,6 @@ namespace ProJect1
         {
             currentTarget = null;
             targetUI.Hide();
-        }
-
-        void HandleAttackInput()
-        {
-            if (Input.GetMouseButtonDown(0) && currentTarget != null)
-            {
-                Debug.Log("°ø°Ý! ¡æ " + currentTarget.name);
-            }
         }
     }
 }

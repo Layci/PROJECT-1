@@ -122,6 +122,7 @@ namespace ProJect1
 
         IEnumerator DashAndAttack(MainSenceEnemy enemy)
         {
+            PartyFormationManager.Instance.lastFieldPosition = transform.position;
             //isAttacking = true;
             anim.SetTrigger("Attack");
 
@@ -162,58 +163,5 @@ namespace ProJect1
             //isAttacking = false;
             cr.enabled = true;
         }
-
-        /*void TryAttack()
-        {
-            if (isAttacking) return;
-
-            Transform target = PlayerCombat.instance.currentTarget.transform;
-
-            if (target != null)
-            {
-                StartCoroutine(DashAndAttack(target));
-            }
-            else
-            {
-                anim.SetTrigger("Attack");
-            }
-        }*/
-
-        /*IEnumerator DashAndAttack(Transform target)
-        {
-            if (target == null) yield break;
-
-            isAttacking = true;
-            cr.enabled = false; // 이동충돌 방지 (돌진 시 필수)
-
-            Vector3 dir = (target.position - transform.position).normalized;
-            dir.y = 0;
-
-            // 적 방향 바라보기
-            Quaternion targetRot = Quaternion.LookRotation(dir);
-            transform.rotation = targetRot;
-
-            float dashTime = 0.1f;      // 돌진 시간
-            float dashSpeed = 12f;      // 돌진 속도
-            float timer = 0f;
-
-            // ★ 빠르게 앞으로 슬라이드해 들어감
-            while (timer < dashTime)
-            {
-                transform.position += dir * dashSpeed * Time.deltaTime;
-
-                timer += Time.deltaTime;
-                yield return null;
-            }
-
-            // ★ 공격 애니메이션
-            anim.SetTrigger("Attack");
-
-            // 공격 애니 끝날 때까지 대기 (애니 길이에 맞춰 조절)
-            yield return new WaitForSeconds(0.5f);
-
-            cr.enabled = true;
-            isAttacking = false;
-        }*/
     }
 }

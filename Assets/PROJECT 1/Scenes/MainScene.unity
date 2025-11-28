@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 338373347}
   - component: {fileID: 338373346}
   - component: {fileID: 338373345}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -424,7 +424,7 @@ GameObject:
   - component: {fileID: 449665015}
   - component: {fileID: 449665014}
   - component: {fileID: 449665013}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -530,7 +530,7 @@ GameObject:
   - component: {fileID: 754735860}
   - component: {fileID: 754735859}
   - component: {fileID: 754735858}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6176,14 +6176,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentParty:
-  - prefab: {fileID: 8886643203085043590, guid: 47fa46e5008c7b64c858f4eeed68fb71, type: 3}
-    characterName: Inugami
   - prefab: {fileID: 6505999207909017065, guid: 1c33d09449cf9bc45b5dc0b9cda47110, type: 3}
     characterName: Faye
-  - prefab: {fileID: 6137447632712536868, guid: f3147ed369d7a74409c75fd7a24d8ec7, type: 3}
-    characterName: Taster
   - prefab: {fileID: 4296464342933810020, guid: d0f06ad2c6775d643942c5f439884561, type: 3}
     characterName: Hoshi
+  - prefab: {fileID: 6137447632712536868, guid: f3147ed369d7a74409c75fd7a24d8ec7, type: 3}
+    characterName: Taster
+  - prefab: {fileID: 8886643203085043590, guid: 47fa46e5008c7b64c858f4eeed68fb71, type: 3}
+    characterName: Inugami
+  partyStates:
+  - characterName: 
+    currentHP: 0
+    maxHP: 0
+  lastFieldPosition: {x: 0, y: 0, z: 0}
 --- !u!33 &775810265
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -6261,8 +6266,8 @@ GameObject:
   - component: {fileID: 783368417}
   - component: {fileID: 783368416}
   - component: {fileID: 783368415}
-  m_Layer: 0
-  m_Name: Plane (1)
+  m_Layer: 21
+  m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8330,7 +8335,7 @@ GameObject:
   - component: {fileID: 1474923342}
   - component: {fileID: 1474923341}
   - component: {fileID: 1474923340}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8504,7 +8509,7 @@ GameObject:
   - component: {fileID: 1849268847}
   - component: {fileID: 1849268846}
   - component: {fileID: 1849268845}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8712,7 +8717,7 @@ GameObject:
   - component: {fileID: 2033734331}
   - component: {fileID: 2033734330}
   - component: {fileID: 2033734329}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8851,7 +8856,7 @@ SceneRoots:
   - {fileID: 388495026}
   - {fileID: 365978617}
   - {fileID: 901705813}
-  - {fileID: 775709236}
   - {fileID: 1921029557}
   - {fileID: 1542744152}
   - {fileID: 983535367}
+  - {fileID: 775709236}
