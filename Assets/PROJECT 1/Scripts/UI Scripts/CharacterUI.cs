@@ -10,6 +10,7 @@ namespace ProJect1
     {
         public Image portrait;
         public Slider hpBarSlider;
+        public Text hpText;
         public Text buffTurnText;
         public BuffIconUI buffIconUI;
         public Text buffPowerText;
@@ -32,6 +33,7 @@ namespace ProJect1
         {
             if (hpBarSlider != null)
                 hpBarSlider.value = (float)owner.curHealth / owner.maxHealth;
+            hpText.text = Mathf.RoundToInt(owner.curHealth).ToString();
         }
 
         public void UpdateBuff()

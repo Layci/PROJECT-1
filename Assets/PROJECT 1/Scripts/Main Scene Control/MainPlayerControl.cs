@@ -163,5 +163,10 @@ namespace ProJect1
             //isAttacking = false;
             cr.enabled = true;
         }
+
+        public void RestorePlayerPosition()
+        {
+            transform.position = PartyFormationManager.Instance.lastFieldPosition;
+        }
     }
 }

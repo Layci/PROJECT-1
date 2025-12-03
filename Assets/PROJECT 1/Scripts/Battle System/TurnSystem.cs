@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
@@ -68,7 +69,7 @@ namespace Project1
                 return;
             }
 
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
 
         private void Start()
@@ -163,6 +164,7 @@ namespace Project1
                     Debug.Log("모든 웨이브 완료! 전투 종료.");
                     // 전체 전투 승리 처리
                     SaveBattleResult();
+                    PartyFormationManager.Instance.SavePartyState();
                     StartCoroutine(ShowWinText());
                 }
             }
@@ -313,6 +315,7 @@ namespace Project1
         {
             // 이제 스폰이 끝났으니 캐릭터들 새로 불러오기
             RefreshCharacterLists();
+            //PartyFormationManager.Instance.LoadPartyState();
 
             currentTurnIndex = 0;
             currentTurn = 1;
@@ -386,6 +389,7 @@ namespace Project1
                 yield return null;
             }
             winText.gameObject.SetActive(false);
+            SceneManager.LoadScene("MainScene");
         }
     }
 }

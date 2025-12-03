@@ -39,6 +39,7 @@ namespace ProJect1
             if (PartyFormationManager.Instance != null && PartyFormationManager.Instance.currentParty.Count > 0)
             {
                 SpawnPlayerUnitsFromFormation();
+                PartyFormationManager.Instance.LoadPartyState(playerCharacters); // 저장된 체력 로드
             }
 
             // 기존대로 유닛 리스트 갱신

@@ -37,7 +37,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1277.3265, y: 80.679115}
+  m_AnchoredPosition: {x: 0, y: 80.679115}
   m_SizeDelta: {x: 250, y: 65}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2606068880502129939
@@ -182,16 +182,15 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8175446183300018740
-Transform:
+--- !u!224 &8175446183300018740
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2189435719221961901}
-  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.3265047, y: 1.8208823, z: -1.2667549}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -199,6 +198,11 @@ Transform:
   - {fileID: 6837758853468191369}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2365146481637261840
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,7 +399,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   portrait: {fileID: 6594757131700212882}
   hpBarSlider: {fileID: 2606068880502129939}
+  hpText: {fileID: 1387041834675475540}
   buffTurnText: {fileID: 0}
+  buffIconUI: {fileID: 0}
+  buffPowerText: {fileID: 0}
 --- !u!1 &6185727201816262571
 GameObject:
   m_ObjectHideFlags: 0

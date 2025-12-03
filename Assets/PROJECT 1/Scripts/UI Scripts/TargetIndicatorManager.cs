@@ -18,7 +18,6 @@ namespace ProJect1
         public void ShowTargetIndicators(List<GameObject> targets)
         {
             ClearIndicators();
-            Debug.Log("ddddddddddddddddddddddddddddddddddddddddddddd");
             foreach (var target in targets)
             {
                 if (target == null) continue;
