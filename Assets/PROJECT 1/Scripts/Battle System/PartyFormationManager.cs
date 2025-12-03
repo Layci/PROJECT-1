@@ -2,6 +2,7 @@ using Project1;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ProJect1
 {
@@ -39,6 +40,7 @@ namespace ProJect1
             {
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
+                SceneManager.sceneLoaded += OnSceneLoaded;
             }
             else
             {
@@ -102,6 +104,22 @@ namespace ProJect1
                 unit.curHealth = state.currentHP;
                 unit.maxHealth = state.maxHP;
                 //unit.UpdateHPUI();
+            }
+        }
+
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (scene.name == "MainScene")
+            {
+                var player = GameObject.FindWithTag("Player");
+                var cc = player.GetComponent<CharacterController>();
+                
+                if (player != null)
+                {
+                    if (cc != null) cc.enabled = false;
+                    player.transform.position = lastFieldPosition;
+                    if (cc != null) cc.enabled = true;
+                }
             }
         }
         /*public void LoadPartyState(List<GameObject> spawnedParty)

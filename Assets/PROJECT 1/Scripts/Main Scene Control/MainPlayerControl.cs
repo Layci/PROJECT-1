@@ -35,6 +35,8 @@ namespace ProJect1
         {
             anim = GetComponentInChildren<Animator>();
             cr = GetComponentInChildren<CharacterController>();
+            //transform.position = PartyFormationManager.Instance.lastFieldPosition;
+            Debug.Log(PartyFormationManager.Instance.lastFieldPosition);
         }
 
         void Update()
