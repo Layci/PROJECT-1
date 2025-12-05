@@ -16,7 +16,7 @@ namespace ProJect1
             btn.onClick.AddListener(OnIconClicked);
         }
 
-        void OnIconClicked()
+        public void OnIconClicked()
         {
             WorldMapUI.Instance.TeleportTo(teleporterId);
         }

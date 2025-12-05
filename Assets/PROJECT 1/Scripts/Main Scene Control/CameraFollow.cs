@@ -88,7 +88,7 @@ namespace ProJect1
             {
                 LockCursor(false);
             }
-            else if (Input.GetKeyUp(KeyCode.LeftAlt))
+            else if (Input.GetKeyUp(KeyCode.LeftAlt) && !MainPlayerControl.instance.inputBlocked)
             {
                 LockCursor(true);
             }
@@ -103,7 +103,7 @@ namespace ProJect1
         void HandleCameraRotation()
         {
             // Alt 키를 누르고 있을 땐 카메라 회전 금지
-            if (Input.GetKey(KeyCode.LeftAlt))
+            if (Input.GetKey(KeyCode.LeftAlt) || MainPlayerControl.instance.inputBlocked)
                 return;
 
             float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;

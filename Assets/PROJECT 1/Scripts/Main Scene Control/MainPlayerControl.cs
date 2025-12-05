@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace ProJect1
 {
@@ -17,6 +18,7 @@ namespace ProJect1
         public bool holdRun = true;
         public bool isAttack = false;
         public bool isAttacking = false;
+        public bool inputBlocked = false;
 
         [Header("카메라 참조")]
         public Transform cameraTransform; // 3인칭 카메라의 Transform
@@ -41,10 +43,10 @@ namespace ProJect1
 
         void Update()
         {
-            if (!isAttacking)
+            if (!isAttacking && !inputBlocked)
                 MovePlayer();
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !inputBlocked && !EventSystem.current.IsPointerOverGameObject())
                 TryAttack();
         }
 

@@ -8,7 +8,7 @@ namespace ProJect1
     {
         public static WorldMapUI Instance;
 
-        private Dictionary<string, Teleporter> teleporterDict = new Dictionary<string, Teleporter>();
+        public Dictionary<string, Teleporter> teleporterDict = new Dictionary<string, Teleporter>();
         public GameObject player;
 
         private void Awake()
