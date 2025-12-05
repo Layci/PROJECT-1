@@ -25,6 +25,7 @@ namespace ProJect1
     {
         public GameObject prefab;     // 전투씬에서 Instantiate할 프리팹
         public string characterName;  // 캐릭터 이름(선택적으로 UI용)
+        public Sprite icon;           // 캐릭터 아이콘
     }
 
     public class PartyFormationManager : MonoBehaviour
@@ -33,6 +34,7 @@ namespace ProJect1
         public List<PartyMemberData> currentParty = new(); // 현재 파티 저장 목록
         public List<PartyMemberState> partyStates = new(); // 전투 결과 저장 목록
         public Vector3 lastFieldPosition; // 전투 전 플레이어 필드 위치
+        public int maxPartySize = 4;
 
         void Awake()
         {
@@ -53,9 +55,23 @@ namespace ProJect1
             BuildPartyStates();
         }
 
-        public void SetParty(List<PartyMemberData> newParty)
+        /*public void SetParty(List<PartyMemberData> newParty)
         {
             currentParty = newParty;
+        }*/
+
+        public void SetSlot(int index, PartyMemberData data)
+        {
+            if (index >= currentParty.Count)
+                currentParty.Add(data);
+            else
+                currentParty[index] = data;
+        }
+
+        public void RemoveSlot(int index)
+        {
+            if (index < currentParty.Count)
+                currentParty.RemoveAt(index);
         }
 
         public void BuildPartyStates()

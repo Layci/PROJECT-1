@@ -9,6 +9,7 @@ namespace ProJect1
         public static UIManager Instance;
 
         public GameObject worldMapUI;
+        public GameObject partyFormationUI;
         public MainPlayerControl player;
 
         public bool isWorldMapOpen = false;
@@ -43,9 +44,24 @@ namespace ProJect1
             UpdateCursorState();
         }
 
+        public void TogglePartyMenu()
+        {
+            isWorldMapOpen = !isWorldMapOpen;
+            partyFormationUI.SetActive(isWorldMapOpen);
+
+            player.inputBlocked = isWorldMapOpen;
+
+            UpdateCursorState();
+        }
+
         public void OnClickMapBtn()
         {
             ToggleWorldMap();
+        }
+
+        public void OnClickPartyMenu()
+        {
+            TogglePartyMenu();
         }
 
         public void CloseAllUI()
