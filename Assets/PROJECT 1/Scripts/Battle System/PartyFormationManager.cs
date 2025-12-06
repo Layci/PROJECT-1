@@ -36,6 +36,9 @@ namespace ProJect1
         public Vector3 lastFieldPosition; // 전투 전 플레이어 필드 위치
         public int maxPartySize = 4;
 
+        // 중복 선택 방지 기능 ON/OFF
+        public bool preventDuplicate = true;
+
         void Awake()
         {
             if (Instance == null)
@@ -60,6 +63,7 @@ namespace ProJect1
             currentParty = newParty;
         }*/
 
+        // 슬롯에 캐릭터 배정
         public void SetSlot(int index, PartyMemberData data)
         {
             if (index >= currentParty.Count)
@@ -68,10 +72,21 @@ namespace ProJect1
                 currentParty[index] = data;
         }
 
+        // 슬롯 비우기
         public void RemoveSlot(int index)
         {
             if (index < currentParty.Count)
                 currentParty.RemoveAt(index);
+        }
+
+        // 파티 중복 여부 확인
+        public bool IsCharacterAlreadySelected(PartyMemberData data)
+        {
+            foreach (var member in currentParty)
+            {
+                if (member == data) return true;
+            }
+            return false;
         }
 
         public void BuildPartyStates()

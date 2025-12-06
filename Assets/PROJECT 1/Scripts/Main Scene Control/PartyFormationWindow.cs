@@ -20,6 +20,14 @@ namespace ProJect1
         // 캐릭터 아이콘 누르면 가장 먼저 비어있는 슬롯에 자동 배치
         public void AddToFirstEmptySlot(PartyMemberData data)
         {
+            // 중복 체크 활성화 + 이미 선택된 캐릭터라면 추가하지 않음
+            if (PartyFormationManager.Instance.preventDuplicate &&
+                PartyFormationManager.Instance.IsCharacterAlreadySelected(data))
+            {
+                Debug.Log($"중복 캐릭터 {data.characterName} 선택 방지됨.");
+                return;
+            }
+
             for (int i = 0; i < slots.Length; i++)
             {
                 if (slots[i].IsEmpty())

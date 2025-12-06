@@ -14,15 +14,17 @@ namespace ProJect1
 
         public PartyMemberData currentData;
 
-        RectTransform rectTransform;
+        private GameObject dragIcon;
+        private RectTransform dragIconRect;
+        //RectTransform rectTransform;
         Canvas canvas;
-        CanvasGroup canvasGroup;
+        //CanvasGroup canvasGroup;
 
         private void Awake()
         {
-            rectTransform = GetComponent<RectTransform>();
+            //rectTransform = GetComponent<RectTransform>();
             canvas = FindObjectOfType<Canvas>();
-            canvasGroup = gameObject.AddComponent<CanvasGroup>();
+            //canvasGroup = gameObject.AddComponent<CanvasGroup>();
         }
 
         public void SetData(PartyMemberData data)
@@ -52,39 +54,47 @@ namespace ProJect1
             }
         }
 
-        // 드래그 시작
         public void OnBeginDrag(PointerEventData eventData)
         {
             if (currentData == null) return;
 
-            canvasGroup.alpha = 0.6f;
-            canvasGroup.blocksRaycasts = false;
+            // 드래그 아이콘 생성
+            dragIcon = new GameObject("DragIcon");
+            dragIcon.transform.SetParent(canvas.transform);
+
+            dragIconRect = dragIcon.AddComponent<RectTransform>();
+            dragIconRect.sizeDelta = icon.rectTransform.sizeDelta;
+
+            Image img = dragIcon.AddComponent<Image>();
+            img.sprite = icon.sprite;
+            img.raycastTarget = false; // 드래그 아이콘은 레이캐스트 방해하지 않음
         }
 
-        // 드래그 중
         public void OnDrag(PointerEventData eventData)
         {
-            if (currentData == null) return;
+            if (dragIconRect == null) return;
 
-            rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+            Vector2 pos;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                canvas.transform as RectTransform,
+                eventData.position,
+                eventData.pressEventCamera,
+                out pos
+            );
+
+            dragIconRect.anchoredPosition = pos;
         }
 
-        // 드래그 종료 → 다른 슬롯에 Dropped 확인
         public void OnEndDrag(PointerEventData eventData)
         {
-            canvasGroup.alpha = 1f;
-            canvasGroup.blocksRaycasts = true;
+            Destroy(dragIcon);
 
-            PartySlotUI hoveredSlot = PartyFormationWindow.Instance.GetHoveredSlot(eventData);
+            var hoveredSlot = PartyFormationWindow.Instance.GetHoveredSlot(eventData);
 
-            // 슬롯과 슬롯 교환
             if (hoveredSlot != null && hoveredSlot != this)
             {
                 PartyFormationWindow.Instance.SwapSlots(this, hoveredSlot);
             }
-
-            // 원래 위치로 돌아가기
-            PartyFormationWindow.Instance.RefreshUI();
         }
     }
 }
