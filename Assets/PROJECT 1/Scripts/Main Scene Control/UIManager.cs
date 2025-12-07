@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ProJect1
 {
@@ -11,12 +13,35 @@ namespace ProJect1
         public GameObject worldMapUI;
         public GameObject partyFormationUI;
         public MainPlayerControl player;
+        public Toggle toggle;
+        public GameObject duplicateWarningPopup;
 
         public bool isWorldMapOpen = false;
 
         private void Awake()
         {
             Instance = this;
+        }
+
+        private void Start()
+        {
+            // 초기 상태 = 켜짐(true)
+            toggle.isOn = PartyFormationManager.Instance.preventDuplicate;
+
+            toggle.onValueChanged.AddListener((value) =>
+            {
+                //PartyFormationManager.Instance.preventDuplicate = value;
+                if (value) // ture == 중복 방지 켜기
+                {
+                    duplicateWarningPopup.SetActive(true);
+                }
+                else
+                {
+                    // 단순히 옵션만 켜면 됨
+                    PartyFormationManager.Instance.preventDuplicate = value;
+                }
+                Debug.Log("중복 선택 방지: " + (value ? "켜짐" : "꺼짐"));
+            });
         }
 
         private void Update()
@@ -28,12 +53,13 @@ namespace ProJect1
             }
 
             // ESC로 UI 닫기
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) && !duplicateWarningPopup.activeSelf)
             {
                 CloseAllUI();
             }
         }
 
+        // 월드맵을 열었을때
         public void ToggleWorldMap()
         {
             isWorldMapOpen = !isWorldMapOpen;
@@ -44,6 +70,7 @@ namespace ProJect1
             UpdateCursorState();
         }
 
+        // 파티편성 메뉴를 열었을때
         public void TogglePartyMenu()
         {
             isWorldMapOpen = !isWorldMapOpen;
@@ -54,26 +81,54 @@ namespace ProJect1
             UpdateCursorState();
         }
 
+        // 맵 UI 클릭
         public void OnClickMapBtn()
         {
             ToggleWorldMap();
         }
 
+        // 파티편성 UI 클릭
         public void OnClickPartyMenu()
         {
             TogglePartyMenu();
         }
 
+        // UI 닫기
         public void CloseAllUI()
         {
             // 월드맵만 관리한다면 이렇게
             isWorldMapOpen = false;
             player.inputBlocked = isWorldMapOpen; // 전투 입력
             worldMapUI.SetActive(false);
+            partyFormationUI.SetActive(false);
 
             UpdateCursorState();
         }
 
+        public void ConfirmTurnOffDuplicate()
+        {
+            // 옵션 활성화 확정
+            PartyFormationManager.Instance.preventDuplicate = true;
+
+            // 파티 초기화
+            PartyFormationManager.Instance.ResetParty();
+            // UI 갱신
+            PartyFormationWindow.Instance.RefreshUI();
+
+            // 팝업 닫기
+            duplicateWarningPopup.SetActive(false);
+        }
+
+        public void CancelTurnOffDuplicate()
+        {
+            // 토글 다시 false로 돌리기 (UI 강제 갱신)
+            toggle.isOn = false;
+
+            // 팝업 닫기
+            duplicateWarningPopup.SetActive(false);
+        }
+
+        // 커서 잠금 상태
         private void UpdateCursorState()
         {
             // UI 열려 있으면 마우스 보이고 Unlock

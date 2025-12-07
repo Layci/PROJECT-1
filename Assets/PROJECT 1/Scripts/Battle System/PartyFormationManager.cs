@@ -79,6 +79,12 @@ namespace ProJect1
                 currentParty.RemoveAt(index);
         }
 
+        public void ResetParty()
+        {
+            for (int i = 0; i < currentParty.Count; i++)
+                currentParty[i] = null;
+        }
+
         // 파티 중복 여부 확인
         public bool IsCharacterAlreadySelected(PartyMemberData data)
         {
