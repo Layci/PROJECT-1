@@ -31,6 +31,7 @@ namespace ProJect1
     public class PartyFormationManager : MonoBehaviour
     {
         public static PartyFormationManager Instance;
+
         public List<PartyMemberData> currentParty = new(); // 현재 파티 저장 목록
         public List<PartyMemberState> partyStates = new(); // 전투 결과 저장 목록
         public Vector3 lastFieldPosition; // 전투 전 플레이어 필드 위치
@@ -55,7 +56,7 @@ namespace ProJect1
 
         private void Start()
         {
-            BuildPartyStates();
+            PartyHeal();
         }
 
         /*public void SetParty(List<PartyMemberData> newParty)
@@ -104,10 +105,20 @@ namespace ProJect1
                 // 1) 프리팹에서 BaseCharacterControl 가져오기 (프리팹이니까 Instantiate 필요 없음)
                 BaseCharacterControl baseStats = member.prefab.GetComponent<BaseCharacterControl>();
 
-                PartyMemberState state = new PartyMemberState(baseStats.unitName,(int)baseStats.maxHealth, (int)baseStats.maxHealth);
+                PartyMemberState state = new PartyMemberState(baseStats.unitName,(int)baseStats.curHealth, (int)baseStats.maxHealth);
 
                 partyStates.Add(state);
             }
+        }
+
+        public void PartyHeal()
+        {
+            foreach (var state in partyStates)
+            {
+                state.currentHP = state.maxHP;
+            }
+
+            Debug.Log("파티 전체 회복 완료!");
         }
 
         public void SavePartyState()

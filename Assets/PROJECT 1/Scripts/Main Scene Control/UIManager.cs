@@ -93,6 +93,18 @@ namespace ProJect1
             TogglePartyMenu();
         }
 
+        // 월드맵 닫기
+        public void OnCLickExitMap()
+        {
+            CloseAllUI();
+        }
+
+        // 파티편성메뉴 닫기
+        public void OnClickExitParty()
+        {
+            CloseAllUI();
+        }
+
         // UI 닫기
         public void CloseAllUI()
         {
@@ -102,9 +114,11 @@ namespace ProJect1
             worldMapUI.SetActive(false);
             partyFormationUI.SetActive(false);
 
+            PartyFormationManager.Instance.BuildPartyStates();
             UpdateCursorState();
         }
 
+        // 중복방지 허용
         public void ConfirmTurnOffDuplicate()
         {
             // 옵션 활성화 확정
@@ -119,6 +133,7 @@ namespace ProJect1
             duplicateWarningPopup.SetActive(false);
         }
 
+        // 중복방지 취소
         public void CancelTurnOffDuplicate()
         {
             // 토글 다시 false로 돌리기 (UI 강제 갱신)

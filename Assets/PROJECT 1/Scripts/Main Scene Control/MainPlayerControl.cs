@@ -12,6 +12,7 @@ namespace ProJect1
         public float runSpeed = 6f;
         public float rotateSpeed = 10f;
         public float gravity = -10f;
+        public float stopMoveTime = 0;
 
         [Header("캐릭터 상태")]
         public bool run = false;
@@ -110,6 +111,22 @@ namespace ProJect1
             // === 애니메이션 ===
             float animSpeed = move.magnitude / runSpeed;   // 0 ~ 1
             anim.SetFloat("Speed", animSpeed);
+
+            // 플레이어가 움직이지 않으면
+            if (moveDir.magnitude < 0.1f)
+            {
+                stopMoveTime += Time.deltaTime;
+            }
+            else
+            {
+                stopMoveTime = 0;
+            }
+
+            if (stopMoveTime >= 10)
+            {
+                anim.SetTrigger("Rest");
+                stopMoveTime = 0;
+            }
         }
 
         void TryAttack()
