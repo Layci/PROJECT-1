@@ -354,6 +354,35 @@ namespace Project1
         // 전투 결과 저장
         public void SaveBattleResult()
         {
+            var manager = PartyFormationManager.Instance;
+
+            foreach (var player in TurnSystem.instance.playerCharacters)
+            {
+                var unit = player.GetComponent<BaseCharacterControl>();
+                string key = unit.unitName;
+
+                // 기존 상태가 없으면 새로 생성
+                if (!manager.allStates.ContainsKey(key))
+                {
+                    manager.allStates[key] = new PartyMemberState(
+                        key,
+                        (int)unit.curHealth,
+                        (int)unit.maxHealth
+                    );
+                }
+                else
+                {
+                    // 기존 상태 업데이트
+                    var state = manager.allStates[key];
+                    state.currentHP = (int)unit.curHealth;
+                    state.maxHP = (int)unit.maxHealth;
+                }
+
+                Debug.Log($"전투 결과 저장: {key}, 남은 체력 = {unit.curHealth}");
+            }
+        }
+        /*public void SaveBattleResult()
+        {
             PartyFormationManager.Instance.partyStates.Clear();
 
             foreach (var player in TurnSystem.instance.playerCharacters)
@@ -364,7 +393,7 @@ namespace Project1
                     new PartyMemberState(unit.unitName, ((int)unit.curHealth), ((int)unit.maxHealth))
                 );
             }
-        }
+        }*/
 
         IEnumerator HideWaveTextAfterSeconds(float seconds)
         {

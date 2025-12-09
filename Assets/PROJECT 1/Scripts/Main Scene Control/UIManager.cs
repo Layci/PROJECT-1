@@ -15,6 +15,9 @@ namespace ProJect1
         public MainPlayerControl player;
         public Toggle toggle;
         public GameObject duplicateWarningPopup;
+        public Image partyHealMessege;
+        public float textDuration;
+        public float fadeDuration;
 
         public bool isWorldMapOpen = false;
 
@@ -114,7 +117,7 @@ namespace ProJect1
             worldMapUI.SetActive(false);
             partyFormationUI.SetActive(false);
 
-            PartyFormationManager.Instance.BuildPartyStates();
+            PartyFormationManager.Instance.ReBuildPartyStates();
             UpdateCursorState();
         }
 
@@ -141,6 +144,25 @@ namespace ProJect1
 
             // ÆË¾÷ ´Ý±â
             duplicateWarningPopup.SetActive(false);
+        }
+
+        IEnumerator ShowHealMessege()
+        {
+            partyHealMessege.gameObject.SetActive(true);
+            Color originalColor = partyHealMessege.color;
+            originalColor.a = 1f;
+            partyHealMessege.color = originalColor;
+            yield return new WaitForSeconds(textDuration);
+            // ÆäÀÌµå ¾Æ¿ô
+            float elapsed = 0f;
+            while (elapsed < fadeDuration)
+            {
+                elapsed += Time.deltaTime;
+                float alpha = Mathf.Lerp(1f, 0, elapsed / fadeDuration);
+                partyHealMessege.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+                yield return null;
+            }
+            partyHealMessege.gameObject.SetActive(false);
         }
 
         // Ä¿¼­ Àá±Ý »óÅÂ
