@@ -5189,8 +5189,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitName: Faye
   unitIcon: {fileID: 21300000, guid: 809a6a65b705bea4fb70d6f7bffbfb1b, type: 3}
-  maxHealth: 245
-  curHealth: 245
+  maxHealth: 250
+  curHealth: 250
   moveSpeed: 3
   unitSpeed: 93
   attackRange: 1

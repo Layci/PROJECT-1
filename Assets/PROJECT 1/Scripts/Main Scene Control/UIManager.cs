@@ -117,7 +117,7 @@ namespace ProJect1
             worldMapUI.SetActive(false);
             partyFormationUI.SetActive(false);
 
-            PartyFormationManager.Instance.ReBuildPartyStates();
+            PartyFormationManager.Instance.RebuildPartyData();
             UpdateCursorState();
         }
 

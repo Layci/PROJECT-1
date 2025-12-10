@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 namespace ProJect1
 {
-    [System.Serializable]
+    /*[System.Serializable]
     public class PartyMemberState
     {
         public string characterName;
@@ -20,13 +20,16 @@ namespace ProJect1
             currentHP = hp;
             maxHP = max;
         }
-    }
+    }*/
     [System.Serializable]
     public class PartyMemberData
     {
         public GameObject prefab;     // 전투씬에서 Instantiate할 프리팹
         public string characterName;  // 캐릭터 이름(선택적으로 UI용)
+        public GameObject battleInstance; // 전투에서 Instantiate된 오브젝트
         public Sprite icon;           // 캐릭터 아이콘
+        public int currentHP;
+        public int maxHP;
     }
 
     public class PartyFormationManager : MonoBehaviour
@@ -34,8 +37,9 @@ namespace ProJect1
         public static PartyFormationManager Instance;
 
         public List<PartyMemberData> currentParty = new(); // 현재 파티 저장 목록
-        public List<PartyMemberState> partyStates = new(); // 전투 결과 저장 목록
-        public Dictionary<string, PartyMemberState> allStates = new Dictionary<string, PartyMemberState>();
+        // 111111111111111111
+        //public List<PartyMemberState> partyStates = new(); // 전투 결과 저장 목록
+        //public Dictionary<string, PartyMemberState> allStates = new Dictionary<string, PartyMemberState>();
         public Vector3 lastFieldPosition; // 전투 전 플레이어 필드 위치
         public int maxPartySize = 4;
 
@@ -100,6 +104,21 @@ namespace ProJect1
 
         public void BuildPartyStates()
         {
+            foreach (var member in currentParty)
+            {
+                BaseCharacterControl baseStats = member.prefab.GetComponent<BaseCharacterControl>();
+
+                // 최대 체력 세팅
+                member.maxHP = (int)baseStats.maxHealth;
+
+                // 현재 체력을 풀피로 초기화
+                member.currentHP = member.maxHP;
+            }
+        }
+
+        // 111111111111111
+        /*public void BuildPartyStates()
+        {
             partyStates.Clear();
 
             foreach (var member in currentParty)
@@ -111,9 +130,10 @@ namespace ProJect1
 
                 partyStates.Add(state);
             }
-        }
+        }*/
 
-        public PartyMemberState GetOrCreateState(PartyMemberData member)
+        // 체력 저장 방식
+        /*public PartyMemberState GetOrCreateState(PartyMemberData member)
         {
             if (allStates.TryGetValue(member.characterName, out var state))
                 return state;  // 기존 체력 유지
@@ -136,8 +156,29 @@ namespace ProJect1
                 var state = GetOrCreateState(member);
                 partyStates.Add(state);
             }
-        }
+        }*/
 
+        public void RebuildPartyData()
+        {
+            foreach (var member in currentParty)
+            {
+                // Base stats 가져오기
+                var baseStats = member.prefab.GetComponent<BaseCharacterControl>();
+                int prefabMax = (int)baseStats.maxHealth;
+
+                // maxHP가 0이면 프리팹 기준으로 세팅(초기화 안 된 경우)
+                if (member.maxHP == 0)
+                    member.maxHP = prefabMax;
+
+                // currentHP가 0이면 "아직 값이 없음"으로 보고 풀피로 세팅
+                // (주의: 0을 '사망'으로 쓰고 있다면 이 로직을 바꿔야 함)
+                if (member.currentHP == 0)
+                    member.currentHP = 1;
+            }
+
+            Debug.Log("Party data rebuilt (currentHP/maxHP 보정 완료)");
+        }
+        // 11111111111111111111111
         /*public void ReBuildPartyStates()
         {
             List<PartyMemberState> newStates = new List<PartyMemberState>();
@@ -175,9 +216,10 @@ namespace ProJect1
             Debug.Log("PartyState 재정렬 완료 (체력 유지됨)");
         }*/
 
+        // 111111111111111111
         public void PartyHeal()
         {
-            foreach (var state in partyStates)
+            foreach (var state in currentParty)
             {
                 state.currentHP = state.maxHP;
             }
@@ -185,7 +227,7 @@ namespace ProJect1
             Debug.Log("파티 전체 회복 완료!");
         }
 
-        public void SavePartyState()
+        /*public void SavePartyState()
         {
             var manager = PartyFormationManager.Instance;
 
@@ -204,8 +246,37 @@ namespace ProJect1
                     ReBuildPartyStates();
                 }
             }
-        }
+        }*/
 
+        public void SavePartyState()
+        {
+            // currentParty가 비어있으면 저장할 것이 없음
+            if (currentParty == null || currentParty.Count == 0)
+                return;
+
+            for (int i = 0; i < currentParty.Count; i++)
+            {
+                // 전투에서 생성된 인스턴스(죽었을 수도 있음)
+                var instance = currentParty[i].battleInstance;
+
+                // battleInstance가 null이면 (전투 중 제외된 경우)
+                // prefab의 BaseCharacterControl로 접근
+                BaseCharacterControl unit;
+
+                if (instance != null)
+                    unit = instance.GetComponent<BaseCharacterControl>();
+                else
+                    unit = currentParty[i].prefab.GetComponent<BaseCharacterControl>();
+
+                // 이미 SaveBattleResult()에서 curHealth가 덮어져 있으므로
+                // 여기선 따로 HP를 수정할 필요 없음.
+                // prefab에 curHealth를 반영.
+
+                var prefabStats = currentParty[i].prefab.GetComponent<BaseCharacterControl>();
+                prefabStats.curHealth = unit.curHealth;
+            }
+        }
+        // 11111111111111111111111
         /*public void SavePartyState()
         {
             var states = partyStates;
@@ -219,12 +290,33 @@ namespace ProJect1
                 var unit = currentParty[i].prefab.GetComponent<BaseCharacterControl>();
 
                 unit.curHealth = state.currentHP;
-                Debug.Log(state.currentHP);
-                Debug.Log(state.characterName);
             }
         }*/
 
+        // BattleManager start 함수에 위치 배틀씬 진입시 편성정보에 있는 캐릭터 인스턴스 한 뒤 남은 체력을 로드
         public void LoadPartyState(List<BaseCharacterControl> players)
+        {
+            var party = PartyFormationManager.Instance.currentParty;
+
+            if (party == null || party.Count == 0)
+                return;
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                var member = party[i];
+                var unit = players[i];
+
+                // currentParty → 전투 인스턴스 BaseCharacterControl 체력 복구
+                unit.curHealth = member.currentHP;
+                unit.maxHealth = member.maxHP;
+
+                // 체력이 0 이하라면 죽은 상태였던 것이므로 바로 1로 회복
+                if (unit.curHealth <= 0)
+                    unit.curHealth = 1;
+            }
+        }
+        // 111111111111111111111
+        /*public void LoadPartyState(List<BaseCharacterControl> players)
         {
             if (partyStates == null || partyStates.Count == 0)
                 return;
@@ -238,7 +330,7 @@ namespace ProJect1
                 unit.maxHealth = state.maxHP;
                 //unit.UpdateHPUI();
             }
-        }
+        }*/
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {

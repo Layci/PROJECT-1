@@ -50,7 +50,6 @@ namespace ProJect1
                 Debug.Log("모든 웨이브 완료 또는 잘못된 인덱스입니다!");
                 return;
             }
-
             // 현재 웨이브 인덱스 업데이트
             currentWaveIndex = waveIndex;
 

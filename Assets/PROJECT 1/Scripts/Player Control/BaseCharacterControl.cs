@@ -155,15 +155,12 @@ namespace Project1
             {
                 if (prepareState == AttackPrepareState.Skill)
                 {
-                    Debug.Log("현재 prepareState2: " + prepareState);
                     // 이미 준비 상태 → 확정 실행
                     ExecuteSkillAttack();
                     SkillPointManager.instance.UseSkillPoint();
                 }
                 else
                 {
-                    Debug.Log("스킬공격 준비 상태 진입");
-                    Debug.Log("현재 prepareState2: " + prepareState);
                     Debug.Log(skillAttackRange);
                     // 준비 상태 진입
                     TurnSystem.instance.SetAllPlayersPrepareState(AttackPrepareState.Skill);
@@ -287,7 +284,6 @@ namespace Project1
                 {
                     if (distanceToTarget <= attackRange && !isBlock)
                     {
-                        Debug.Log("일반공격 준비중.......................");
                         currentState = PlayerState.Attacking;
                     }
                 }
@@ -295,7 +291,6 @@ namespace Project1
                 {
                     if (distanceToTarget <= skillRange)
                     {
-                        Debug.Log("스킬공격 준비중.......................");
                         currentState = PlayerState.Attacking;
                     }
                 }
@@ -399,7 +394,6 @@ namespace Project1
         public override void Die()
         {
             base.Die();
-            Destroy(gameObject);
             TurnSystem.instance.RemoveCharacterFromTurnOrder(this);            
         }
 

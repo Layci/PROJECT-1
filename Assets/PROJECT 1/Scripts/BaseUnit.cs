@@ -70,6 +70,7 @@ namespace ProJect1
 
             if (curHealth <= 0)
             {
+                curHealth = 0;
                 Die();
             }
         }

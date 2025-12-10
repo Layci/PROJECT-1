@@ -113,13 +113,15 @@ namespace ProJect1
 
                 // 프리팹 생성
                 GameObject player = Instantiate(member.prefab, currentPos, Quaternion.identity);
-
+                member.battleInstance = player;
                 // BaseCharacterControl 등록
                 var control = player.GetComponent<BaseCharacterControl>();
                 if (control != null)
                 {
                     playerCharacters.Add(control);
                     control.initialPosition = currentPos;
+                    member.maxHP = (int)control.maxHealth;
+                    member.currentHP = (int)control.curHealth;
                 }
 
                 // 간격 적용

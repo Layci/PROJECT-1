@@ -5081,7 +5081,6 @@ MonoBehaviour:
   enemySelection: {fileID: 0}
   currentTarget: {fileID: 0}
   currentState: 0
-  buffIconUI: {fileID: 0}
 --- !u!1 &6146704835895786655
 GameObject:
   m_ObjectHideFlags: 0

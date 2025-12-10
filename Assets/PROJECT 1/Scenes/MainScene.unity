@@ -627,7 +627,10 @@ MonoBehaviour:
   currentData:
     prefab: {fileID: 0}
     characterName: 
+    battleInstance: {fileID: 0}
     icon: {fileID: 0}
+    currentHP: 0
+    maxHP: 0
 --- !u!114 &76160851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -774,6 +777,80 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 77503224}
   m_CullTransparentMesh: 1
+--- !u!1 &107296890
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 107296893}
+  - component: {fileID: 107296892}
+  - component: {fileID: 107296891}
+  m_Layer: 22
+  m_Name: Enemy (2)
+  m_TagString: Enemy
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!136 &107296891
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107296890}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &107296892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107296890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5a1a576b62288d4eb280fe99e75f70c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waves:
+  - enemiesToSpawn:
+    - enemyPrefab: {fileID: 8138895244512721228, guid: efe62b6a77eeb3146ae8070432c47f0b, type: 3}
+      enemyData: {fileID: 11400000, guid: 63598452be46be443a5a2b20f30425d2, type: 2}
+--- !u!4 &107296893
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107296890}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 184.96, y: 1, z: 227.31}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2126278645}
+  - {fileID: 713429357}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &124425854
 GameObject:
   m_ObjectHideFlags: 0
@@ -812,7 +889,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: ef430b4c85dff984cb386f1634d5ff81, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5944,7 +6021,10 @@ MonoBehaviour:
   data:
     prefab: {fileID: 8886643203085043590, guid: 47fa46e5008c7b64c858f4eeed68fb71, type: 3}
     characterName: Inugami
+    battleInstance: {fileID: 0}
     icon: {fileID: 21300000, guid: 60f1e51f3592c5842966cda97fe3875b, type: 3}
+    currentHP: 220
+    maxHP: 220
   button: {fileID: 235560389}
 --- !u!114 &235560391
 MonoBehaviour:
@@ -22446,7 +22526,10 @@ MonoBehaviour:
   data:
     prefab: {fileID: 6505999207909017065, guid: 1c33d09449cf9bc45b5dc0b9cda47110, type: 3}
     characterName: Faye
+    battleInstance: {fileID: 0}
     icon: {fileID: 21300000, guid: 809a6a65b705bea4fb70d6f7bffbfb1b, type: 3}
+    currentHP: 250
+    maxHP: 250
   button: {fileID: 560005248}
 --- !u!1 &586268492
 GameObject:
@@ -37178,6 +37261,89 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1 &713429356
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 713429357}
+  - component: {fileID: 713429359}
+  - component: {fileID: 713429358}
+  m_Layer: 23
+  m_Name: Mark
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &713429357
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713429356}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 300, z: 0}
+  m_LocalScale: {x: 20, y: 1, z: 20}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 107296893}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &713429358
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713429356}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 615f4afc4706d9f40bc99964f0ee3e47, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &713429359
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713429356}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &731655425
 GameObject:
   m_ObjectHideFlags: 0
@@ -43020,18 +43186,26 @@ MonoBehaviour:
   currentParty:
   - prefab: {fileID: 6505999207909017065, guid: 1c33d09449cf9bc45b5dc0b9cda47110, type: 3}
     characterName: Faye
+    battleInstance: {fileID: 0}
     icon: {fileID: 21300000, guid: 809a6a65b705bea4fb70d6f7bffbfb1b, type: 3}
+    currentHP: 0
+    maxHP: 0
   - prefab: {fileID: 4296464342933810020, guid: d0f06ad2c6775d643942c5f439884561, type: 3}
     characterName: Hoshi
+    battleInstance: {fileID: 0}
     icon: {fileID: 21300000, guid: 516f60cdff05af34e811aab0ea8ff875, type: 3}
+    currentHP: 0
+    maxHP: 0
   - prefab: {fileID: 6137447632712536868, guid: f3147ed369d7a74409c75fd7a24d8ec7, type: 3}
     characterName: Taster
+    battleInstance: {fileID: 0}
     icon: {fileID: 21300000, guid: 33bd4912a9f12c94d868d7848bdca7c8, type: 3}
+    currentHP: 0
+    maxHP: 0
   - prefab: {fileID: 8886643203085043590, guid: 47fa46e5008c7b64c858f4eeed68fb71, type: 3}
     characterName: Inugami
+    battleInstance: {fileID: 0}
     icon: {fileID: 21300000, guid: 60f1e51f3592c5842966cda97fe3875b, type: 3}
-  partyStates:
-  - characterName: 
     currentHP: 0
     maxHP: 0
   lastFieldPosition: {x: 179, y: 0, z: 223}
@@ -44746,7 +44920,10 @@ MonoBehaviour:
   currentData:
     prefab: {fileID: 0}
     characterName: 
+    battleInstance: {fileID: 0}
     icon: {fileID: 0}
+    currentHP: 0
+    maxHP: 0
 --- !u!114 &790069937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44883,7 +45060,10 @@ MonoBehaviour:
   data:
     prefab: {fileID: 4296464342933810020, guid: d0f06ad2c6775d643942c5f439884561, type: 3}
     characterName: Hoshi
+    battleInstance: {fileID: 0}
     icon: {fileID: 21300000, guid: 516f60cdff05af34e811aab0ea8ff875, type: 3}
+    currentHP: 250
+    maxHP: 250
   button: {fileID: 809011278}
 --- !u!114 &809011280
 MonoBehaviour:
@@ -55936,7 +56116,10 @@ MonoBehaviour:
   data:
     prefab: {fileID: 6137447632712536868, guid: f3147ed369d7a74409c75fd7a24d8ec7, type: 3}
     characterName: Taster
+    battleInstance: {fileID: 0}
     icon: {fileID: 21300000, guid: 33bd4912a9f12c94d868d7848bdca7c8, type: 3}
+    currentHP: 220
+    maxHP: 220
   button: {fileID: 1198009022}
 --- !u!114 &1198009024
 MonoBehaviour:
@@ -56446,7 +56629,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 8126519
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -56799,7 +56982,10 @@ MonoBehaviour:
   currentData:
     prefab: {fileID: 0}
     characterName: 
+    battleInstance: {fileID: 0}
     icon: {fileID: 0}
+    currentHP: 0
+    maxHP: 0
 --- !u!114 &1414418188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78673,8 +78859,8 @@ MonoBehaviour:
   toggle: {fileID: 833234355}
   duplicateWarningPopup: {fileID: 1309681593}
   partyHealMessege: {fileID: 124425855}
-  textDuration: 0
-  fadeDuration: 0
+  textDuration: 2
+  fadeDuration: 2
   isWorldMapOpen: 0
 --- !u!1 &2023895836
 GameObject:
@@ -78734,7 +78920,10 @@ MonoBehaviour:
   currentData:
     prefab: {fileID: 0}
     characterName: 
+    battleInstance: {fileID: 0}
     icon: {fileID: 0}
+    currentHP: 0
+    maxHP: 0
 --- !u!114 &2023895839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89031,6 +89220,89 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1 &2126278644
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2126278645}
+  - component: {fileID: 2126278647}
+  - component: {fileID: 2126278646}
+  m_Layer: 0
+  m_Name: Enemy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2126278645
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2126278644}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 107296893}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!23 &2126278646
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2126278644}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &2126278647
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2126278644}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &110272688731029706
 GameObject:
   m_ObjectHideFlags: 0
@@ -113723,6 +113995,7 @@ SceneRoots:
   - {fileID: 1507172600}
   - {fileID: 388495026}
   - {fileID: 365978617}
+  - {fileID: 107296893}
   - {fileID: 142752789}
   - {fileID: 901705813}
   - {fileID: 1921029557}

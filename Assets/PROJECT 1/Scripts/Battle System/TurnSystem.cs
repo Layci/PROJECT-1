@@ -81,7 +81,6 @@ namespace Project1
 
             // 웨이브 스폰 완료 시 초기화 진행
             EnemyWaveManager.OnWaveSpawned += InitializeBattle;
-
             //StartTurn(); // 첫 번째 턴 시작
         }
 
@@ -351,8 +350,8 @@ namespace Project1
             character.ui = ui;
         }
 
-        // 전투 결과 저장
-        public void SaveBattleResult()
+        // 체력 저장 방식
+        /*public void SaveBattleResult()
         {
             var manager = PartyFormationManager.Instance;
 
@@ -380,18 +379,81 @@ namespace Project1
 
                 Debug.Log($"전투 결과 저장: {key}, 남은 체력 = {unit.curHealth}");
             }
+        }*/
+
+        // 전투 결과 저장
+        public void SaveBattleResult()
+        {
+            var party = PartyFormationManager.Instance.currentParty;
+            if (party == null || party.Count == 0)
+                return;
+
+            // 전투 인스턴스 기준으로 각 멤버의 HP 저장
+            foreach (var member in party)
+            {
+                // battleInstance가 존재하면 전투 인스턴스에서 정보 읽기
+                if (member.battleInstance != null)
+                {
+                    var unit = member.battleInstance.GetComponent<BaseCharacterControl>();
+
+                    if (unit == null)
+                        continue;
+
+                    // 죽은 경우는 1로 저장, 아니면 실제 남은 체력 저장
+                    member.currentHP = unit.isDead ? 1 : (int)unit.curHealth;
+
+                    // 최대체력도 저장해두면 나중에 사용하기 편함
+                    member.maxHP = (int)unit.maxHealth;
+                }
+                else
+                {
+                    // 안전장치: battleInstance가 없을 때는 prefab의 기본값을 보존하거나 갱신
+                    var prefabStats = member.prefab.GetComponent<BaseCharacterControl>();
+                    if (prefabStats != null)
+                    {
+                        // 전투 중 instance가 존재하지 않으면 prefab 기준으로 세팅
+                        // (보통의 경우 SaveBattleResult는 전투 종료시에 호출되므로 여기로 오면 드문 케이스)
+                        member.maxHP = (int)prefabStats.maxHealth;
+                        // member.currentHP를 변경하지 않음(이미 값이 있을 수 있으므로)
+                    }
+                }
+            }
         }
+
+        // 1111111111111111111111111
         /*public void SaveBattleResult()
         {
-            PartyFormationManager.Instance.partyStates.Clear();
+            var party = PartyFormationManager.Instance.currentParty;
+            var states = PartyFormationManager.Instance.partyStates;
 
-            foreach (var player in TurnSystem.instance.playerCharacters)
+            // 파티 편성 오류시 파티 재편성
+            if (states.Count != party.Count)
             {
-                var unit = player.GetComponent<BaseCharacterControl>();
+                states.Clear();
+                for (int i = 0; i < party.Count; i++)
+                {
+                    states.Add(new PartyMemberState(
+                        party[i].characterName, (int)party[i].prefab.GetComponent<BaseCharacterControl>().maxHealth, (int)party[i].prefab.GetComponent<BaseCharacterControl>().maxHealth
+                    ));
+                }
+                Debug.Log("파티편성 오류 재편성");
+            }
+            foreach (var member in PartyFormationManager.Instance.currentParty)
+            {
+                if (member.battleInstance != null)
+                {
+                    var unit = member.battleInstance.GetComponent<BaseCharacterControl>();
 
-                PartyFormationManager.Instance.partyStates.Add(
-                    new PartyMemberState(unit.unitName, ((int)unit.curHealth), ((int)unit.maxHealth))
-                );
+                    // 죽은 경우
+                    if (unit.isDead)
+                    {
+                        member.currentHP = 1;
+                    }
+                    else
+                    {
+                        member.currentHP = (int)unit.curHealth;
+                    }
+                }
             }
         }*/
 
