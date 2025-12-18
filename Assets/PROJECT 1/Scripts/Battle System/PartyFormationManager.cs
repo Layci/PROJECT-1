@@ -293,8 +293,32 @@ namespace ProJect1
             }
         }*/
 
-        // BattleManager start 함수에 위치 배틀씬 진입시 편성정보에 있는 캐릭터 인스턴스 한 뒤 남은 체력을 로드
+        // BattleManager start 함수에 위치 배틀씬 진입시 편성정보에 있는 캐릭터의 체력을 로드
         public void LoadPartyState(List<BaseCharacterControl> players)
+        {
+            var party = PartyFormationManager.Instance.currentParty;
+
+            if (party == null || party.Count == 0)
+                return;
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                var saved = party[i];      // PartyMemberData (저장된 데이터)
+                var unit = players[i];     // 전투 인스턴스 BaseCharacterControl
+
+                // 프리팹의 초기값이 아니라 PartyMemberData 값 그대로 강제 적용
+                unit.curHealth = saved.currentHP;
+
+                // maxHealth는 캐릭터 자체 스탯이므로 일반적으로 덮어쓰면 안 됨
+                // unit.maxHealth = saved.maxHP;  // 웬만하면 주석!
+
+                Debug.Log($"[LoadHP] {saved.characterName} HP = {unit.curHealth}");
+
+                if (unit.curHealth <= 0)
+                    unit.curHealth = 1;
+            }
+        }
+        /*public void LoadPartyState(List<BaseCharacterControl> players)
         {
             var party = PartyFormationManager.Instance.currentParty;
 
@@ -309,12 +333,12 @@ namespace ProJect1
                 // currentParty → 전투 인스턴스 BaseCharacterControl 체력 복구
                 unit.curHealth = member.currentHP;
                 unit.maxHealth = member.maxHP;
-
+                Debug.Log($"[LoadHP] {member.characterName} cur={member.currentHP} / max={member.maxHP}");
                 // 체력이 0 이하라면 죽은 상태였던 것이므로 바로 1로 회복
                 if (unit.curHealth <= 0)
                     unit.curHealth = 1;
             }
-        }
+        }*/
         // 111111111111111111111
         /*public void LoadPartyState(List<BaseCharacterControl> players)
         {

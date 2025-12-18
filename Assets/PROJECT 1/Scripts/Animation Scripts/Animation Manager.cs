@@ -74,6 +74,57 @@ namespace Project1
         {
             if (player == null) return;
 
+            var cur = TurnSystem.instance.allCharacters[
+                TurnSystem.instance.currentTurnIndex
+            ] as BaseUnit;
+
+            if (cur == null) return;
+
+            bool isSkill = player.skillAttack;
+            int range = isSkill ? cur.skillAttackRange : cur.normalAttackRange;
+
+            var targets = EnemySelection.instance.GetAOETargets(range);
+
+            float damage = isSkill ? player.playerSkillAttackPower : player.playerAttackPower;
+            damage *= player.damageIncreased;
+
+            totalDamage = 0;
+
+            // === 이펙트 ===
+            if (isSkill && range > 0)
+            {
+                // ? 범위 스킬 → 직접 선택한 적 기준
+                var center = EnemySelection.instance.currentTarget;
+                EffectManager.Instance.PlayAOE(EffectType.Skill, center.transform);
+            }
+            else
+            {
+                // 단일 공격
+                foreach (var enemy in targets)
+                {
+                    EffectManager.Instance.PlaySingle(EffectType.NormalAttack, enemy.transform);
+                }
+            }
+
+            // === 데미지 처리 ===
+            foreach (var enemy in targets)
+            {
+                float finalDamage = damage * enemy.damageReduction;
+                enemy.TakeDamage(finalDamage);
+                totalDamage += (int)finalDamage;
+
+                DamageTextSpawner.Instance?.SpawnDamageText(
+                    enemy.transform.position + Vector3.up * 1.5f,
+                    (int)finalDamage
+                );
+            }
+
+            TotalDamageUI.Instance?.ShowTotalDamage(totalDamage);
+        }
+        /*public void OnAttackEvent()
+        {
+            if (player == null) return;
+
             // 현재 턴 캐릭터 가져오기
             var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
             if (cur == null) return;
@@ -103,7 +154,7 @@ namespace Project1
 
             if (TotalDamageUI.Instance != null)
                 TotalDamageUI.Instance.ShowTotalDamage(totalDamage);
-        }
+        }*/
 
         public void EnemyMeleeAttack()
         {

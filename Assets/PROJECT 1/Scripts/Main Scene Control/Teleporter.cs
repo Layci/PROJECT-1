@@ -35,10 +35,16 @@ namespace ProJect1
         {
             // 감지 구체에 플레이어가 닿으면 힐
             Collider[] hits = Physics.OverlapSphere(transform.position, detectRadius, playerMask);
-
+            var partys = PartyFormationManager.Instance.currentParty;
+            foreach(var member in partys)
+            {
+                if (member.currentHP == member.maxHP)
+                    return;
+            }
             foreach(Collider col in hits)
             {
                 PartyFormationManager.Instance.PartyHeal();
+                UIManager.Instance.StartCoroutine("ShowHealMessege");
             }
         }
     }

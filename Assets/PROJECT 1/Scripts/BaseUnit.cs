@@ -43,7 +43,7 @@ namespace ProJect1
         protected virtual void Awake()
         {
             animator = GetComponent<Animator>();
-            curHealth = maxHealth;
+            //curHealth = maxHealth;
         }
 
         public void AnimationSpeedCheck()

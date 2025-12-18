@@ -9,10 +9,10 @@ namespace ProJect1
     {
         public static List<WaveData> pendingWaves;
 
-        public static void LoadBattle(MainSenceEnemy enemy)
+        public static void PrepareBattle(MainSenceEnemy enemy)
         {
             pendingWaves = enemy.waves;   // 메인씬 적의 웨이브 가져오기
-            SceneManager.LoadScene("BattleScene");
+            //SceneManager.LoadScene("BattleScene");
         }
     }
 }

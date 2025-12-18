@@ -164,6 +164,7 @@ namespace Project1
                     // 전체 전투 승리 처리
                     SaveBattleResult();
                     PartyFormationManager.Instance.SavePartyState();
+                    WorldEnemyState.MarkDefeated(BattleContext.enemyID);
                     StartCoroutine(ShowWinText());
                 }
             }

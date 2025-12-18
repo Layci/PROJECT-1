@@ -4289,7 +4289,7 @@ MonoBehaviour:
   unitName: Hoshi
   unitIcon: {fileID: 21300000, guid: 516f60cdff05af34e811aab0ea8ff875, type: 3}
   maxHealth: 250
-  curHealth: 250
+  curHealth: 12
   moveSpeed: 3
   unitSpeed: 9700
   attackRange: 1

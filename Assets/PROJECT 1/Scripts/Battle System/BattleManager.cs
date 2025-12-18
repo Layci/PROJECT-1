@@ -38,6 +38,8 @@ namespace ProJect1
             // 편성 정보가 있다면 생성
             if (PartyFormationManager.Instance != null && PartyFormationManager.Instance.currentParty.Count > 0)
             {
+                Debug.Log($"전투 시작 - EnemyID: {BattleContext.enemyID}");
+
                 SpawnPlayerUnitsFromFormation();
                 PartyFormationManager.Instance.LoadPartyState(playerCharacters); // 저장된 체력 로드
             }
@@ -45,11 +47,6 @@ namespace ProJect1
             // 기존대로 유닛 리스트 갱신
             RefreshUnitLists();
         }
-
-        /*private void Start()
-        {
-            RefreshUnitLists();
-        }*/
 
         public void RefreshUnitLists()
         {
@@ -64,7 +61,8 @@ namespace ProJect1
             Debug.Log($"[UnitManager] 아군 {playerCharacters.Count}명, 적군 {enemyCharacters.Count}명 발견됨.");
         }
 
-        public void RepositionPlayerUnits()
+        // 플레이어 포지션 재설정
+        /*public void RepositionPlayerUnits()
         {
             List<BaseCharacterControl> alivePlayers = playerCharacters
                 .Where(p => p.curHealth > 0)
@@ -81,7 +79,7 @@ namespace ProJect1
                 // 다음 유닛 간격 누적
                 currentPos += new Vector3(alivePlayers[i].unitSpacing, 0, 0);
             }
-        }
+        }*/
 
         public void RepositionEnemyUnits()
         {
@@ -120,8 +118,8 @@ namespace ProJect1
                 {
                     playerCharacters.Add(control);
                     control.initialPosition = currentPos;
-                    member.maxHP = (int)control.maxHealth;
-                    member.currentHP = (int)control.curHealth;
+                    /*member.maxHP = (int)control.maxHealth;
+                    member.currentHP = (int)control.curHealth;*/
                 }
 
                 // 간격 적용

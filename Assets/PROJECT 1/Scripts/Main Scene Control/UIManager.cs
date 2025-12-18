@@ -146,11 +146,12 @@ namespace ProJect1
             duplicateWarningPopup.SetActive(false);
         }
 
+        // Èú ¸Þ½ÃÁö
         IEnumerator ShowHealMessege()
         {
             partyHealMessege.gameObject.SetActive(true);
             Color originalColor = partyHealMessege.color;
-            originalColor.a = 1f;
+            originalColor.a = 0.8f;
             partyHealMessege.color = originalColor;
             yield return new WaitForSeconds(textDuration);
             // ÆäÀÌµå ¾Æ¿ô
@@ -158,7 +159,7 @@ namespace ProJect1
             while (elapsed < fadeDuration)
             {
                 elapsed += Time.deltaTime;
-                float alpha = Mathf.Lerp(1f, 0, elapsed / fadeDuration);
+                float alpha = Mathf.Lerp(0.8f, 0, elapsed / fadeDuration);
                 partyHealMessege.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
                 yield return null;
             }

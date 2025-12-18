@@ -10,6 +10,7 @@ namespace ProJect1
 
         public Dictionary<string, Teleporter> teleporterDict = new Dictionary<string, Teleporter>();
         public GameObject player;
+        Teleporter t;
 
         private void Awake()
         {
@@ -34,8 +35,29 @@ namespace ProJect1
             }
 
             Teleporter t = teleporterDict[teleporterId];
+            UIManager.Instance.ToggleWorldMap();
+            StartCoroutine(TeleportRoutine(t));
+        }
 
+        private IEnumerator TeleportRoutine(Teleporter t)
+        {
+            // 1. 입력 차단 (선택)
+            MainPlayerControl.instance.inputBlocked = true;
+
+            // 2. 페이드 아웃
+            yield return ScreenFadeManager.Instance.FadeOut();
+
+            // 3. 위치 이동
             player.transform.position = t.teleportPoint.position;
+
+            // 4. 한 프레임 대기 (안정성)
+            yield return null;
+
+            // 5. 페이드 인
+            yield return ScreenFadeManager.Instance.FadeIn();
+
+            // 6. 입력 복구
+            MainPlayerControl.instance.inputBlocked = false;
         }
     }
 }

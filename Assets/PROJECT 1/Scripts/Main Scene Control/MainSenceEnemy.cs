@@ -9,9 +9,21 @@ namespace ProJect1
         // 이 적을 때렸을 때 진입할 웨이브 구성
         public List<WaveData> waves;
 
+        public string enemyID;
+
+        void Start()
+        {
+            if (WorldEnemyState.IsDefeated(enemyID))
+            {
+                gameObject.SetActive(false);
+            }
+        }
+
         public void OnPlayerEnterBattle()
         {
-            BattleSceneLoader.LoadBattle(this);
+            BattleContext.enemyID = enemyID;
+            BattleTransitionManager.Instance.StartBattle(this);
+            //BattleSceneLoader.PrepareBattle(this);
         }
     }
 }
