@@ -3315,6 +3315,11 @@ MonoBehaviour:
   buffPower: 0
   maxBuffPower: 3
   buff: 0
+  attackEffect:
+    effectType: 0
+    useForNormal: 1
+    useForSkill: 1
+    isAOECenter: 0
   enemyData: {fileID: 0}
   initialPosition: {x: 0, y: 0, z: 0}
   enemyAttackPower: 30

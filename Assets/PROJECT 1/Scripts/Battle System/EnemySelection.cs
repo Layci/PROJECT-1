@@ -82,6 +82,16 @@ namespace Project1
             return targets;
         }
 
+        public BaseEnemyControl GetSelectedEnemy()
+        {
+            var allEnemies = turnSystem.enemyCharacters;
+
+            if (selectedEnemyIndex < 0 || selectedEnemyIndex >= allEnemies.Count)
+                return null;
+
+            return allEnemies[selectedEnemyIndex];
+        }
+
         public void UpdateSelectedEnemy()
         {
             if (turnSystem.enemyCharacters.Count == 0) return;

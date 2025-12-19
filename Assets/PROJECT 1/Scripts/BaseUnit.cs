@@ -23,13 +23,30 @@ namespace ProJect1
         public float animationSpeed = 1f;     // 애니메이션 스피드
         public bool isDead = false;           // 사망 판정
 
-        [Header("공격 범위 설정")]
+        [System.Serializable]
+        public class AttackEffectData
+        {
+            [Header("Effect Type")]
+            public EffectType effectType;
+
+            [Header("Usage")]
+            public bool useForNormal;
+            public bool useForSkill;
+
+            [Header("Usage")]
+            [Tooltip("(True = 직접 타겟한 적 중심, False = 타겟마다)")]
+            public bool isAOECenter;   // true = 중심 1개 / false = 타겟마다
+        }
+
+        [Header("일반 공격 범위 설정")]
         [Tooltip("기본 공격 범위 (0 = 단일, 1 = 양옆 1칸 포함)")]
         public int normalAttackRange = 0;
+        public EffectAsset normalAttackEffect;
 
-        [Header("범위 공격")]
+        [Header("스킬 범위 공격")]
         [Tooltip("0이면 단일 대상, 1 이상이면 범위 공격")]
         public int skillAttackRange = 0;
+        public EffectAsset skillAttackEffect;
 
         [Header("버프 정보")]
         public int buffTrun;                  // 남은 버프 턴

@@ -11,35 +11,41 @@ namespace ProJect1
         [System.Serializable]
         public class Pool
         {
-            public EffectType type;
             public EffectBase prefab;
             public int size = 5;
         }
 
         public List<Pool> pools;
-        private Dictionary<EffectType, Queue<EffectBase>> poolDict;
+        private Dictionary<EffectBase, Queue<EffectBase>> poolDict;
 
         private void Awake()
         {
             Instance = this;
-            poolDict = new Dictionary<EffectType, Queue<EffectBase>>();
+            poolDict = new Dictionary<EffectBase, Queue<EffectBase>>();
 
             foreach (var pool in pools)
             {
                 Queue<EffectBase> q = new Queue<EffectBase>();
+
                 for (int i = 0; i < pool.size; i++)
                 {
                     var obj = Instantiate(pool.prefab, transform);
                     obj.gameObject.SetActive(false);
                     q.Enqueue(obj);
                 }
-                poolDict.Add(pool.type, q);
+
+                poolDict.Add(pool.prefab, q);
             }
         }
 
-        public EffectBase Get(EffectType type)
+        public EffectBase Get(EffectBase prefab)
         {
-            var q = poolDict[type];
+            if (!poolDict.TryGetValue(prefab, out var q))
+            {
+                Debug.LogError($"No pool found for prefab: {prefab.name}");
+                return null;
+            }
+
             var effect = q.Dequeue();
             q.Enqueue(effect);
             return effect;
