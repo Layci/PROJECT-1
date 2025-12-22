@@ -85,7 +85,7 @@ namespace Project1
         }
 
         // 맨 처음 실행
-        private void StartTurn()
+        public void StartTurn()
         {
             if (currentTurnIndex >= allCharacters.Count)
             {
@@ -139,6 +139,24 @@ namespace Project1
             turnOrderUI.Initialize(allCharacters, currentTurnIndex);
         }
 
+        private void RegisterNewEnemyEffects(int prevEnemyCount)
+        {
+            if (enemyCharacters.Count <= prevEnemyCount)
+                return;
+
+            for (int i = prevEnemyCount; i < enemyCharacters.Count; i++)
+            {
+                var enemy = enemyCharacters[i];
+
+                var effects = enemy.GetAllEffects();
+
+                foreach (var effect in effects)
+                {
+                    EffectPoolManager.Instance.RegisterEffect(effect);
+                }
+            }
+        }
+
         // 턴이 끝날시 호출
         public void EndTurn()
         {
@@ -150,9 +168,11 @@ namespace Project1
                 // 웨이브가 남아 있으면 다음 웨이브 시작
                 if (currentWave < waveManager.TotalWaveCount)
                 {
+                    int prevEnemyCount = enemyCharacters.Count;
                     waveManager.SpawnWave(currentWave);
                     currentTurnIndex = 0;
                     RefreshCharacterLists();
+                    RegisterNewEnemyEffects(prevEnemyCount); // 추가
                     UpdateTurnUI();
                     ShowWaveStart();
                     StartTurn();
@@ -183,8 +203,22 @@ namespace Project1
 
             // 다음 캐릭터로 넘어감
             currentTurnIndex++;
-            
+
             StartTurn(); // 다음 턴 시작
+        }
+
+        private void EndCurrentCharacterTurn()
+        {
+            if (allCharacters[currentTurnIndex] is BaseCharacterControl player)
+            {
+                player.isTurn = false;
+                EnemySelectorUI.instance.isTurn = false;
+            }
+            else if (allCharacters[currentTurnIndex] is BaseEnemyControl enemy)
+            {
+                enemy.isTurn = false;
+                enemy.enemySkillPoint += Random.Range(1, 3);
+            }
         }
 
         private void SortEnemiesByPosition()
@@ -464,7 +498,7 @@ namespace Project1
             curWaveText.gameObject.SetActive(false);
         }
 
-        IEnumerator ShowWinText()
+        public IEnumerator ShowWinText()
         {
             winText.gameObject.SetActive(true);
             Color originalColor = winText.color;

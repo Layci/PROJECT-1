@@ -69,6 +69,28 @@ namespace Project1
             }
         }
 
+        public void OnAttackRFXEvent()
+        {
+            var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
+            if (cur == null) return;
+
+            bool isSkill = player.skillAttack;
+
+            int range = isSkill ? cur.skillAttackRange : cur.normalAttackRange;
+            float damage = isSkill ? player.playerSkillAttackPower : player.playerAttackPower;
+            damage *= player.damageIncreased;
+
+            var targets = EnemySelection.instance.GetAOETargets(range);
+
+            // 이펙트 호출 (여기서 분기하지 않음)
+            EffectManager.Instance.PlayAttackEffect(
+                attacker: cur,
+                targets: targets,
+                isSkill: isSkill,
+                range: range
+            );
+        }
+
         // 애니메이션 이벤트에서 호출
         public void OnAttackEvent()
         {

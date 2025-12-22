@@ -15,6 +15,7 @@ namespace ProJect1
         public Vector3 startPlayerPos = new Vector3(-3, 0, -2); // 기준 위치
         public Vector3 startEnemyPos = new Vector3(-3, 0, 3);
         public float spacing = 2f; // 유닛 간 간격
+        public int currentWave = 0;
 
         public List<BaseCharacterControl> playerCharacters = new List<BaseCharacterControl>();
         public List<BaseEnemyControl> enemyCharacters = new List<BaseEnemyControl>();
@@ -46,6 +47,35 @@ namespace ProJect1
 
             // 기존대로 유닛 리스트 갱신
             RefreshUnitLists();
+            // 유닛 이펙트 정보 갱신
+            RegisterAllEffects();
+        }
+
+        // 모든 캐릭터 이펙트 정보 전달
+        private void RegisterAllEffects()
+        {
+            // 플레이어 캐릭터
+            foreach (var player in playerCharacters)
+            {
+                RegisterUnitEffects(player);
+            }
+
+            // 적 캐릭터
+            foreach (var enemy in enemyCharacters)
+            {
+                RegisterUnitEffects(enemy);
+            }
+        }
+
+        // 전달 받은 이펙트 정보를 풀 매니저에 저장
+        private void RegisterUnitEffects(BaseUnit unit)
+        {
+            var effects = unit.GetAllEffects();
+
+            foreach (var effect in effects)
+            {
+                EffectPoolManager.Instance.RegisterEffect(effect);
+            }
         }
 
         public void RefreshUnitLists()

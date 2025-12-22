@@ -834,6 +834,11 @@ MonoBehaviour:
   - enemiesToSpawn:
     - enemyPrefab: {fileID: 8138895244512721228, guid: efe62b6a77eeb3146ae8070432c47f0b, type: 3}
       enemyData: {fileID: 11400000, guid: 63598452be46be443a5a2b20f30425d2, type: 2}
+  - enemiesToSpawn:
+    - enemyPrefab: {fileID: 8138895244512721228, guid: efe62b6a77eeb3146ae8070432c47f0b, type: 3}
+      enemyData: {fileID: 11400000, guid: 63598452be46be443a5a2b20f30425d2, type: 2}
+    - enemyPrefab: {fileID: 3703020108176700387, guid: 0678bb7cf73a1434c94e2453e291c709, type: 3}
+      enemyData: {fileID: 11400000, guid: cb0ebb7af673874479d9769a545cf9f2, type: 2}
   enemyID: Starting_1
 --- !u!4 &107296893
 Transform:

@@ -23,7 +23,7 @@ namespace ProJect1
         public float animationSpeed = 1f;     // 애니메이션 스피드
         public bool isDead = false;           // 사망 판정
 
-        [System.Serializable]
+        /*[System.Serializable]
         public class AttackEffectData
         {
             [Header("Effect Type")]
@@ -36,7 +36,7 @@ namespace ProJect1
             [Header("Usage")]
             [Tooltip("(True = 직접 타겟한 적 중심, False = 타겟마다)")]
             public bool isAOECenter;   // true = 중심 1개 / false = 타겟마다
-        }
+        }*/
 
         [Header("일반 공격 범위 설정")]
         [Tooltip("기본 공격 범위 (0 = 단일, 1 = 양옆 1칸 포함)")]
@@ -48,6 +48,10 @@ namespace ProJect1
         public int skillAttackRange = 0;
         public EffectAsset skillAttackEffect;
 
+        [Header("이펙트 피벗")]
+        public Transform centerPoint;   // 몸통
+        public Transform headPoint;     // 머리 (선택)
+
         [Header("버프 정보")]
         public int buffTrun;                  // 남은 버프 턴
         public int buffPower;                 // 버프 파워
@@ -56,6 +60,19 @@ namespace ProJect1
 
         public List<Buff> activeBuffs = new List<Buff>();
         protected Animator animator;
+
+        public virtual List<EffectAsset> GetAllEffects()
+        {
+            List<EffectAsset> list = new List<EffectAsset>();
+
+            if (normalAttackEffect != null)
+                list.Add(normalAttackEffect);
+
+            if (skillAttackEffect != null)
+                list.Add(skillAttackEffect);
+
+            return list;
+        }
 
         protected virtual void Awake()
         {

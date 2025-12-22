@@ -8,44 +8,43 @@ namespace ProJect1
     {
         public static EffectPoolManager Instance;
 
-        [System.Serializable]
-        public class Pool
-        {
-            public EffectBase prefab;
-            public int size = 5;
-        }
-
-        public List<Pool> pools;
         private Dictionary<EffectBase, Queue<EffectBase>> poolDict;
 
         private void Awake()
         {
             Instance = this;
             poolDict = new Dictionary<EffectBase, Queue<EffectBase>>();
+        }
 
-            foreach (var pool in pools)
+        public void RegisterEffect(EffectAsset asset)
+        {
+            if (asset == null || asset.effectPrefab == null)
+                return;
+
+            if (poolDict.ContainsKey(asset.effectPrefab))
+                return; // ¿ÃπÃ µÓ∑œµ 
+
+            Queue<EffectBase> q = new Queue<EffectBase>();
+
+            for (int i = 0; i < asset.poolSize; i++)
             {
-                Queue<EffectBase> q = new Queue<EffectBase>();
-
-                for (int i = 0; i < pool.size; i++)
-                {
-                    var obj = Instantiate(pool.prefab, transform);
-                    obj.gameObject.SetActive(false);
-                    q.Enqueue(obj);
-                }
-
-                poolDict.Add(pool.prefab, q);
+                var obj = Instantiate(asset.effectPrefab, transform);
+                obj.gameObject.SetActive(false);
+                q.Enqueue(obj);
             }
+
+            poolDict.Add(asset.effectPrefab, q);
         }
 
         public EffectBase Get(EffectBase prefab)
         {
-            if (!poolDict.TryGetValue(prefab, out var q))
+            if (!poolDict.ContainsKey(prefab))
             {
                 Debug.LogError($"No pool found for prefab: {prefab.name}");
                 return null;
             }
 
+            var q = poolDict[prefab];
             var effect = q.Dequeue();
             q.Enqueue(effect);
             return effect;

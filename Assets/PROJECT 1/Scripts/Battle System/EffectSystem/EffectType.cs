@@ -6,8 +6,10 @@ namespace ProJect1
 {
     public enum EffectType
     {
-        NormalAttack,   // 평타
-        Skill,          // 스킬
-        Heal            // 힐 (선택)
+        Effect,
+        RFX
+        //NormalAttack,   // 평타
+        //Skill,          // 스킬
+        //Heal            // 힐 (선택)
     }
 }

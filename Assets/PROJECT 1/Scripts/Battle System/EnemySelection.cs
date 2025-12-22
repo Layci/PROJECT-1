@@ -62,7 +62,28 @@ namespace Project1
             }
         }
 
-        public List<BaseEnemyControl> GetAOETargets(int range = 1)
+        public List<BaseUnit> GetAOETargets(int range = 1)
+        {
+            List<BaseUnit> targets = new List<BaseUnit>();
+            var allEnemies = turnSystem.enemyCharacters; // List<BaseEnemyControl>
+
+            // 현재 선택된 적 인덱스
+            if (selectedEnemyIndex < 0 || selectedEnemyIndex >= allEnemies.Count)
+                return targets;
+
+            int start = Mathf.Max(0, selectedEnemyIndex - range);
+            int end = Mathf.Min(allEnemies.Count - 1, selectedEnemyIndex + range);
+
+            for (int i = start; i <= end; i++)
+            {
+                targets.Add(allEnemies[i]);
+                // BaseEnemyControl → BaseUnit (업캐스팅, 안전)
+            }
+
+            return targets;
+        }
+
+        /*public List<BaseEnemyControl> GetAOETargets(int range = 1)
         {
             List<BaseEnemyControl> targets = new List<BaseEnemyControl>();
             var allEnemies = turnSystem.enemyCharacters;
@@ -80,7 +101,7 @@ namespace Project1
             }
 
             return targets;
-        }
+        }*/
 
         public BaseEnemyControl GetSelectedEnemy()
         {
