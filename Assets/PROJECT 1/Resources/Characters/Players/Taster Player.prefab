@@ -5114,16 +5114,16 @@ MonoBehaviour:
   maxHealth: 260
   curHealth: 260
   moveSpeed: 3
-  unitSpeed: 105
-  attackRange: 1
+  unitSpeed: 10500
+  attackRange: 4
   skillRange: 1000
   damageReduction: 1
   damageIncreased: 1
   unitSpacing: 2
   animationSpeed: 1
   isDead: 0
-  normalAttackRange: 0
-  normalAttackEffect: {fileID: 0}
+  normalAttackRange: 1
+  normalAttackEffect: {fileID: 11400000, guid: 4e7ad26f4757a3f449cc57d8694310e9, type: 2}
   skillAttackRange: 0
   skillAttackEffect: {fileID: 0}
   centerPoint: {fileID: 502662354327015987}

@@ -18,8 +18,11 @@ namespace ProJect1
             transform.position = position;
             gameObject.SetActive(true);
 
-            ps.Play();
-            Invoke(nameof(ReturnToPool), ps.main.duration);
+            if (ps != null)
+            {
+                ps.Play();
+                Invoke(nameof(ReturnToPool), ps.main.duration);
+            }
         }
 
         protected virtual void ReturnToPool()

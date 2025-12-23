@@ -1,6 +1,7 @@
 using Project1;
 using ProJect1;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Project1
@@ -69,60 +70,48 @@ namespace Project1
             }
         }
 
-        public void OnAttackRFXEvent()
-        {
-            var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
-            if (cur == null) return;
-
-            bool isSkill = player.skillAttack;
-
-            int range = isSkill ? cur.skillAttackRange : cur.normalAttackRange;
-            float damage = isSkill ? player.playerSkillAttackPower : player.playerAttackPower;
-            damage *= player.damageIncreased;
-
-            var targets = EnemySelection.instance.GetAOETargets(range);
-
-            // 이펙트 호출 (여기서 분기하지 않음)
-            EffectManager.Instance.PlayAttackEffect(
-                attacker: cur,
-                targets: targets,
-                isSkill: isSkill,
-                range: range
-            );
-        }
-
         // 애니메이션 이벤트에서 호출
         public void OnAttackEvent()
         {
+            // 현재 턴인 유닛 가져오기
             var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
             if (cur == null) return;
 
+            // 스킬 공격인지 확인
             bool isSkill = player.skillAttack;
 
+            // 스킬 공격인지 아닌지에 따라 공격 사거리값 가져오기
             int range = isSkill ? cur.skillAttackRange : cur.normalAttackRange;
+            // 공격 방식에 따른 데미지 가져오기
             float damage = isSkill ? player.playerSkillAttackPower : player.playerAttackPower;
+            // 데미지 * 피해 증가량
             damage *= player.damageIncreased;
-
+            // 공격 방식에 따른 이펙트 에셋 가져오기
+            EffectAsset effectAsset = isSkill ? cur.skillAttackEffect : cur.normalAttackEffect;
             var targets = EnemySelection.instance.GetAOETargets(range);
 
-            // 이펙트 호출 (여기서 분기하지 않음)
+            // 이펙트 호출
             EffectManager.Instance.PlayAttackEffect(
                 attacker: cur,
                 targets: targets,
                 isSkill: isSkill,
-                range: range
+                range: range,
+                damage: damage
             );
 
             // 데미지 처리
-            foreach (var enemy in targets)
+            if (!effectAsset.isProjectile)
             {
-                float finalDamage = damage * enemy.damageReduction;
-                enemy.TakeDamage(finalDamage);
-
-                DamageTextSpawner.Instance?.SpawnDamageText(
-                    enemy.transform.position + Vector3.up * 1.5f,
-                    (int)finalDamage
-                );
+                foreach (var enemy in targets)
+                {
+                    float finalDamage = damage * enemy.damageReduction;
+                    enemy.TakeDamage(finalDamage);
+                    
+                    DamageTextSpawner.Instance?.SpawnDamageText(
+                        enemy.transform.position + Vector3.up * 1.5f,
+                        (int)finalDamage
+                    );
+                }
             }
         }
         /*public void OnAttackEvent()
