@@ -15,7 +15,55 @@ namespace ProJect1
             Instance = this;
         }
 
+        private void SpawnProjectile(BaseUnit attacker, BaseUnit target, EffectAsset asset, float damage)
+        {
+            if (target == null)
+                return;
+
+            // Projectile은 풀링하지 않는다
+            var effect = Instantiate(asset.effectPrefab);
+
+            // 1. 발사 위치
+            Vector3 spawnPos = attacker.GetProjectileSpawnPosition(asset);
+            effect.transform.position = spawnPos;
+            effect.transform.rotation = Quaternion.identity;
+
+            // 2. 타겟 피벗 설정
+            var pivot = target.GetEffectTargetPivot(asset.spawnType);
+            var motion = effect.GetComponentInChildren<RFX1_TransformMotion>();
+            if (motion != null && pivot != null)
+            {
+                motion.Target = pivot.gameObject;
+            }
+
+            // 3. 데미지 릴레이 초기화
+            var damageRelay = effect.GetComponentInChildren<ProjectileDamageRelay>();
+            if (damageRelay != null)
+            {
+                damageRelay.Init(target, damage, effect.gameObject, asset);
+            }
+
+            effect.gameObject.SetActive(true);
+        }
+
         private void PlayProjectile(BaseUnit attacker, List<BaseUnit> targets, EffectAsset asset, float damage)
+        {
+            if (targets == null || targets.Count == 0)
+                return;
+
+            if (asset.isAOECenter)
+            {
+                SpawnProjectile(attacker, targets[0], asset, damage);
+            }
+            else
+            {
+                foreach (var target in targets)
+                {
+                    SpawnProjectile(attacker, target, asset, damage);
+                }
+            }
+        }
+        /*private void PlayProjectile(BaseUnit attacker, List<BaseUnit> targets, EffectAsset asset, float damage)
         {
             if (asset.isAOECenter)
             {
@@ -27,12 +75,17 @@ namespace ProJect1
                 // 1. TransformMotion 직접 세팅
                 var motion = effect.GetComponentInChildren<RFX1_TransformMotion>();
                 if (motion != null)
-                    motion.Target = targets[0].gameObject;
+                {
+                    var pivot = targets[0].GetEffectTargetPivot(asset.spawnType);
+                    motion.Target = pivot.gameObject;
+                }
+                *//*if (motion != null)
+                    motion.Target = targets[0].gameObject;*//*
 
                 // 2. DamageRelay 초기화
                 var relay = effect.GetComponentInChildren<ProjectileDamageRelay>();
                 if (relay != null)
-                    relay.Init(targets[0], damage); // damage는 외부에서 계산해서 넘겨도 됨
+                    relay.Init(targets[0], damage, effect.gameObject); // damage는 외부에서 계산해서 넘겨도 됨
 
                 effect.gameObject.SetActive(true);
             }
@@ -47,16 +100,21 @@ namespace ProJect1
 
                     var motion = effect.GetComponentInChildren<RFX1_TransformMotion>();
                     if (motion != null)
-                        motion.Target = target.gameObject;
+                    {
+                        var pivot = target.GetEffectTargetPivot(asset.spawnType);
+                        motion.Target = pivot.gameObject;
+                    }
+                    *//*if (motion != null)
+                        motion.Target = target.gameObject;*//*
 
                     var relay = effect.GetComponentInChildren<ProjectileDamageRelay>();
                     if (relay != null)
-                        relay.Init(target, damage);
+                        relay.Init(target, damage, effect.gameObject);
 
                     effect.gameObject.SetActive(true);
                 }
             }
-        }
+        }*/
         /*private void PlayProjectile(BaseUnit attacker, List<BaseUnit> targets, EffectAsset asset, float damage)
         {
             if (asset.isAOECenter)

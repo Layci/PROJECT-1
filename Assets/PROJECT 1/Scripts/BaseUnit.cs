@@ -51,6 +51,7 @@ namespace ProJect1
         [Header("이펙트 피벗")]
         public Transform centerPoint;   // 몸통
         public Transform headPoint;     // 머리 (선택)
+        public Transform projectileSpawnPoint;
 
         [Header("버프 정보")]
         public int buffTrun;                  // 남은 버프 턴
@@ -72,6 +73,34 @@ namespace ProJect1
                 list.Add(skillAttackEffect);
 
             return list;
+        }
+
+        public Vector3 GetProjectileSpawnPosition(EffectAsset asset)
+        {
+            if (projectileSpawnPoint != null)
+                return projectileSpawnPoint.position + asset.offset;
+
+            // fallback
+            return centerPoint != null
+                ? centerPoint.position + asset.offset
+                : transform.position + Vector3.up * 1.2f + asset.offset;
+        }
+
+        public Transform GetEffectTargetPivot(EffectSpawnType targetType)
+        {
+            switch (targetType)
+            {
+                case EffectSpawnType.Head:
+                    return headPoint != null
+                        ? headPoint
+                        : centerPoint != null ? centerPoint : transform;
+
+                case EffectSpawnType.Center:
+                    return centerPoint != null ? centerPoint : transform;
+
+                default:
+                    return transform;
+            }
         }
 
         protected virtual void Awake()

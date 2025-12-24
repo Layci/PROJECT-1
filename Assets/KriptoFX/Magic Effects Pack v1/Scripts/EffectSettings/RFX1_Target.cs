@@ -12,8 +12,8 @@ public class RFX1_Target : MonoBehaviour
 	void Start ()
 	{
 	    transformMotion = GetComponentInChildren<RFX1_TransformMotion>();
-      UpdateTarget();
-  }
+        UpdateTarget();
+    }
 
     void Update()
     {

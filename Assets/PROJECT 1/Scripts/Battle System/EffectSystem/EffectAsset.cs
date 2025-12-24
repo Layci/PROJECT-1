@@ -9,7 +9,6 @@ namespace ProJect1
     {
         [Header("Effect")]
         public EffectBase effectPrefab;     // 실제 이펙트 프리팹
-        //public EffectType effectType;
 
         [Header("Usage")]
         [Tooltip("(True = 직접 타겟한 적 중심, False = 타겟마다)")]

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a6c88a7f7858bd4b9a8e8b7bd3723b8, type: 3}
-  m_Name: Hoshi Attack Effect Asset
+  m_Name: Inugami Attack Effect Asset
   m_EditorClassIdentifier: 
-  effectPrefab: {fileID: 334816746990932979, guid: 5bfaa0272916b0544a829bf6ff9f0c96, type: 3}
+  effectPrefab: {fileID: 1705192708482180163, guid: f7713ae3a433002449d3022830a12fb3, type: 3}
   isAOECenter: 0
-  isProjectile: 0
+  isProjectile: 1
   spawnType: 1
   offset: {x: 0, y: 0, z: 0}
-  poolSize: 3
+  poolSize: 0

@@ -116413,21 +116413,14 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.76666665
-    functionName: PlayerMeleeAttack
+    functionName: OnAttackEvent
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 1.4
-    functionName: PlayerMeleeAttack
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 2.6666667
-    functionName: EndAttack
+    functionName: OnAttackEvent
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

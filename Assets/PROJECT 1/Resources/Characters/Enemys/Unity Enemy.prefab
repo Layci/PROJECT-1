@@ -6318,6 +6318,7 @@ MonoBehaviour:
   skillAttackEffect: {fileID: 0}
   centerPoint: {fileID: 7668168310551872876}
   headPoint: {fileID: 1930837187420448728}
+  projectileSpawnPoint: {fileID: 7668168310551872876}
   buffTrun: 0
   buffPower: 0
   maxBuffPower: 3
