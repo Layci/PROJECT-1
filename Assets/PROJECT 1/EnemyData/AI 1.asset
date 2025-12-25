@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: AI
   maxHealth: 250
-  unitSpeed: 96
+  unitSpeed: 9600
   attackPower: 33
   skillAttackPower: 42
   attackRange: 1

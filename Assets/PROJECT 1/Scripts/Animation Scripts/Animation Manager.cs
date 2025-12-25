@@ -50,7 +50,7 @@ namespace Project1
                     BaseEnemyControl enemyControl = player.currentTarget.GetComponent<BaseEnemyControl>();
                     if (enemyControl != null)
                     {
-                        float damage = player.skillAttack ? player.playerSkillAttackPower : player.playerAttackPower;
+                        float damage = player.skillAttack ? player.SkillAttackPower : player.AttackPower;
                         // 적에게 피해를 입히기전 피해 증가율에 따라 데미지 조정
                         damage *= player.damageIncreased;
                         // 적에게 피해를 입힐때 적 피해 감소율에 따라 데미지 조정
@@ -83,12 +83,14 @@ namespace Project1
             // 스킬 공격인지 아닌지에 따라 공격 사거리값 가져오기
             int range = isSkill ? cur.skillAttackRange : cur.normalAttackRange;
             // 공격 방식에 따른 데미지 가져오기
-            float damage = isSkill ? player.playerSkillAttackPower : player.playerAttackPower;
+            float damage = isSkill ? cur.SkillAttackPower : cur.AttackPower;
             // 데미지 * 피해 증가량
             damage *= player.damageIncreased;
             // 공격 방식에 따른 이펙트 에셋 가져오기
             EffectAsset effectAsset = isSkill ? cur.skillAttackEffect : cur.normalAttackEffect;
-            var targets = EnemySelection.instance.GetAOETargets(range);
+
+            //var targets = EnemySelection.instance.GetAOETargets(range);
+            var targets = cur.GetAttackTargets(range);
 
             // 이펙트 호출
             EffectManager.Instance.PlayAttackEffect(
@@ -128,7 +130,7 @@ namespace Project1
             var targets = EnemySelection.instance.GetAOETargets(range);
 
             // 공격 종류별 데미지 구분
-            float damage = player.skillAttack ? player.playerSkillAttackPower : player.playerAttackPower;
+            float damage = player.skillAttack ? player.SkillAttackPower : player.AttackPower;
             damage *= player.damageIncreased;
 
             //totalDamage = 0;
@@ -195,7 +197,7 @@ namespace Project1
                 var playerControl2 = playerGO.GetComponent<BaseCharacterControl>();
                 if (playerControl2 == null) continue;
 
-                float damage = enemy.skillAttack ? enemy.enemySkillAttackPower : enemy.enemyAttackPower;
+                float damage = enemy.skillAttack ? enemy.SkillAttackPower : enemy.AttackPower;
                 damage *= enemy.damageIncreased * playerControl2.damageReduction;
 
                 playerControl2.TakeDamage(damage);
@@ -208,162 +210,6 @@ namespace Project1
             if (EnemyAOEHighlighter.Instance != null)
                 EnemyAOEHighlighter.Instance.ClearAllHighlights();
         }
-
-        /*public void EnemyMeleeAttack()
-        {
-            if (enemy == null) return;
-
-            var turnSystem = FindObjectOfType<TurnSystem>();
-            if (turnSystem == null)
-            {
-                Debug.LogError("[EnemyMeleeAttack] TurnSystem을 찾지 못했습니다!");
-                return;
-            }
-
-            if (enemy.playerTransform == null)
-            {
-                Debug.LogError("[EnemyMeleeAttack] playerTransform이 비어있습니다!");
-                return;
-            }
-
-            // 공격 타겟 인덱스 찾기
-            int targetIndex = turnSystem.playerCharacters.IndexOf(enemy.playerTransform.GetComponent<BaseCharacterControl>());
-
-            if (targetIndex == -1)
-            {
-                Debug.LogError("[EnemyMeleeAttack] 대상 플레이어가 playerCharacters 리스트에 없습니다!");
-                return;
-            }
-
-            // 공격 범위 계산
-            int range = enemy.skillAttack ? enemy.skillAttackRange : enemy.normalAttackRange;
-
-            // 인덱스 기반으로 AOE 대상 리스트 구하기
-            var targets = PlayerSelection.instance.GetAOETargetsFromEnemy(range, targetIndex);
-
-            Debug.Log($"[EnemyMeleeAttack] 공격 범위 내 플레이어 수: {targets.Count}");
-
-            foreach (var player in targets)
-            {
-                if (player == null) continue;
-
-                var playerControl = player.GetComponent<BaseCharacterControl>();
-                if (playerControl == null) continue;
-
-                // 데미지 계산
-                float damage = enemy.skillAttack ? enemy.enemySkillAttackPower : enemy.enemyAttackPower;
-                damage *= enemy.damageIncreased * playerControl.damageReduction;
-
-                // 데미지 적용
-                playerControl.TakeDamage(damage);
-
-                // 데미지 텍스트 출력
-                DamageTextSpawner.Instance.SpawnDamageText(
-                    playerControl.transform.position + Vector3.up * 1.5f,
-                    (int)damage
-                );
-            }
-
-            // 공격 후 하이라이트 제거
-            if (EnemyAOEHighlighter.Instance != null)
-                EnemyAOEHighlighter.Instance.ClearAllHighlights();
-        }*/
-
-        /*public void EnemyMeleeAttack()
-        {
-            if (enemy == null) return;
-
-            // 공격 범위 계산
-            int range = enemy.skillAttack ? enemy.skillAttackRange : enemy.normalAttackRange;
-
-            // 적 기준으로 플레이어 타겟 탐색
-            var targets = PlayerSelection.instance.GetAOETargetsFromEnemy(enemy.transform.position, range);
-
-            Debug.Log($"[EnemyMeleeAttack] 공격 범위 내 플레이어 수: {targets.Count}");
-
-            foreach (var player in targets)
-            {
-                if (player == null) continue;
-
-                // 컴포넌트 가져오기
-                var playerControl = player.GetComponent<BaseCharacterControl>();
-                if (playerControl == null) continue;
-
-                // 데미지 계산
-                float damage = enemy.skillAttack ? enemy.enemySkillAttackPower : enemy.enemyAttackPower;
-                damage *= enemy.damageIncreased * playerControl.damageReduction;
-
-                playerControl.TakeDamage(damage);
-                DamageTextSpawner.Instance.SpawnDamageText(
-                    playerControl.transform.position + Vector3.up * 1.5f,
-                    (int)damage
-                );
-            }
-
-            // 공격 후 AOE 하이라이트 제거 (있을 경우)
-            if (EnemyAOEHighlighter.Instance != null)
-                EnemyAOEHighlighter.Instance.ClearAllHighlights();
-        }*/
-
-        /*public void EnemyMeleeAttack()
-        {
-            if (enemy == null || enemy.currentState != EnemyState.Attacking) return;
-
-            int range = enemy.skillAttack ? enemy.skillAttackRange : enemy.normalAttackRange;
-            var targets = PlayerSelection.instance.GetAOETargets(range);
-
-            float damage = enemy.skillAttack ? enemy.enemySkillAttackPower : enemy.enemyAttackPower;
-            damage *= enemy.damageIncreased;
-
-            foreach (var player in targets)
-            {
-                if (player == null || player.isDead) continue;
-
-                float finalDamage = damage * player.damageReduction;
-                player.TakeDamage(finalDamage);
-
-                // 데미지 텍스트 표시
-                if (DamageTextSpawner.Instance != null)
-                {
-                    DamageTextSpawner.Instance.SpawnDamageText(
-                        player.transform.position + Vector3.up * 1.5f,
-                        (int)finalDamage
-                    );
-                }
-            }
-
-            // 공격 후 하이라이트 제거
-            if (EnemyAOEHighlighter.Instance != null)
-                EnemyAOEHighlighter.Instance.ClearHighlights();
-        }*/
-
-
-        /*public void EnemyMeleeAttack()
-        {
-            if (enemy != null && enemy.currentState == EnemyState.Attacking)
-            {
-                // 플레이어에게 피해를 입힘
-                if (enemy.playerTransform != null)
-                {
-                    BaseCharacterControl playerControl = enemy.playerTransform.GetComponent<BaseCharacterControl>();
-                    if (playerControl != null)
-                    {
-                        float damage = enemy.skillAttack ? enemy.enemySkillAttackPower : enemy.enemyAttackPower;
-                        // 아군에게 피해를 입히기전 피해 증가율에 따라 데미지 조정
-                        damage *= enemy.damageIncreased;
-                        // 아군에게 피해를 입힐때 아군 피해 감소율에 따라 데미지 조정
-                        damage *= playerControl.damageReduction;
-                        playerControl.TakeDamage(damage);
-
-                        // 싱글턴을 사용하여 DamageTextSpawner 호출
-                        if (DamageTextSpawner.Instance != null)
-                        {
-                            DamageTextSpawner.Instance.SpawnDamageText(target.position + Vector3.up * 1.5f, (int)damage);
-                        }
-                    }
-                }
-            }
-        }*/
 
         // Taster 캐릭터가 피격 시 버프 파워상승 ((((안씀
         public void TasterTakeDamaged()

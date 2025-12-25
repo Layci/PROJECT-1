@@ -47,8 +47,8 @@ namespace Project1
         //public float curHealth;               // 현재 체력
         //public float moveSpeed;               // 이동 속도
         //public float unitSpeed;               // 유닛 속도(턴 순서 관련)
-        public float playerAttackPower;       // 플레이어 기본공격력
-        public float playerSkillAttackPower;  // 플레이어 스킬공격력
+        //public float AttackPower;       // 플레이어 기본공격력
+        //public float SkillAttackPower;  // 플레이어 스킬공격력
         //public int buffPower = 0;             // 플레이어 버프 파워
         //public float attackRange;             // 공격 거리
         //public float damageReduction;         // 피해 감소
@@ -94,6 +94,11 @@ namespace Project1
                 HandleAttackInput();
                 TargetUpdate();
             }
+        }
+
+        public override List<BaseUnit> GetAttackTargets(int range)
+        {
+            return EnemySelection.instance.GetAOETargets(range);
         }
 
         protected virtual void HandleAttackInput()

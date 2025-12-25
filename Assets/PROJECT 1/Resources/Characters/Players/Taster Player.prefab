@@ -5136,7 +5136,7 @@ MonoBehaviour:
   initialPosition: {x: 0, y: 0, z: 0}
   uiPrefab: {fileID: 5999149774184021666, guid: 53d032fda35083e4c84997c8edc21a56, type: 3}
   ui: {fileID: 0}
-  playerAttackPower: 38
+  playerAttackPower: 18
   playerSkillAttackPower: 12
   startAttacking: 0
   startBlocking: 0

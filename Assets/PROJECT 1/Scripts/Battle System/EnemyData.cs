@@ -12,7 +12,7 @@ namespace ProJect1
         public float unitSpeed;
         public float attackPower;
         public float skillAttackPower;
-        public float attackRange;
+        //public float attackRange;
         public GameObject prefab;
     }
 }

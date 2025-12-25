@@ -63,105 +63,6 @@ namespace ProJect1
                 }
             }
         }
-        /*private void PlayProjectile(BaseUnit attacker, List<BaseUnit> targets, EffectAsset asset, float damage)
-        {
-            if (asset.isAOECenter)
-            {
-                var effect = EffectPoolManager.Instance.Get(asset.effectPrefab);
-                if (effect == null) return;
-
-                effect.transform.position = attacker.transform.position + asset.offset;
-
-                // 1. TransformMotion 직접 세팅
-                var motion = effect.GetComponentInChildren<RFX1_TransformMotion>();
-                if (motion != null)
-                {
-                    var pivot = targets[0].GetEffectTargetPivot(asset.spawnType);
-                    motion.Target = pivot.gameObject;
-                }
-                *//*if (motion != null)
-                    motion.Target = targets[0].gameObject;*//*
-
-                // 2. DamageRelay 초기화
-                var relay = effect.GetComponentInChildren<ProjectileDamageRelay>();
-                if (relay != null)
-                    relay.Init(targets[0], damage, effect.gameObject); // damage는 외부에서 계산해서 넘겨도 됨
-
-                effect.gameObject.SetActive(true);
-            }
-            else
-            {
-                foreach (var target in targets)
-                {
-                    var effect = EffectPoolManager.Instance.Get(asset.effectPrefab);
-                    if (effect == null) continue;
-
-                    effect.transform.position = attacker.transform.position + asset.offset;
-
-                    var motion = effect.GetComponentInChildren<RFX1_TransformMotion>();
-                    if (motion != null)
-                    {
-                        var pivot = target.GetEffectTargetPivot(asset.spawnType);
-                        motion.Target = pivot.gameObject;
-                    }
-                    *//*if (motion != null)
-                        motion.Target = target.gameObject;*//*
-
-                    var relay = effect.GetComponentInChildren<ProjectileDamageRelay>();
-                    if (relay != null)
-                        relay.Init(target, damage, effect.gameObject);
-
-                    effect.gameObject.SetActive(true);
-                }
-            }
-        }*/
-        /*private void PlayProjectile(BaseUnit attacker, List<BaseUnit> targets, EffectAsset asset, float damage)
-        {
-            if (asset.isAOECenter)
-            {
-                var effect = EffectPoolManager.Instance.Get(asset.effectPrefab);
-                if (effect == null) return;
-
-                effect.transform.position = attacker.transform.position + asset.offset;
-
-                var rfx = effect.GetComponent<RFX1_Target>();
-                if (rfx != null)
-                    rfx.Target = targets[0].gameObject;
-
-                var relay = effect.GetComponent<ProjectileDamageRelay>();
-                if (relay != null)
-                    relay.Init(targets[0], damage);
-
-                //effect.transform.position = attacker.transform.position + asset.offset;
-                effect.gameObject.SetActive(true);
-            }
-            else
-            {
-                foreach (var target in targets)
-                {
-                    var effect = EffectPoolManager.Instance.Get(asset.effectPrefab);
-                    if (effect == null) continue;
-
-                    effect.transform.position = attacker.transform.position + asset.offset;
-
-                    var rfxTarget = effect.GetComponent<RFX1_Target>();
-                    if (rfxTarget != null)
-                        rfxTarget.Target = target.gameObject;
-
-                    var relay = effect.GetComponent<ProjectileDamageRelay>();
-                    if (relay != null)
-                        relay.Init(target, damage); // ← OnAttackEvent에서 계산한 값 전달해도 됨
-                    Debug.Log(damage);
-                    effect.gameObject.SetActive(true);
-
-                    *//*var rfx = effect.GetComponent<RFX1_Target>();
-                    rfx.Target = target.gameObject;
-
-                    effect.transform.position = attacker.transform.position + asset.offset;
-                    effect.gameObject.SetActive(true);*//*
-                }
-            }
-        }*/
 
         public void PlayAttackEffect(BaseUnit attacker, List<BaseUnit> targets, bool isSkill, int range, float damage)
         {
@@ -183,16 +84,19 @@ namespace ProJect1
             if (!isAOE)
             {
                 PlaySingle(targets, effectAsset);
+                Debug.Log("PlaySingle");
                 return;
             }
 
             if (effectAsset.isAOECenter)
             {
                 PlayAOECenter(targets[0], effectAsset);
+                Debug.Log("PlayAOECenter");
             }
             else
             {
                 PlayAOEMulti(targets, effectAsset);
+                Debug.Log("PlayAOEMulti");
             }
         }
 

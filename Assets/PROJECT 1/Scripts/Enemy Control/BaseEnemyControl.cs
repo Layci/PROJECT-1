@@ -30,8 +30,8 @@ namespace Project1
         //public float curHealth;                  // 현재 체력
         //public float moveSpeed;                  // 이동 속도
         //public float unitSpeed;                  // 유닛 속도(턴 순서 관련)
-        public float enemyAttackPower;           // 적 기본 공격력
-        public float enemySkillAttackPower;      // 플레이어 스킬공격력
+        //public float AttackPower;           // 적 기본 공격력
+        //public float SkillAttackPower;      // 플레이어 스킬공격력
         //public float attackRange;                // 공격 거리
         public float enemySkillPoint;            // 적 공격 스킬 포인트
         //public float damageReduction = 1f;  // 적 피해 감소
@@ -81,6 +81,18 @@ namespace Project1
                     }
                 }
             }
+        }
+
+        public override List<BaseUnit> GetAttackTargets(int range)
+        {
+            int centerIndex = GetMyIndexInPlayerList();
+            return PlayerSelection.instance.GetAOETargetsByIndex(centerIndex, range)
+                .ConvertAll(go => go.GetComponent<BaseUnit>());
+        }
+
+        private int GetMyIndexInPlayerList()
+        {
+            return TurnSystem.instance.playerCharacters.IndexOf(playerTransform.GetComponent<BaseCharacterControl>());
         }
 
         protected void HandleState()
@@ -240,10 +252,10 @@ namespace Project1
                 unitName = enemyData.enemyName;
                 maxHealth = enemyData.maxHealth;
                 curHealth = enemyData.maxHealth;
-                enemyAttackPower = enemyData.attackPower;
-                enemySkillAttackPower = enemyData.skillAttackPower;
+                AttackPower = enemyData.attackPower;
+                SkillAttackPower = enemyData.skillAttackPower;
                 unitSpeed = enemyData.unitSpeed;
-                attackRange = enemyData.attackRange;
+                //attackRange = enemyData.attackRange;
             }
         }
 

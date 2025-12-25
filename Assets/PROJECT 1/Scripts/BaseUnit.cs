@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace ProJect1
 {
-    public class BaseUnit : MonoBehaviour
+    public abstract class BaseUnit : MonoBehaviour
     {
         [Header("유닛 정보")]
         public string unitName;               // 유닛 이름
@@ -22,6 +22,8 @@ namespace ProJect1
         public float unitSpacing = 2f;        // 각 유닛마다 간격 조절 거리
         public float animationSpeed = 1f;     // 애니메이션 스피드
         public bool isDead = false;           // 사망 판정
+        public float AttackPower;       // 플레이어 기본공격력
+        public float SkillAttackPower;  // 플레이어 스킬공격력
 
         /*[System.Serializable]
         public class AttackEffectData
@@ -61,6 +63,8 @@ namespace ProJect1
 
         public List<Buff> activeBuffs = new List<Buff>();
         protected Animator animator;
+
+        public abstract List<BaseUnit> GetAttackTargets(int range);
 
         public virtual List<EffectAsset> GetAllEffects()
         {
