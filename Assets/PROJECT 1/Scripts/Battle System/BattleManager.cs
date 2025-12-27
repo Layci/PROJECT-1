@@ -67,11 +67,18 @@ namespace ProJect1
             }
         }
 
+        public void OnEnemySpawnCompleted()
+        {
+            RefreshUnitLists();
+            RegisterAllEffects();
+            Debug.Log($"[Register] enemies = {enemyCharacters.Count}");
+        }
+
         // 전달 받은 이펙트 정보를 풀 매니저에 저장
         private void RegisterUnitEffects(BaseUnit unit)
         {
             var effects = unit.GetAllEffects();
-
+            
             foreach (var effect in effects)
             {
                 EffectPoolManager.Instance.RegisterEffect(effect);

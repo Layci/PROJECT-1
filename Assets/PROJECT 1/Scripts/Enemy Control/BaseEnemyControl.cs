@@ -2,6 +2,7 @@ using Project1;
 using ProJect1;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.UI;
@@ -37,7 +38,7 @@ namespace Project1
         //public float damageReduction = 1f;  // 적 피해 감소
         //public float damageIncreased = 1;     // 피해 증가
         public bool startAttacking;              // 공격중을 알리는 연산자
-        public bool skillAttack;                 // 스킬공격을 할지 알리는 연산자
+        //public bool skillAttack;                 // 스킬공격을 할지 알리는 연산자
         public bool isTurn = false;              // 본인 턴인지 알려주는 연산자
         public Transform playerTransform;        // 플레이어 참조
         public Slider hpBarSlider;               // HP바
@@ -148,22 +149,29 @@ namespace Project1
 
                 // 현재 적의 인덱스를 턴시스템에서 찾기
                 var turnSystem = FindObjectOfType<TurnSystem>();
-                Debug.Log($"[DEBUG] playerCount={turnSystem.playerCharacters.Count}");
                 int playerIndex = turnSystem.playerCharacters.IndexOf(playerTransform.GetComponent<BaseCharacterControl>());
-                //int enemyIndex = turnSystem.enemyCharacters.IndexOf(this);
                 // 인덱스 기반으로 AOE 범위 계산
                 var targets = PlayerSelection.instance.GetAOETargetsFromEnemy(range, playerIndex);
                 TargetIndicatorManager.Instance.ShowTargetIndicators(targets);
-                //ShowAOEPreview();
 
                 // 외곽선 표시
                 //EnemyAOEHighlighter.Instance.ShowAOETargets(targets);
                 
                 float distanceToTarget = Vector3.Distance(transform.position, playerTransform.position);               
                 Debug.Log($"[Enemy] 이동 전 AOE 표시됨, 대상 수: {targets.Count}");
-                if (distanceToTarget <= attackRange)
+                if (!skillAttack)
                 {
-                    currentState = EnemyState.Attacking;
+                    if (distanceToTarget <= attackRange)
+                    {
+                        currentState = EnemyState.Attacking;
+                    }
+                }
+                else if (skillAttack)
+                {
+                    if (distanceToTarget <= skillRange)
+                    {
+                        currentState = EnemyState.Attacking;
+                    }
                 }
             }
         }

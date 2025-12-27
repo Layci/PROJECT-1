@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: AI
   maxHealth: 250
-  unitSpeed: 9600
+  unitSpeed: 96
   attackPower: 33
   skillAttackPower: 42
-  attackRange: 1
   prefab: {fileID: 3703020108176700387, guid: 0678bb7cf73a1434c94e2453e291c709, type: 3}

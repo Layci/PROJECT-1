@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Distance: 30
-  Speed: 30
+  Speed: 25
   TimeDelay: 0
   RandomMoveRadius: 0
   RandomMoveSpeedScale: 0

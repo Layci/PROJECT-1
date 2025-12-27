@@ -8,6 +8,6 @@ namespace ProJect1
     {
         Ground,   // 바닥 (장판)
         Center,   // 캐릭터 중심
-        Head      // (선택) 머리 위
+        Head,      // (선택) 머리 위
     }
 }

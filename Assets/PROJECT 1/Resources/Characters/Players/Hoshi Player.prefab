@@ -3279,6 +3279,37 @@ Transform:
   - {fileID: 3203336127827931312}
   m_Father: {fileID: 4614273698514402033}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3507905566432884182
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4755878943180079149}
+  m_Layer: 20
+  m_Name: FrontPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4755878943180079149
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3507905566432884182}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8153248233305135427}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3517659964517824832
 GameObject:
   m_ObjectHideFlags: 0
@@ -4312,6 +4343,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8153248233305135427}
   - component: {fileID: 4358585387873974833}
+  - component: {fileID: 4762090119136019230}
   m_Layer: 20
   m_Name: Hoshi Player
   m_TagString: Untagged
@@ -4333,6 +4365,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5926909298613654489}
+  - {fileID: 4755878943180079149}
   - {fileID: 7169056789226557895}
   - {fileID: 339335499413001027}
   - {fileID: 1974099133958814148}
@@ -4355,7 +4388,7 @@ MonoBehaviour:
   maxHealth: 250
   curHealth: 12
   moveSpeed: 3
-  unitSpeed: 9700
+  unitSpeed: 97
   attackRange: 2
   skillRange: 1
   damageReduction: 1
@@ -4363,9 +4396,12 @@ MonoBehaviour:
   unitSpacing: 2
   animationSpeed: 1
   isDead: 0
+  AttackPower: 18
+  SkillAttackPower: 15
+  skillAttack: 0
   normalAttackRange: 1
   normalAttackEffect: {fileID: 11400000, guid: a7d99722d04c3ef489fcfd9ad504332e, type: 2}
-  skillAttackRange: 1
+  skillAttackRange: 0
   skillAttackEffect: {fileID: 11400000, guid: a7d99722d04c3ef489fcfd9ad504332e, type: 2}
   centerPoint: {fileID: 5926909298613654489}
   headPoint: {fileID: 7169056789226557895}
@@ -4377,11 +4413,8 @@ MonoBehaviour:
   initialPosition: {x: 0, y: 0, z: 0}
   uiPrefab: {fileID: 2189435719221961901, guid: 27bd92ada80a4b046a2b314e93d5ffa2, type: 3}
   ui: {fileID: 0}
-  playerAttackPower: 18
-  playerSkillAttackPower: 14
   startAttacking: 0
   startBlocking: 0
-  skillAttack: 0
   isTurn: 0
   isBlock: 0
   isPreparingAOEAttack: 0
@@ -4391,6 +4424,29 @@ MonoBehaviour:
   enemySelection: {fileID: 0}
   currentTarget: {fileID: 0}
   currentState: 0
+--- !u!136 &4762090119136019230
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4296464342933810020}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.25
+  m_Height: 1.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.75, z: 0}
 --- !u!1 &4381179735983040771
 GameObject:
   m_ObjectHideFlags: 0

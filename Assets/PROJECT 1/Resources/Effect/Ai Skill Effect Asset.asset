@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Ai Skill Effect Asset
   m_EditorClassIdentifier: 
   effectPrefab: {fileID: 1603882983179585246, guid: 121fad2c594a0814b8a17c235682b324, type: 3}
-  isAOECenter: 0
+  isAOECenter: 1
   isProjectile: 0
   spawnType: 1
   offset: {x: 0, y: 0, z: 0}

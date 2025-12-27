@@ -77,6 +77,7 @@ namespace ProJect1
 
             if (effectAsset.isProjectile)
             {
+                Debug.Log("isProjectile");
                 PlayProjectile(attacker, targets, effectAsset, damage);
                 return;
             }

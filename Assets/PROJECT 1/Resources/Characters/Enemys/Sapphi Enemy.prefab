@@ -5960,6 +5960,37 @@ Transform:
   - {fileID: 2919273447303644167}
   m_Father: {fileID: 1607194023954002190}
   m_LocalEulerAnglesHint: {x: 0.000004050924, y: 179.99998, z: 143.97263}
+--- !u!1 &7132648464800463888
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4858044185109945229}
+  m_Layer: 0
+  m_Name: FrontPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4858044185109945229
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7132648464800463888}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8595798891239541236}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7170010181510435352
 GameObject:
   m_ObjectHideFlags: 0
@@ -6817,6 +6848,7 @@ Transform:
   - {fileID: 2769600324595670842}
   - {fileID: 5903299630614147015}
   - {fileID: 2266147553700215027}
+  - {fileID: 4858044185109945229}
   - {fileID: 142497889040792608}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
@@ -6838,17 +6870,20 @@ MonoBehaviour:
   curHealth: 220
   moveSpeed: 3
   unitSpeed: 108
-  attackRange: 1
+  attackRange: 4
   skillRange: 1
   damageReduction: 1
   damageIncreased: 1
   unitSpacing: 2
   animationSpeed: 1
   isDead: 0
+  AttackPower: 0
+  SkillAttackPower: 0
+  skillAttack: 0
   normalAttackRange: 0
-  normalAttackEffect: {fileID: 0}
-  skillAttackRange: 0
-  skillAttackEffect: {fileID: 0}
+  normalAttackEffect: {fileID: 11400000, guid: 2afdc0f31635d1c49a85748a4e29e2b3, type: 2}
+  skillAttackRange: 2
+  skillAttackEffect: {fileID: 11400000, guid: 680fec03bfd4acc4a935cd62ff7e5271, type: 2}
   centerPoint: {fileID: 2266147553700215027}
   headPoint: {fileID: 142497889040792608}
   projectileSpawnPoint: {fileID: 2266147553700215027}
@@ -6858,11 +6893,8 @@ MonoBehaviour:
   buff: 0
   enemyData: {fileID: 0}
   initialPosition: {x: 0, y: 0, z: 0}
-  enemyAttackPower: 40
-  enemySkillAttackPower: 55
   enemySkillPoint: 0
   startAttacking: 0
-  skillAttack: 0
   isTurn: 0
   playerTransform: {fileID: 0}
   hpBarSlider: {fileID: 9116886878553253504}

@@ -55,7 +55,7 @@ namespace Project1
         //public float damageIncreased = 1;     // 피해 증가
         public bool startAttacking;           // 공격중을 알리는 연산자
         public bool startBlocking;            // 방어중을 알리는 연산자
-        public bool skillAttack;              // 스킬공격을 할지 알리는 연산자
+        //public bool skillAttack;              // 스킬공격을 할지 알리는 연산자
         public bool isTurn = false;           // 본인 턴인지 알려주는 연산자
         public bool isBlock = false;          // 본인이 방어 상태인지 알려주는 연산자
         public bool isPreparingAOEAttack = false;

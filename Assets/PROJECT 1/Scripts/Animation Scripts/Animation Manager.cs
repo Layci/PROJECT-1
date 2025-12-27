@@ -78,14 +78,14 @@ namespace Project1
             if (cur == null) return;
 
             // 스킬 공격인지 확인
-            bool isSkill = player.skillAttack;
+            bool isSkill = cur.skillAttack;
 
             // 스킬 공격인지 아닌지에 따라 공격 사거리값 가져오기
             int range = isSkill ? cur.skillAttackRange : cur.normalAttackRange;
             // 공격 방식에 따른 데미지 가져오기
             float damage = isSkill ? cur.SkillAttackPower : cur.AttackPower;
             // 데미지 * 피해 증가량
-            damage *= player.damageIncreased;
+            damage *= cur.damageIncreased;
             // 공격 방식에 따른 이펙트 에셋 가져오기
             EffectAsset effectAsset = isSkill ? cur.skillAttackEffect : cur.normalAttackEffect;
 

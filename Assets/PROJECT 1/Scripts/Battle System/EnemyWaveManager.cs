@@ -34,6 +34,7 @@ namespace ProJect1
                 hasSpawnedInitial = true;
             }
             //SpawnWave(currentWaveIndex);
+            BattleManager.instance.OnEnemySpawnCompleted();
         }
 
         public void SpawnWave(int waveIndex)
