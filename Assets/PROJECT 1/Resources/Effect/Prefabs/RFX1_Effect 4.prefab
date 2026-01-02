@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Distance: 30
-  Speed: 25
+  Speed: 30
   TimeDelay: 0
   RandomMoveRadius: 0
   RandomMoveSpeedScale: 0
@@ -231,6 +231,7 @@ GameObject:
   - component: {fileID: 4271633513742352}
   - component: {fileID: 108580967063158218}
   - component: {fileID: 114178875968176484}
+  - component: {fileID: 1170641015013424178}
   m_Layer: 0
   m_Name: Light
   m_TagString: Untagged
@@ -355,6 +356,29 @@ MonoBehaviour:
   GraphIntensityMultiplier: 2
   IsLoop: 0
   canUpdate: 0
+--- !u!114 &1170641015013424178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1293575224930330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &1501234703303816
 GameObject:
   m_ObjectHideFlags: 0
@@ -459,6 +483,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   GraphTimeMultiplier: 0.5
   IsLoop: 0
+  sfxGroup: {fileID: -6655638346048455796, guid: 85c5410c900ba734eb02747e43d1a0ab, type: 2}
 --- !u!82 &82470053172063002
 AudioSource:
   m_ObjectHideFlags: 0
@@ -468,7 +493,7 @@ AudioSource:
   m_GameObject: {fileID: 1517734460087526}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -6655638346048455796, guid: 85c5410c900ba734eb02747e43d1a0ab, type: 2}
   m_audioClip: {fileID: 8300000, guid: c207d735120f95444a7c9b61fb03ac31, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.5
@@ -5225,6 +5250,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   GraphTimeMultiplier: 0.5
   IsLoop: 0
+  sfxGroup: {fileID: -6655638346048455796, guid: 85c5410c900ba734eb02747e43d1a0ab, type: 2}
 --- !u!82 &82890918160665804
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5234,7 +5260,7 @@ AudioSource:
   m_GameObject: {fileID: 1559481017015902}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -6655638346048455796, guid: 85c5410c900ba734eb02747e43d1a0ab, type: 2}
   m_audioClip: {fileID: 8300000, guid: ac7cda8cc5f51ae43b94e61d01028d01, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.5
@@ -9859,7 +9885,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 213eb7489e494444aba29a5b9ad4308e, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14459,7 +14484,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 1825afa0379ad6b488b119ddba47e5b7, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -19310,7 +19334,6 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1825afa0379ad6b488b119ddba47e5b7, type: 2}
   - {fileID: 2100000, guid: 1825afa0379ad6b488b119ddba47e5b7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0

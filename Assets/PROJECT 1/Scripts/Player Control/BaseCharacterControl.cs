@@ -65,7 +65,7 @@ namespace Project1
         public Slider hpBarSlider;            // HP바
         public Text hpText;                   // HP 텍스트
         public EnemySelection enemySelection; // 선택된 적 관리
-        public Transform currentTarget;       // 현재 이동 중인 적의 Transform
+        //public Transform currentTarget;       // 현재 타겟팅 중인 적의 Transform
         //public string unitName;               // 캐릭터 이름
         //public Sprite unitIcon;               // 캐릭터 아이콘
 

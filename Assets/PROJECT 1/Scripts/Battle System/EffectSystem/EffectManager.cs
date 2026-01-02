@@ -91,7 +91,9 @@ namespace ProJect1
 
             if (effectAsset.isAOECenter)
             {
-                PlayAOECenter(targets[0], effectAsset);
+                var centerTarget = attacker.currentTarget;
+                if (centerTarget != null)
+                    PlayAOECenter(centerTarget.GetComponent<BaseUnit>(), effectAsset);
                 Debug.Log("PlayAOECenter");
             }
             else

@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Unity
   maxHealth: 300
-  unitSpeed: 91
+  unitSpeed: 9100
   attackPower: 33
   skillAttackPower: 19
-  attackRange: 1
   prefab: {fileID: 7987327555153608299, guid: 0b1a3a7cd0901ff49a6a7dd28e47dbfa, type: 3}

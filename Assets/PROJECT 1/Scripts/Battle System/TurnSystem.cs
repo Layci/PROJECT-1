@@ -182,10 +182,12 @@ namespace Project1
                 {
                     Debug.Log("모든 웨이브 완료! 전투 종료.");
                     // 전체 전투 승리 처리
-                    SaveBattleResult();
+                    //SaveBattleResult();
+                    BattleManager.instance.SaveBattleResult();
                     PartyFormationManager.Instance.SavePartyState();
                     WorldEnemyState.MarkDefeated(BattleContext.enemyID);
                     StartCoroutine(ShowWinText());
+                    //BattleManager.instance.OnBattleWin();
                 }
             }
             // 현재 턴 캐릭터의 isTurn을 false로 설정
@@ -417,7 +419,7 @@ namespace Project1
         }*/
 
         // 전투 결과 저장
-        public void SaveBattleResult()
+        /*public void SaveBattleResult()
         {
             var party = PartyFormationManager.Instance.currentParty;
             if (party == null || party.Count == 0)
@@ -453,7 +455,7 @@ namespace Project1
                     }
                 }
             }
-        }
+        }*/
 
         // 1111111111111111111111111
         /*public void SaveBattleResult()
@@ -515,7 +517,8 @@ namespace Project1
                 yield return null;
             }
             winText.gameObject.SetActive(false);
-            SceneManager.LoadScene("MainScene");
+            //SceneManager.LoadScene("MainScene");
+            BattleManager.instance.OnBattleWin();
         }
     }
 }

@@ -6893,7 +6893,7 @@ MonoBehaviour:
   buff: 0
   enemyData: {fileID: 0}
   initialPosition: {x: 0, y: 0, z: 0}
-  enemySkillPoint: 0
+  enemySkillPoint: 4
   startAttacking: 0
   isTurn: 0
   playerTransform: {fileID: 0}

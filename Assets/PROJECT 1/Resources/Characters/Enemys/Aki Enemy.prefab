@@ -8356,7 +8356,6 @@ MonoBehaviour:
   skillAttackEffect: {fileID: 11400000, guid: eaca218a002aea246bc125b78d170df6, type: 2}
   centerPoint: {fileID: 9161399623118646736}
   headPoint: {fileID: 5422213770306249829}
-  frontPoint: {fileID: 7838032834426411443}
   projectileSpawnPoint: {fileID: 9161399623118646736}
   buffTrun: 0
   buffPower: 0
@@ -8364,7 +8363,7 @@ MonoBehaviour:
   buff: 0
   enemyData: {fileID: 0}
   initialPosition: {x: 0, y: 0, z: 0}
-  enemySkillPoint: 5
+  enemySkillPoint: 0
   startAttacking: 0
   isTurn: 0
   playerTransform: {fileID: 0}

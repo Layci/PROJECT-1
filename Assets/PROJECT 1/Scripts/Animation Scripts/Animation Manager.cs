@@ -36,7 +36,7 @@ namespace Project1
             else if (enemy != null)
             {
                 // 적의 currentTarget을 타겟으로 설정
-                target = enemy.playerTransform;
+                target = enemy.currentTarget;
             }
         }
 
@@ -163,17 +163,17 @@ namespace Project1
                 return;
             }
 
-            if (enemy.playerTransform == null)
+            if (enemy.currentTarget == null)
             {
-                Debug.LogError("[AnimationManager] enemy.playerTransform is null");
+                Debug.LogError("[AnimationManager] enemy.currentTarget is null");
                 return;
             }
 
             // playerTransform이 모델 하위(본 등)를 가리키더라도 부모에서 BaseCharacterControl을 찾도록 안전 처리
-            var targetControl = enemy.playerTransform.GetComponentInParent<BaseCharacterControl>();
+            var targetControl = enemy.currentTarget.GetComponentInParent<BaseCharacterControl>();
             if (targetControl == null)
             {
-                Debug.LogError("[AnimationManager] targetControl not found on playerTransform");
+                Debug.LogError("[AnimationManager] targetControl not found on currentTarget");
                 return;
             }
 

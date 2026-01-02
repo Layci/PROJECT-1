@@ -4832,7 +4832,7 @@ AudioSource:
   m_GameObject: {fileID: 1118708722207498}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -6655638346048455796, guid: 85c5410c900ba734eb02747e43d1a0ab, type: 2}
   m_audioClip: {fileID: 8300000, guid: 1b8a9b0318efa8946a7c51cf9d4280c9, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.5
@@ -9579,7 +9579,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 1673b55d4e4f0104499a333a4bbe6c41, type: 2}
-  - {fileID: 2100000, guid: 1673b55d4e4f0104499a333a4bbe6c41, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9851,7 +9850,7 @@ AudioSource:
   m_GameObject: {fileID: 1598638873198306}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -6655638346048455796, guid: 85c5410c900ba734eb02747e43d1a0ab, type: 2}
   m_audioClip: {fileID: 8300000, guid: fa5d50ffc674c344fa972b6488f906bb, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.1
@@ -19087,7 +19086,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 0}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -23851,7 +23849,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 0}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -28516,7 +28513,6 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1673b55d4e4f0104499a333a4bbe6c41, type: 2}
   - {fileID: 2100000, guid: 1673b55d4e4f0104499a333a4bbe6c41, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0

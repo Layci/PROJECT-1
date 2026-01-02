@@ -35,7 +35,7 @@ namespace ProJect1
             }
 
             Teleporter t = teleporterDict[teleporterId];
-            UIManager.Instance.ToggleWorldMap();
+            UIManager.Instance.CloseTopUI();
             StartCoroutine(TeleportRoutine(t));
         }
 

@@ -12,14 +12,16 @@ namespace ProJect1
 
         public GameObject worldMapUI;
         public GameObject partyFormationUI;
+        public GameObject settingUI;
         public MainPlayerControl player;
         public Toggle toggle;
-        public GameObject duplicateWarningPopup;
+        public GameObject duplicateWarningPopup; // 팝업창
         public Image partyHealMessege;
         public float textDuration;
         public float fadeDuration;
 
-        public bool isWorldMapOpen = false;
+        // UI 관리용 스택
+        private Stack<GameObject> uiStack = new Stack<GameObject>();
 
         private void Awake()
         {
@@ -28,160 +30,137 @@ namespace ProJect1
 
         private void Start()
         {
-            // 초기 상태 = 켜짐(true)
             toggle.isOn = PartyFormationManager.Instance.preventDuplicate;
-
             toggle.onValueChanged.AddListener((value) =>
             {
-                //PartyFormationManager.Instance.preventDuplicate = value;
-                if (value) // ture == 중복 방지 켜기
+                if (value)
                 {
-                    duplicateWarningPopup.SetActive(true);
+                    // 팝업창은 중첩해서 열 수 있도록 설계
+                    OpenPopup(duplicateWarningPopup);
                 }
                 else
                 {
-                    // 단순히 옵션만 켜면 됨
                     PartyFormationManager.Instance.preventDuplicate = value;
                 }
-                Debug.Log("중복 선택 방지: " + (value ? "켜짐" : "꺼짐"));
             });
         }
 
         private void Update()
         {
-            // M키로 월드맵 토글
-            if (Input.GetKeyDown(KeyCode.M))
+            // 1. 단축키 관리 (다른 UI가 열려있지 않을 때만 새 UI 열기 허용)
+            if (uiStack.Count == 0)
             {
-                ToggleWorldMap();
+                if (Input.GetKeyDown(KeyCode.F1)) OpenUI(worldMapUI);
+                if (Input.GetKeyDown(KeyCode.F2)) OpenUI(partyFormationUI);
+                if (Input.GetKeyDown(KeyCode.F3)) OpenUI(settingUI);
+            }
+            else
+            {
+                // 현재 열려있는 UI가 단축키와 같다면 토글(닫기) 기능 제공
+                if (Input.GetKeyDown(KeyCode.F1) && uiStack.Peek() == worldMapUI) CloseTopUI();
+                if (Input.GetKeyDown(KeyCode.F2) && uiStack.Peek() == partyFormationUI) CloseTopUI();
+                if (Input.GetKeyDown(KeyCode.F3) && uiStack.Peek() == settingUI) CloseTopUI();
             }
 
-            // ESC로 UI 닫기
-            if (Input.GetKeyDown(KeyCode.Escape) && !duplicateWarningPopup.activeSelf)
+            // 2. ESC 관리 (가장 최근에 열린 순서대로 닫기)
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                CloseAllUI();
+                if (uiStack.Count > 0)
+                {
+                    CloseTopUI();
+                }
             }
         }
 
-        // 월드맵을 열었을때
-        public void ToggleWorldMap()
+        // --- UI 열기 로직 ---
+        public void OpenUI(GameObject ui)
         {
-            isWorldMapOpen = !isWorldMapOpen;
-            worldMapUI.SetActive(isWorldMapOpen);
+            // 이미 다른 UI가 열려있다면 무시 (스타레일 방식)
+            if (uiStack.Count > 0 && uiStack.Peek() != ui) return;
 
-            player.inputBlocked = isWorldMapOpen; // 전투 입력
-
-            UpdateCursorState();
+            ui.SetActive(true);
+            if (!uiStack.Contains(ui))
+            {
+                uiStack.Push(ui);
+            }
+            UpdateState();
         }
 
-        // 파티편성 메뉴를 열었을때
-        public void TogglePartyMenu()
+        // 팝업창 전용 (기존 UI 위에 겹쳐서 열릴 수 있음)
+        public void OpenPopup(GameObject popup)
         {
-            isWorldMapOpen = !isWorldMapOpen;
-            partyFormationUI.SetActive(isWorldMapOpen);
+            // 1. 이미 열려있는 팝업이라면 다시 열지 않음 (중복 방지)
+            if (uiStack.Count > 0 && uiStack.Peek() == popup) return;
 
-            player.inputBlocked = isWorldMapOpen;
-
-            UpdateCursorState();
+            popup.SetActive(true);
+            uiStack.Push(popup);
+            UpdateState();
         }
 
-        // 맵 UI 클릭
-        public void OnClickMapBtn()
+        // --- UI 닫기 로직 ---
+        public void CloseTopUI()
         {
-            ToggleWorldMap();
+            if (uiStack.Count == 0) return;
+
+            GameObject topUI = uiStack.Pop();
+            topUI.SetActive(false);
+
+            // 특정 UI가 닫힐 때 실행해야 할 로직 처리
+            if (topUI == partyFormationUI)
+            {
+                PartyFormationManager.Instance.RebuildPartyData();
+            }
+
+            UpdateState();
         }
 
-        // 파티편성 UI 클릭
-        public void OnClickPartyMenu()
-        {
-            TogglePartyMenu();
-        }
-
-        // 월드맵 닫기
-        public void OnCLickExitMap()
-        {
-            CloseAllUI();
-        }
-
-        // 파티편성메뉴 닫기
-        public void OnClickExitParty()
-        {
-            CloseAllUI();
-        }
-
-        // UI 닫기
         public void CloseAllUI()
         {
-            // 월드맵만 관리한다면 이렇게
-            isWorldMapOpen = false;
-            player.inputBlocked = isWorldMapOpen; // 전투 입력
-            worldMapUI.SetActive(false);
-            partyFormationUI.SetActive(false);
-
-            PartyFormationManager.Instance.RebuildPartyData();
-            UpdateCursorState();
-        }
-
-        // 중복방지 허용
-        public void ConfirmTurnOffDuplicate()
-        {
-            // 옵션 활성화 확정
-            PartyFormationManager.Instance.preventDuplicate = true;
-
-            // 파티 초기화
-            PartyFormationManager.Instance.ResetParty();
-            // UI 갱신
-            PartyFormationWindow.Instance.RefreshUI();
-
-            // 팝업 닫기
-            duplicateWarningPopup.SetActive(false);
-        }
-
-        // 중복방지 취소
-        public void CancelTurnOffDuplicate()
-        {
-            // 토글 다시 false로 돌리기 (UI 강제 갱신)
-            toggle.isOn = false;
-
-            // 팝업 닫기
-            duplicateWarningPopup.SetActive(false);
-        }
-
-        // 힐 메시지
-        IEnumerator ShowHealMessege()
-        {
-            partyHealMessege.gameObject.SetActive(true);
-            Color originalColor = partyHealMessege.color;
-            originalColor.a = 0.8f;
-            partyHealMessege.color = originalColor;
-            yield return new WaitForSeconds(textDuration);
-            // 페이드 아웃
-            float elapsed = 0f;
-            while (elapsed < fadeDuration)
+            while (uiStack.Count > 0)
             {
-                elapsed += Time.deltaTime;
-                float alpha = Mathf.Lerp(0.8f, 0, elapsed / fadeDuration);
-                partyHealMessege.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
-                yield return null;
+                uiStack.Pop().SetActive(false);
             }
-            partyHealMessege.gameObject.SetActive(false);
+            UpdateState();
         }
 
-        // 커서 잠금 상태
-        private void UpdateCursorState()
+        // 마우스 커서 및 플레이어 입력 제어 통합 관리
+        private void UpdateState()
         {
-            // UI 열려 있으면 마우스 보이고 Unlock
-            if (isWorldMapOpen)
+            // ui스택이 하나라도 열려있을 경우 hasOpenUI를 true로
+            bool hasOpenUI = uiStack.Count > 0;
+            // ui가 열려있을 경우 플레이어 공격 잠금
+            player.inputBlocked = hasOpenUI;
+
+            if (hasOpenUI)
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                Debug.Log("마우스 잠금 해제");
             }
-            else  // UI 다 닫히면 Lock
+            else
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
-                Debug.Log("마우스 잠금");
             }
+        }
+
+        // 버튼용 메서드들
+        public void OnClickExitMap() => CloseTopUI();
+        public void OnClickExitParty() => CloseTopUI();
+        public void OnClickExitSetting() => CloseTopUI();
+
+        // 중복방지 팝업 처리 (중복방지 비허용)
+        public void ConfirmTurnOffDuplicate()
+        {
+            PartyFormationManager.Instance.preventDuplicate = true;
+            PartyFormationManager.Instance.ResetParty();
+            PartyFormationWindow.Instance.RefreshUI();
+            CloseTopUI(); // 팝업 닫기
+        }
+        // 중복방지 팝업 처리 (중복방지 허용)
+        public void CancelTurnOffDuplicate()
+        {
+            toggle.isOn = false;
+            CloseTopUI(); // 팝업 닫기
         }
     }
 }

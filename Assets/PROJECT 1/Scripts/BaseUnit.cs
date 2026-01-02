@@ -26,6 +26,8 @@ namespace ProJect1
         public float SkillAttackPower;  // 플레이어 스킬공격력
         public bool skillAttack;        // 스킬공격을 할지 알리는 연산자
 
+        public Transform currentTarget;
+
         /*[System.Serializable]
         public class AttackEffectData
         {

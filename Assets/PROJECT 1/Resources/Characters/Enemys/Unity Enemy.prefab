@@ -6347,10 +6347,10 @@ MonoBehaviour:
   AttackPower: 0
   SkillAttackPower: 0
   skillAttack: 0
-  normalAttackRange: 0
+  normalAttackRange: 1
   normalAttackEffect: {fileID: 11400000, guid: 34b57e45175765b459a1d26a09ee6330, type: 2}
   skillAttackRange: 1
-  skillAttackEffect: {fileID: 11400000, guid: 0e495b58dc98bcc42af90ce69f6a0f35, type: 2}
+  skillAttackEffect: {fileID: 11400000, guid: 7d394d86e2bab5d4b87bc1af185fe24b, type: 2}
   centerPoint: {fileID: 7668168310551872876}
   headPoint: {fileID: 1930837187420448728}
   projectileSpawnPoint: {fileID: 7668168310551872876}
