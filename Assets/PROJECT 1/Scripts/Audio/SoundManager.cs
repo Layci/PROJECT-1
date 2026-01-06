@@ -27,118 +27,49 @@ namespace ProJect1
             DontDestroyOnLoad(gameObject);
         }
 
-        public void SetMaster(float value)
-        {
-            //mixer.SetFloat("MasterVol", Mathf.Log10(value) * 20);
-            PlayerPrefs.SetFloat("MasterVol", value);
-
-            UpdateMixerVolume("MasterVol", value);
-        }
-
-        public float GetMaster()
-        {
-            return PlayerPrefs.GetFloat("MasterVol", 1f);
-        }
-
-        public void SetBGM(float value)
-        {
-            //mixer.SetFloat("BGMVol", Mathf.Log10(value) * 20);
-            PlayerPrefs.SetFloat("BGMVol", value);
-
-            UpdateMixerVolume("BGMVol", value);
-        }
-
-        public float GetBGM()
-        {
-            return PlayerPrefs.GetFloat("BGMVol", 1f);
-        }
-
-        public void SetSFX(float value)
-        {
-            //mixer.SetFloat("SFXVol", Mathf.Log10(value) * 20);
-            PlayerPrefs.SetFloat("SFXVol", value);
-
-            UpdateMixerVolume("SFXVol", value);
-        }
-
-        public float GetSFX()
-        {
-            return PlayerPrefs.GetFloat("SFXVol", 1f);
-        }
-
-        private void UpdateMixerVolume(string parameterName, float sliderValue)
-        {
-            // 슬라이더 0일 때 완전 무음(-80dB), 그 외에는 로그 계산
-            float dB = sliderValue > 0.0001f ? Mathf.Log10(sliderValue) * 20 : -80f;
-
-            mixer.SetFloat(parameterName, dB);
-            PlayerPrefs.SetFloat(parameterName, sliderValue);
-        }
-
-        /*public AudioMixer masterMixer;
-        public AudioMixerGroup sfxGroup;
-        public static SoundManager Instance;
-        [SerializeField] private Slider masterSlider;
-        [SerializeField] private Slider bgmSlider;
-        [SerializeField] private Slider sfxSlider;
-
         private void Start()
         {
-            LoadVolumes();
+            // 게임 시작 시 저장된 모든 볼륨 적용
+            ApplyAllVolumes();
         }
 
-        private void Awake()
+        public void ApplyAllVolumes()
         {
-            if (Instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            ApplyMixerVolume("MasterVol", PlayerPrefs.GetFloat("MasterVol", 1f));
+            ApplyMixerVolume("BGMVol", PlayerPrefs.GetFloat("BGMVol", 1f));
+            ApplyMixerVolume("SFXVol", PlayerPrefs.GetFloat("SFXVol", 1f));
         }
 
-        // 슬라이더를 통해 호출될 메서드들
-        public void SetMasterVolume(float sliderValue)
+        // 1. 총괄 Get 메서드
+        public float GetVolume(string parameterName)
         {
-            UpdateMixerVolume("MasterVol", sliderValue);
+            // 여기서 기본값(1f)을 일괄적으로 관리할 수 있습니다.
+            return PlayerPrefs.GetFloat(parameterName, 1f);
         }
 
-        public void SetBGMVolume(float sliderValue)
-        {
-            UpdateMixerVolume("BGMVol", sliderValue);
-        }
+        // 2. 외부 UI에서 부르기 편한 개별 Wrapper 메서드들 (선택 사항이지만 추천)
+        public float GetMaster() => GetVolume("MasterVol");
+        public float GetBGM() => GetVolume("BGMVol");
+        public float GetSFX() => GetVolume("SFXVol");
 
-        public void SetSFXVolume(float sliderValue)
+        // 실제 믹서 조절 + 데이터 저장
+        public void SetVolume(string parameterName, float sliderValue)
         {
-            Debug.Log($"[SFX] slider = {sliderValue}");
-            UpdateMixerVolume("SFXVol", sliderValue);
-        }
-
-        // 공통 볼륨 조절 로직
-        private void UpdateMixerVolume(string parameterName, float sliderValue)
-        {
-            // 슬라이더 0일 때 완전 무음(-80dB), 그 외에는 로그 계산
-            float dB = sliderValue > 0.0001f ? Mathf.Log10(sliderValue) * 20 : -80f;
-
-            masterMixer.SetFloat(parameterName, dB);
+            ApplyMixerVolume(parameterName, sliderValue);
+            // PlayerPrefs 저장은 여기서 한 번만 수행하면 됩니다.
             PlayerPrefs.SetFloat(parameterName, sliderValue);
         }
 
-        public void LoadVolumes()
+        private void ApplyMixerVolume(string parameterName, float sliderValue)
         {
-            float master = PlayerPrefs.GetFloat("MasterVol", 1f);
-            float bgm = PlayerPrefs.GetFloat("BGMVol", 1f);
-            float sfx = PlayerPrefs.GetFloat("SFXVol", 1f);
+            // 선형 보간을 이용한 직관적인 dB 계산
+            // $dB = \text{Mathf.Lerp}(-80, 0, \text{sliderValue})$
+            float dB = Mathf.Lerp(-80f, 0f, sliderValue);
 
-            masterSlider.SetValueWithoutNotify(master);
-            bgmSlider.SetValueWithoutNotify(bgm);
-            sfxSlider.SetValueWithoutNotify(sfx);
-
-            SetMasterVolume(master);
-            SetBGMVolume(bgm);
-            SetSFXVolume(sfx);
-        }*/
+            if (mixer != null)
+            {
+                mixer.SetFloat(parameterName, dB);
+            }
+        }
     }
 }

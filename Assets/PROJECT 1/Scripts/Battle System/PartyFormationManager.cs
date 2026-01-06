@@ -53,6 +53,7 @@ namespace ProJect1
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
                 SceneManager.sceneLoaded += OnSceneLoaded;
+                BuildPartyStates();
             }
             else
             {
@@ -62,7 +63,7 @@ namespace ProJect1
 
         private void Start()
         {
-            BuildPartyStates();
+            //BuildPartyStates();
         }
 
         /*public void SetParty(List<PartyMemberData> newParty)

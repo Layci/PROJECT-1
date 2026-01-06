@@ -143,10 +143,15 @@ namespace ProJect1
             }
         }
 
-        // 버튼용 메서드들
+        // 버튼용 Exit 메서드
         public void OnClickExitMap() => CloseTopUI();
         public void OnClickExitParty() => CloseTopUI();
         public void OnClickExitSetting() => CloseTopUI();
+
+        // 버튼용 On 메서드
+        public void OnClickMap() => OpenUI(worldMapUI);
+        public void OnClickParty() => OpenUI(partyFormationUI);
+        public void OnClickSetting() => OpenUI(settingUI);
 
         // 중복방지 팝업 처리 (중복방지 비허용)
         public void ConfirmTurnOffDuplicate()
