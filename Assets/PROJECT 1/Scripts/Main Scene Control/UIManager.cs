@@ -167,5 +167,29 @@ namespace ProJect1
             toggle.isOn = false;
             CloseTopUI(); // 팝업 닫기
         }
+
+        // --------------- 메인씬 회복
+        IEnumerator ShowHealMessege()
+        {
+            // 텍스트 기본값 설정
+            partyHealMessege.gameObject.SetActive(true);
+            Color originalColor = partyHealMessege.color;
+            originalColor.a = 1f;
+            partyHealMessege.color = originalColor;
+
+            yield return new WaitForSeconds(textDuration);
+
+            // 페이드 아웃
+            float elapsed = 0f;
+            while (elapsed < fadeDuration)
+            {
+                elapsed += Time.deltaTime;
+                float alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
+                partyHealMessege.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+                yield return null;
+            }
+
+            partyHealMessege.gameObject.SetActive(false);
+        }
     }
 }
