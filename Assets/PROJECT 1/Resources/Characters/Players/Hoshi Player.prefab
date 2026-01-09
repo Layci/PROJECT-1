@@ -4364,11 +4364,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 339335499413001027}
+  - {fileID: 1974099133958814148}
   - {fileID: 5926909298613654489}
   - {fileID: 4755878943180079149}
   - {fileID: 7169056789226557895}
-  - {fileID: 339335499413001027}
-  - {fileID: 1974099133958814148}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4358585387873974833
@@ -4399,6 +4399,7 @@ MonoBehaviour:
   AttackPower: 18
   SkillAttackPower: 15
   skillAttack: 0
+  currentTarget: {fileID: 0}
   normalAttackRange: 1
   normalAttackEffect: {fileID: 11400000, guid: a7d99722d04c3ef489fcfd9ad504332e, type: 2}
   skillAttackRange: 0
@@ -4422,7 +4423,6 @@ MonoBehaviour:
   hpBarSlider: {fileID: 0}
   hpText: {fileID: 0}
   enemySelection: {fileID: 0}
-  currentTarget: {fileID: 0}
   currentState: 0
 --- !u!136 &4762090119136019230
 CapsuleCollider:

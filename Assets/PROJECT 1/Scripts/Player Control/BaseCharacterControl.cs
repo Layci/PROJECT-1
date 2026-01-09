@@ -19,7 +19,8 @@ namespace Project1
         Attacking,
         Blocking,
         Returning,
-        Buffing
+        Buffing,
+        Healing
     }
 
     public enum AttackPrepareState
@@ -43,38 +44,22 @@ namespace Project1
         [HideInInspector] public CharacterUI ui; // 런타임 생성되는 UI
 
         [Header("캐릭터 정보")]
-        //public float maxHealth;               // 최대 체력
-        //public float curHealth;               // 현재 체력
-        //public float moveSpeed;               // 이동 속도
-        //public float unitSpeed;               // 유닛 속도(턴 순서 관련)
-        //public float AttackPower;       // 플레이어 기본공격력
-        //public float SkillAttackPower;  // 플레이어 스킬공격력
-        //public int buffPower = 0;             // 플레이어 버프 파워
-        //public float attackRange;             // 공격 거리
-        //public float damageReduction;         // 피해 감소
-        //public float damageIncreased = 1;     // 피해 증가
         public bool startAttacking;           // 공격중을 알리는 연산자
         public bool startBlocking;            // 방어중을 알리는 연산자
-        //public bool skillAttack;              // 스킬공격을 할지 알리는 연산자
         public bool isTurn = false;           // 본인 턴인지 알려주는 연산자
         public bool isBlock = false;          // 본인이 방어 상태인지 알려주는 연산자
         public bool isPreparingAOEAttack = false;
-        
+        public bool isHealSkill;
+
         public AttackPrepareState prepareState = AttackPrepareState.None;
 
         public Slider hpBarSlider;            // HP바
         public Text hpText;                   // HP 텍스트
         public EnemySelection enemySelection; // 선택된 적 관리
-        //public Transform currentTarget;       // 현재 타겟팅 중인 적의 Transform
-        //public string unitName;               // 캐릭터 이름
-        //public Sprite unitIcon;               // 캐릭터 아이콘
-
 
         [Header("캐릭터 움직임")]
         public PlayerState currentState = PlayerState.Idle; // 현재 상태 추가
         protected bool isAttackExecuted = false;
-
-        //private List<Buff> activeBuffs = new List<Buff>();
 
         protected override void Awake()
         {
@@ -125,38 +110,41 @@ namespace Project1
                     ExecuteBasicAttack();
                     SkillPointManager.instance.SkillPointUp();
                 }
-
-                /*if (prepareState == AttackPrepareState.Basic)
-                {
-                    Debug.Log("기본공격 확정 실행!");
-                    ExecuteBasicAttack();
-                    SkillPointManager.instance.SkillPointUp();
-                }
-                else
-                {
-                    Debug.Log("기본공격 준비 상태 진입");
-                    prepareState = AttackPrepareState.Basic;
-
-                    int range = normalAttackRange;
-
-                    if (range == 0)
-                    {
-                        // 단일 공격 모드
-                        EnemySelectorUI.instance.ShowSingleTargetUI();
-                        EnemySelectorUI.instance.HideAOEUI();
-                    }
-                    else
-                    {
-                        // 범위 공격 모드
-                        var targets = EnemySelection.instance.GetAOETargets(range);
-                        EnemySelectorUI.instance.ShowAOETargets(targets.Select(e => e.transform).ToList());
-                        EnemySelectorUI.instance.HideSingleTargetUI();
-                    }
-                }*/
             }
 
             // E → 스킬 공격
             if (Input.GetKeyDown(KeyCode.E) && SkillPointManager.instance.curSkillPoint > 0)
+            {
+                if (prepareState == AttackPrepareState.Skill)
+                {
+                    if (isHealSkill)
+                        ExecuteHeal();
+                    else
+                        ExecuteSkillAttack();
+
+                    SkillPointManager.instance.UseSkillPoint();
+                }
+                else
+                {
+                    TurnSystem.instance.SetAllPlayersPrepareState(AttackPrepareState.Skill);
+
+                    int range = skillAttackRange;
+
+                    if (isHealSkill)
+                    {
+                        AllySelection.instance.UpdateSelectedAlly();
+                        //HealCamera.SetActive(true);
+                    }
+                    else
+                    {
+                        EnemySelection.instance.UpdateSelectedEnemy();
+                    }
+
+                    ButtonManager.instance.HighlightBtn();
+                }
+            }
+
+            /*if (Input.GetKeyDown(KeyCode.E) && SkillPointManager.instance.curSkillPoint > 0)
             {
                 if (prepareState == AttackPrepareState.Skill)
                 {
@@ -181,7 +169,7 @@ namespace Project1
 
                     ButtonManager.instance.HighlightBtn();
                 }
-            }
+            }*/
 
             // R → 버프
             /*if (Input.GetKeyDown(KeyCode.R))
@@ -222,6 +210,17 @@ namespace Project1
             prepareState = AttackPrepareState.None;
             currentState = PlayerState.Buffing; // 필요시 Idle로도 가능
             ApplySelfBuff();
+        }
+
+        private void ExecuteHeal()
+        {
+            prepareState = AttackPrepareState.None;
+            currentState = PlayerState.MovingToAttack;
+
+            var targets = AllySelection.instance.GetTargets(skillAttackRange);
+            //HealSystem.Instance.ApplyHeal(this, targets);
+
+            AllySelectorUI.instance.HideAll();
         }
 
         private void ApplySelfBuff()
@@ -273,6 +272,8 @@ namespace Project1
                 case PlayerState.Returning:
                     ReturnToInitialPosition();
                     break;
+                case PlayerState.Healing:
+                    break;
             }
         }
 
@@ -306,7 +307,6 @@ namespace Project1
         {
             if (!isAttackExecuted && !skillAttack)
             {
-                Debug.Log("일반공격 실행중.......................");
                 // 공격 로직
                 animator.SetFloat("Speed", 0);
                 animator.SetTrigger("Trigger Attack");
@@ -314,7 +314,6 @@ namespace Project1
             }
             else if (!isAttackExecuted && skillAttack)
             {
-                Debug.Log("스킬공격 실행중.......................");
                 // 스킬 공격 로직
                 animator.SetFloat("Speed", 0);
                 animator.SetTrigger("Trigger SkillAttack");
@@ -331,6 +330,15 @@ namespace Project1
             }
         }
 
+        protected virtual void PerformHeal()
+        {
+            if (!isAttackExecuted)
+            {
+                animator.SetFloat("Speed", 0);
+                animator.SetBool("Trigger Heal", true);
+            }
+        }
+
         public void BlockEnd()
         {
             if (isBlock)
@@ -339,6 +347,13 @@ namespace Project1
                 // 다음 캐릭터로 턴을 넘김
                 TurnSystem.instance.EndTurn();
             }
+        }
+
+        public void HealEnd()
+        {
+            isTurn = false;
+            // 다음 캐릭터로 턴을 넘김
+            TurnSystem.instance.EndTurn();
         }
 
         protected virtual void ReturnToInitialPosition()

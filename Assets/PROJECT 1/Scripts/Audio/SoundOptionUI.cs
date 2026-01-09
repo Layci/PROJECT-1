@@ -77,11 +77,26 @@ namespace ProJect1
 
             if (float.TryParse(text, out float value))
             {
-                float clampedValue = isFinal ? Mathf.Clamp(value, 0, 100) / 100f : value / 100f;
-                slider.SetValueWithoutNotify(clampedValue);
-                SoundManager.Instance.SetVolume(paramName, clampedValue);
+                // 100 이상의 숫자가 들어오면 즉시 100으로 제한 (Clamp)
+                // 0보다 작으면 0, 100보다 크면 100으로 만듭니다.
+                float clampedValue = Mathf.Clamp(value, 0f, 100f);
 
-                if (isFinal) RefreshInputText(slider, clampedValue);
+                // 믹서용 0.0 ~ 1.0 값으로 변환
+                float normalizedValue = clampedValue / 100f;
+
+                // 슬라이더 위치 업데이트
+                slider.SetValueWithoutNotify(normalizedValue);
+
+                // 실제 사운드 볼륨 적용
+                SoundManager.Instance.SetVolume(paramName, normalizedValue);
+
+                // 사용자가 100 이상의 값을 입력했거나 입력이 끝났을(Final) 경우
+                // 입력창의 글자를 강제로 제한된 숫자로 다시 적용.
+                if (isFinal || value > 100)
+                {
+                    // 사용자가 100이상 타이핑해도 즉시 100으로 글자 수정.
+                    RefreshInputText(slider, normalizedValue);
+                }
             }
         }
 

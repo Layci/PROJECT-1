@@ -50,12 +50,6 @@ namespace Project1
                 // 선택된 적이 없으면 UI를 숨김
                 selectorUI.gameObject.SetActive(false);
             }
-
-            /*if(isTurn)
-            {
-                // 플레이어 턴이면 UI를 보이게 함
-                selectorUI.gameObject.SetActive(true);
-            }*/
         }
 
         public void SetSelectedEnemy(Transform enemyTransform)
@@ -76,58 +70,6 @@ namespace Project1
         public void HideSingleTargetUI()
         {
             selectorUI.gameObject.SetActive(false);
-        }
-
-        // 현재 선택된 적 기준 범위 대상 계산+표시
-        public void ShowCurrentAOERange()
-        {
-            HideSingleTargetUI();
-            List<Transform> aoeTargets = GetAOETargetsFromSelection();
-            ShowAOETargets(aoeTargets);
-        }
-
-        // EnemySelection에서 가져와서 transform 리스트로 만든 범위 대상
-        private List<Transform> GetAOETargetsFromSelection()
-        {
-            List<Transform> results = new List<Transform>();
-            if (EnemySelection.instance == null) return results;
-
-            // 현재 턴 주체의 skillAttackRange 사용 (BaseUnit에 aoeRange가 있다고 가정)
-            int range = 0;
-            var cur = TurnSystem.instance != null ? TurnSystem.instance.CurrentCharacter : null;
-            if (cur != null) range = Mathf.Max(0, cur.skillAttackRange);
-
-            var targets = EnemySelection.instance.GetAOETargets(range);
-            foreach (var e in targets)
-            {
-                if (e != null) results.Add(e.transform);
-            }
-            return results;
-        }
-
-        public List<BaseEnemyControl> GetAOETargets()
-        {
-            var allEnemies = TurnSystem.instance.enemyCharacters; // 턴시스템의 적 리스트
-            int targetIndex = EnemySelection.instance.selectedEnemyIndex; // 현재 선택 인덱스
-            List<BaseEnemyControl> targets = new List<BaseEnemyControl>();
-
-            if (targetIndex < 0 || targetIndex >= allEnemies.Count)
-                return targets;
-
-            // 중심 포함
-            targets.Add(allEnemies[targetIndex]);
-
-            // 좌우 범위
-            for (int offset = 1; offset <= (TurnSystem.instance.CurrentCharacter as BaseCharacterControl).skillAttackRange; offset++)
-            {
-                int left = targetIndex - offset;
-                int right = targetIndex + offset;
-
-                if (left >= 0) targets.Add(allEnemies[left]);
-                if (right < allEnemies.Count) targets.Add(allEnemies[right]);
-            }
-
-            return targets;
         }
 
         public void ShowAOETargets(List<Transform> aoeTargets)

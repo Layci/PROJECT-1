@@ -65,16 +65,5 @@ namespace ProJect1
             }
             highlights.Clear();
         }
-
-        /*public void ClearAllHighlights()
-        {
-            foreach (var h in activeHighlights)
-            {
-                if (h != null)
-                    h.ClearOutline();
-            }
-
-            activeHighlights.Clear();
-        }*/
     }
 }

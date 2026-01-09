@@ -83,36 +83,6 @@ namespace Project1
             return targets;
         }
 
-        /*public List<BaseEnemyControl> GetAOETargets(int range = 1)
-        {
-            List<BaseEnemyControl> targets = new List<BaseEnemyControl>();
-            var allEnemies = turnSystem.enemyCharacters;
-
-            // 현재 선택된 적 인덱스
-            if (selectedEnemyIndex < 0 || selectedEnemyIndex >= allEnemies.Count)
-                return targets;
-
-            int start = Mathf.Max(0, selectedEnemyIndex - range);
-            int end = Mathf.Min(allEnemies.Count - 1, selectedEnemyIndex + range);
-
-            for (int i = start; i <= end; i++)
-            {
-                targets.Add(allEnemies[i]);
-            }
-
-            return targets;
-        }*/
-
-        public BaseEnemyControl GetSelectedEnemy()
-        {
-            var allEnemies = turnSystem.enemyCharacters;
-
-            if (selectedEnemyIndex < 0 || selectedEnemyIndex >= allEnemies.Count)
-                return null;
-
-            return allEnemies[selectedEnemyIndex];
-        }
-
         public void UpdateSelectedEnemy()
         {
             if (turnSystem.enemyCharacters.Count == 0) return;
@@ -121,7 +91,6 @@ namespace Project1
 
             // 현재 캐릭터 가져오기
             var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
-            //int range = cur != null ? cur.skillAttackRange : 0;
 
             if (cur is BaseCharacterControl player)
             {
@@ -188,52 +157,6 @@ namespace Project1
                     }
                 }
             }
-            
-            //빽업
-
-            /*if (cur is BaseCharacterControl player)
-            {
-                if (player.prepareState == AttackPrepareState.Basic)
-                {
-                    // 기본 공격 → normalAttackRange 사용
-                    int normalRange = player.normalAttackRange;
-
-                    enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
-
-                    if (normalRange == 0)
-                    {
-                        // 단일
-                        enemySelectorUI.ShowSingleTargetUI();
-                        enemySelectorUI.HideAOEUI();
-                    }
-                    else
-                    {
-                        // 범위
-                        var targets = GetAOETargets(normalRange);
-                        enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
-                        enemySelectorUI.HideSingleTargetUI();
-                    }
-                }
-                else if (player.prepareState == AttackPrepareState.Skill)
-                {
-                    // 스킬 공격 → skillAttackRange 사용
-                    int skillRange = player.skillAttackRange;
-
-                    enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
-
-                    if (skillRange == 0)
-                    {
-                        enemySelectorUI.ShowSingleTargetUI();
-                        enemySelectorUI.HideAOEUI();
-                    }
-                    else
-                    {
-                        var targets = GetAOETargets(skillRange);
-                        enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
-                        enemySelectorUI.HideSingleTargetUI();
-                    }
-                }
-            }*/
         }
     }
 }

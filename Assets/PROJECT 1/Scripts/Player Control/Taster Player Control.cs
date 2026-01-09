@@ -22,11 +22,6 @@ namespace Project1
             instance = this;
         }
 
-        private void Start()
-        {
-            
-        }
-
         protected override void Update()
         {
             base.Update();

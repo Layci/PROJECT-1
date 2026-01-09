@@ -8,7 +8,7 @@ namespace Project1
 {
     public class AnimationManager : MonoBehaviour
     {
-        public static AnimationManager instans;
+        public static AnimationManager instance;
 
         private BaseCharacterControl player;
         private BaseEnemyControl enemy;
@@ -21,7 +21,7 @@ namespace Project1
             player = GetComponentInParent<BaseCharacterControl>();
             enemy = GetComponentInParent<BaseEnemyControl>();
 
-            instans = this;
+            instance = this;
         }
 
         private void Update()
@@ -226,6 +226,11 @@ namespace Project1
         public void EndBlock()
         {
             player.BlockEnd();
+        }
+
+        public void EndHeal()
+        {
+            player.HealEnd();
         }
     }
 }

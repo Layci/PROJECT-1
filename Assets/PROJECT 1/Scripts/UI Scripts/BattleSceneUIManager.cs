@@ -26,12 +26,20 @@ namespace ProJect1
                     CloseTopUI();
                     return;
                 }
-
-                if (uiStack.Count == 0) OpenUI(settingUI);
-                else
+                else if (uiStack.Count == 0) OpenUI(settingUI);
+                /*else
                 {
                     if (Input.GetKeyDown(KeyCode.Escape) && uiStack.Peek() == settingUI) CloseTopUI();
-                }
+                }*/
+            }
+
+            if (uiStack.Count > 0) 
+            {
+                Time.timeScale = 0;
+            }
+            else
+            {
+                Time.timeScale = 1;
             }
         }
 
@@ -40,7 +48,7 @@ namespace ProJect1
             if (uiStack.Count > 0 && uiStack.Peek() != ui) return;
 
             ui.SetActive(true);
-            if (uiStack.Contains(ui))
+            if (!uiStack.Contains(ui))
             {
                 uiStack.Push(ui);
             }
