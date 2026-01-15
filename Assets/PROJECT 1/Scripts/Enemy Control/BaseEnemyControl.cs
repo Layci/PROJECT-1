@@ -62,9 +62,6 @@ namespace Project1
         {
             curHealth = maxHealth;
             turnSystem = FindObjectOfType<TurnSystem>();
-            //ApplyEnemyData();
-            Debug.Log($"{name} Animator 체크: {animator}");
-            Debug.Log(currentTarget);
         }
 
         protected virtual void Update()
@@ -89,6 +86,25 @@ namespace Project1
             int centerIndex = GetMyIndexInPlayerList();
             return PlayerSelection.instance.GetAOETargetsByIndex(centerIndex, range)
                 .ConvertAll(go => go.GetComponent<BaseUnit>());
+        }
+
+        public override List<BaseUnit> GetHealTargets(int range)
+        {
+            var result = new List<BaseUnit>();
+
+            var players = TurnSystem.instance.enemyCharacters;
+            if (players == null || players.Count == 0)
+                return result;
+
+            int centerIndex = TurnSystem.instance.enemyCharacters.IndexOf(this);
+
+            int left = Mathf.Max(0, centerIndex - range);
+            int right = Mathf.Min(players.Count - 1, centerIndex + range);
+
+            for (int i = left; i <= right; i++)
+                result.Add(players[i]);
+
+            return result;
         }
 
         private int GetMyIndexInPlayerList()
@@ -194,39 +210,6 @@ namespace Project1
                 taster.IncreaseBuffPower();
             }
         }
-
-        /*private void ShowAOEPreview()
-        {
-            if (isAttackExecuted) return;
-
-            int range = skillAttack ? skillAttackRange : normalAttackRange;
-            int targetIndex = GetTargetPlayerIndex();
-
-            if (targetIndex == -1)
-            {
-                Debug.LogError("[Enemy] 대상 플레이어 인덱스를 찾을 수 없습니다.");
-                return;
-            }
-
-            var targets = PlayerSelection.instance.GetAOETargetsByIndex(targetIndex, range);
-            Debug.Log($"[Enemy] 이동 전 AOE 표시됨, 대상 수: {targets.Count}");
-
-            if (EnemyAOEHighlighter.Instance != null)
-                EnemyAOEHighlighter.Instance.ShowAOETargets(targets);
-        }*/
-
-        // 현재 타겟 플레이어 인덱스 찾기
-        /*private int GetTargetPlayerIndex()
-        {
-            if (turnSystem == null || currentTarget == null)
-                return -1;
-
-            var playerControl = currentTarget.GetComponentInParent<BaseCharacterControl>();
-            if (playerControl == null)
-                return -1;
-
-            return turnSystem.playerCharacters.IndexOf(playerControl);
-        }*/
 
         protected virtual void ReturnToInitialPosition()
         {

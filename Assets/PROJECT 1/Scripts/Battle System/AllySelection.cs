@@ -34,12 +34,12 @@ namespace ProJect1
 
             if (Input.GetKeyDown(KeyCode.A))
             {
-                selectedIndex--;
+                selectedIndex++;
                 moved = true;
             }
             else if (Input.GetKeyDown(KeyCode.D))
             {
-                selectedIndex++;
+                selectedIndex--;
                 moved = true;
             }
 

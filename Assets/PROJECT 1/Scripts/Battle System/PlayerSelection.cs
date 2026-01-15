@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 적 아군 타겟
 namespace ProJect1
 {
     public class PlayerSelection : MonoBehaviour

@@ -49,7 +49,7 @@ namespace Project1
         public bool isTurn = false;           // 본인 턴인지 알려주는 연산자
         public bool isBlock = false;          // 본인이 방어 상태인지 알려주는 연산자
         public bool isPreparingAOEAttack = false;
-        public bool isHealSkill;
+        
 
         public AttackPrepareState prepareState = AttackPrepareState.None;
 
@@ -86,6 +86,25 @@ namespace Project1
             return EnemySelection.instance.GetAOETargets(range);
         }
 
+        public override List<BaseUnit> GetHealTargets(int range)
+        {
+            var result = new List<BaseUnit>();
+
+            var players = TurnSystem.instance.playerCharacters;
+            if (players == null || players.Count == 0)
+                return result;
+
+            int centerIndex = TurnSystem.instance.playerCharacters.IndexOf(this);
+
+            int left = Mathf.Max(0, centerIndex - range);
+            int right = Mathf.Min(players.Count - 1, centerIndex + range);
+
+            for (int i = left; i <= right; i++)
+                result.Add(players[i]);
+
+            return result;
+        }
+
         protected virtual void HandleAttackInput()
         {
             if (!CanAttack())
@@ -98,8 +117,11 @@ namespace Project1
 
                 if (prepareState != AttackPrepareState.Basic)
                 {
+                    AllySelectorUI.instance.HideAll();
+                    EnemySelection.instance.selectedEnemyIndex = 0;
+                    EnemySelection.instance.UpdateSelectedEnemy();
                     TurnSystem.instance.SetAllPlayersPrepareState(AttackPrepareState.Basic);
-
+                    BattleCameraManager.Instance.SwitchToDefault();
                     int range = normalAttackRange;
                     var targets = EnemySelection.instance.GetAOETargets(range);
                     EnemySelectorUI.instance.ShowAOETargets(targets.Select(e => e.transform).ToList());
@@ -132,8 +154,9 @@ namespace Project1
 
                     if (isHealSkill)
                     {
+                        EnemySelectorUI.instance.HideAOEUI();
                         AllySelection.instance.UpdateSelectedAlly();
-                        //HealCamera.SetActive(true);
+                        BattleCameraManager.Instance.SwitchToHeal();
                     }
                     else
                     {
@@ -380,11 +403,6 @@ namespace Project1
 
         public void CheckHP()
         {
-            /*if (hpBarSlider != null)
-            {
-                hpBarSlider.value = curHealth / maxHealth;
-                hpText.text = Mathf.RoundToInt(curHealth).ToString(); // 반올림해서 정수로 표시
-            }*/
             if (ui != null)
                 ui.UpdateHP();
         }

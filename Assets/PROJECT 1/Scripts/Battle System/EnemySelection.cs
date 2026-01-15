@@ -101,7 +101,11 @@ namespace Project1
 
                     enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
 
-                    if (normalRange == 0)
+                    var targets = GetAOETargets(normalRange);
+                    enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
+                    enemySelectorUI.HideSingleTargetUI();
+
+                    /*if (normalRange == 0)
                     {
                         // 단일
                         enemySelectorUI.ShowSingleTargetUI();
@@ -113,7 +117,7 @@ namespace Project1
                         var targets = GetAOETargets(normalRange);
                         enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
                         enemySelectorUI.HideSingleTargetUI();
-                    }
+                    }*/
                 }
 
                 if (player.prepareState == AttackPrepareState.Basic)
@@ -123,7 +127,10 @@ namespace Project1
 
                     enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
 
-                    if (normalRange == 0)
+                    var targets = GetAOETargets(normalRange);
+                    enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
+                    enemySelectorUI.HideSingleTargetUI();
+                    /*if (normalRange == 0)
                     {
                         // 단일
                         enemySelectorUI.ShowSingleTargetUI();
@@ -135,7 +142,7 @@ namespace Project1
                         var targets = GetAOETargets(normalRange);
                         enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
                         enemySelectorUI.HideSingleTargetUI();
-                    }
+                    }*/
                 }
                 else if (player.prepareState == AttackPrepareState.Skill)
                 {
@@ -144,7 +151,10 @@ namespace Project1
 
                     enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
 
-                    if (skillRange == 0)
+                    var targets = GetAOETargets(skillRange);
+                    enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
+                    enemySelectorUI.HideSingleTargetUI();
+                    /*if (skillRange == 0)
                     {
                         enemySelectorUI.ShowSingleTargetUI();
                         enemySelectorUI.HideAOEUI();
@@ -154,7 +164,7 @@ namespace Project1
                         var targets = GetAOETargets(skillRange);
                         enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
                         enemySelectorUI.HideSingleTargetUI();
-                    }
+                    }*/
                 }
             }
         }

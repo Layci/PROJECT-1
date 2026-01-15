@@ -2,6 +2,7 @@ using Project1;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace ProJect1
@@ -22,6 +23,7 @@ namespace ProJect1
         public float unitSpacing = 2f;        // 각 유닛마다 간격 조절 거리
         public float animationSpeed = 1f;     // 애니메이션 스피드
         public bool isDead = false;           // 사망 판정
+        public bool isHealSkill;
         public float AttackPower;       // 플레이어 기본공격력
         public float SkillAttackPower;  // 플레이어 스킬공격력
         public bool skillAttack;        // 스킬공격을 할지 알리는 연산자
@@ -68,6 +70,7 @@ namespace ProJect1
         protected Animator animator;
 
         public abstract List<BaseUnit> GetAttackTargets(int range);
+        public abstract List<BaseUnit> GetHealTargets(int range);
 
         public virtual List<EffectAsset> GetAllEffects()
         {
@@ -80,6 +83,13 @@ namespace ProJect1
                 list.Add(skillAttackEffect);
 
             return list;
+        }
+
+        public void Heal(int amount)
+        {
+            curHealth = Mathf.Min(curHealth + amount, maxHealth);
+
+            
         }
 
         public Vector3 GetProjectileSpawnPosition(EffectAsset asset)
