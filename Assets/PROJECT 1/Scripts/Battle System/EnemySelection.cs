@@ -100,10 +100,10 @@ namespace Project1
                     int normalRange = player.normalAttackRange;
 
                     enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
-
+                    //enemySelectorUI.ShowSingleTargetUI();
                     var targets = GetAOETargets(normalRange);
                     enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
-                    enemySelectorUI.HideSingleTargetUI();
+                    //enemySelectorUI.HideSingleTargetUI();
 
                     /*if (normalRange == 0)
                     {
@@ -129,7 +129,7 @@ namespace Project1
 
                     var targets = GetAOETargets(normalRange);
                     enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
-                    enemySelectorUI.HideSingleTargetUI();
+                    //enemySelectorUI.HideSingleTargetUI();
                     /*if (normalRange == 0)
                     {
                         // ´ÜÀÏ
@@ -153,7 +153,7 @@ namespace Project1
 
                     var targets = GetAOETargets(skillRange);
                     enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
-                    enemySelectorUI.HideSingleTargetUI();
+                    //enemySelectorUI.HideSingleTargetUI();
                     /*if (skillRange == 0)
                     {
                         enemySelectorUI.ShowSingleTargetUI();

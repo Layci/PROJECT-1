@@ -255,6 +255,11 @@ namespace Project1
         {
             base.TakeDamage(damage);
 
+            CheckHP();
+        }
+
+        public override void CheckHP()
+        {
             if (hpBarSlider != null)
             {
                 hpBarSlider.value = curHealth / maxHealth;

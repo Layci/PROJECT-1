@@ -118,12 +118,11 @@ namespace Project1
                 if (prepareState != AttackPrepareState.Basic)
                 {
                     AllySelectorUI.instance.HideAll();
-                    EnemySelection.instance.selectedEnemyIndex = 0;
-                    EnemySelection.instance.UpdateSelectedEnemy();
                     TurnSystem.instance.SetAllPlayersPrepareState(AttackPrepareState.Basic);
                     BattleCameraManager.Instance.SwitchToDefault();
                     int range = normalAttackRange;
                     var targets = EnemySelection.instance.GetAOETargets(range);
+                    EnemySelection.instance.UpdateSelectedEnemy();
                     EnemySelectorUI.instance.ShowAOETargets(targets.Select(e => e.transform).ToList());
                     ButtonManager.instance.HighlightBtn();
                 }
@@ -238,7 +237,7 @@ namespace Project1
         private void ExecuteHeal()
         {
             prepareState = AttackPrepareState.None;
-            currentState = PlayerState.MovingToAttack;
+            currentState = PlayerState.Healing;
 
             var targets = AllySelection.instance.GetTargets(skillAttackRange);
             //HealSystem.Instance.ApplyHeal(this, targets);
@@ -296,6 +295,7 @@ namespace Project1
                     ReturnToInitialPosition();
                     break;
                 case PlayerState.Healing:
+                    PerformHeal();
                     break;
             }
         }
@@ -359,6 +359,7 @@ namespace Project1
             {
                 animator.SetFloat("Speed", 0);
                 animator.SetBool("Trigger Heal", true);
+                isAttackExecuted = true;
             }
         }
 
@@ -401,7 +402,7 @@ namespace Project1
             }
         }
 
-        public void CheckHP()
+        public override void CheckHP()
         {
             if (ui != null)
                 ui.UpdateHP();

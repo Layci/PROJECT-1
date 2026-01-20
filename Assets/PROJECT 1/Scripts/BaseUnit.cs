@@ -89,8 +89,10 @@ namespace ProJect1
         {
             curHealth = Mathf.Min(curHealth + amount, maxHealth);
 
-            
+            CheckHP();
         }
+
+        public abstract void CheckHP();
 
         public Vector3 GetProjectileSpawnPosition(EffectAsset asset)
         {
