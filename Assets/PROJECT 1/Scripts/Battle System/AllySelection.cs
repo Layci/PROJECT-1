@@ -92,5 +92,11 @@ namespace ProJect1
 
             return targets;
         }
+
+        public BaseUnit GetAnchorTarget()
+        {
+            if (TurnSystem.instance.playerCharacters.Count == 0) return null;
+            return TurnSystem.instance.playerCharacters[selectedIndex];
+        }
     }
 }

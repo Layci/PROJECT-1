@@ -205,6 +205,8 @@ namespace Project1
 
         public void HideAOEUI()
         {
+            currentAOETargets.Clear();
+
             foreach (var ui in multiSelectorUIs)
             {
                 ui.gameObject.SetActive(false);

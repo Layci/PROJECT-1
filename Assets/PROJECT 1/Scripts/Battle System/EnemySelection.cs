@@ -77,7 +77,6 @@ namespace Project1
             for (int i = start; i <= end; i++)
             {
                 targets.Add(allEnemies[i]);
-                // BaseEnemyControl → BaseUnit (업캐스팅, 안전)
             }
 
             return targets;
@@ -99,33 +98,14 @@ namespace Project1
                     // 기본 공격 → normalAttackRange 사용
                     int normalRange = player.normalAttackRange;
 
-                    enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
-                    //enemySelectorUI.ShowSingleTargetUI();
                     var targets = GetAOETargets(normalRange);
                     enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
-                    //enemySelectorUI.HideSingleTargetUI();
-
-                    /*if (normalRange == 0)
-                    {
-                        // 단일
-                        enemySelectorUI.ShowSingleTargetUI();
-                        enemySelectorUI.HideAOEUI();
-                    }
-                    else
-                    {
-                        // 범위
-                        var targets = GetAOETargets(normalRange);
-                        enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
-                        enemySelectorUI.HideSingleTargetUI();
-                    }*/
                 }
 
                 if (player.prepareState == AttackPrepareState.Basic)
                 {
                     // 기본 공격 → normalAttackRange 사용
                     int normalRange = player.normalAttackRange;
-
-                    enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
 
                     var targets = GetAOETargets(normalRange);
                     enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
@@ -149,24 +129,18 @@ namespace Project1
                     // 스킬 공격 → skillAttackRange 사용
                     int skillRange = player.skillAttackRange;
 
-                    enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
+                    //enemySelectorUI.SetSelectedEnemy(selectedEnemy.transform);
 
                     var targets = GetAOETargets(skillRange);
                     enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
-                    //enemySelectorUI.HideSingleTargetUI();
-                    /*if (skillRange == 0)
-                    {
-                        enemySelectorUI.ShowSingleTargetUI();
-                        enemySelectorUI.HideAOEUI();
-                    }
-                    else
-                    {
-                        var targets = GetAOETargets(skillRange);
-                        enemySelectorUI.ShowAOETargets(targets.Select(e => e.transform).ToList());
-                        enemySelectorUI.HideSingleTargetUI();
-                    }*/
                 }
             }
+        }
+
+        public BaseUnit GetAnchorTarget()
+        {
+            if (turnSystem.enemyCharacters.Count == 0) return null;
+            return turnSystem.enemyCharacters[selectedEnemyIndex];
         }
     }
 }

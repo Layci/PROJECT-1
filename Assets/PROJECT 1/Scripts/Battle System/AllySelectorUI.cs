@@ -73,7 +73,7 @@ namespace ProJect1
 
         public void HideAll()
         {
-            singleSelector.gameObject.SetActive(false);
+            //singleSelector.gameObject.SetActive(false);
             foreach (var ui in aoeSelectors)
                 ui.gameObject.SetActive(false);
 

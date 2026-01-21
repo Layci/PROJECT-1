@@ -81,6 +81,20 @@ namespace Project1
             }
         }
 
+        public override Transform GetAttackAnchorTarget()
+        {
+            if (prepareState == AttackPrepareState.Skill && isHealSkill)
+            {
+                // 힐 → 아군 기준
+                return AllySelection.instance.GetAnchorTarget()?.transform;
+            }
+            else
+            {
+                // 공격 → 적 기준
+                return EnemySelection.instance.GetAnchorTarget()?.transform;
+            }
+        }
+
         public override List<BaseUnit> GetAttackTargets(int range)
         {
             return EnemySelection.instance.GetAOETargets(range);
@@ -272,9 +286,13 @@ namespace Project1
 
         public void TargetUpdate()
         {
-            Transform targetposition = EnemySelectorUI.instance.selectedEnemy;
-            currentTarget = targetposition;
+            attackAnchorTarget = GetAttackAnchorTarget();
         }
+        /*public void TargetUpdate()
+        {
+            Transform targetposition = EnemySelectorUI.instance.selectedEnemy;
+            attackAnchorTarget = targetposition;
+        }*/
 
         protected void HandleState()
         {
@@ -302,7 +320,32 @@ namespace Project1
 
         protected virtual void MoveToAttack()
         {
-            if (currentTarget != null)
+            if (attackAnchorTarget == null)
+                return;
+
+            EnemySelection.instance.isMove = true;
+
+            transform.position = Vector3.MoveTowards(transform.position, attackAnchorTarget.position, moveSpeed * Time.deltaTime);
+
+            animator.SetFloat("Speed", 1);
+
+            float distanceToTarget = Vector3.Distance(transform.position, attackAnchorTarget.position);
+
+            if (!skillAttack)
+            {
+                if (distanceToTarget <= attackRange && !isBlock)
+                    currentState = PlayerState.Attacking;
+            }
+            else
+            {
+                if (distanceToTarget <= skillRange)
+                    currentState = PlayerState.Attacking;
+            }
+        }
+
+        /*protected virtual void MoveToAttack()
+        {
+            if (attackAnchorTarget != null)
             {
                 EnemySelection.instance.isMove = true;
                 transform.position = Vector3.MoveTowards(transform.position, EnemySelectorUI.instance.selectedEnemy.position, moveSpeed * Time.deltaTime);
@@ -324,7 +367,7 @@ namespace Project1
                     }
                 }
             }
-        }
+        }*/
 
         protected virtual void PerformAttack()
         {

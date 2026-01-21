@@ -30,13 +30,13 @@ namespace Project1
             if (player != null)
             {
                 // 플레이어의 currentTarget을 타겟으로 설정
-                target = player.currentTarget;
+                target = player.attackAnchorTarget;
             }
             // 적이 참조하는 경우
             else if (enemy != null)
             {
                 // 적의 currentTarget을 타겟으로 설정
-                target = enemy.currentTarget;
+                target = enemy.attackAnchorTarget;
             }
         }
 

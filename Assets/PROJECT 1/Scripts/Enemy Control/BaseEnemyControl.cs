@@ -40,7 +40,7 @@ namespace Project1
         public bool startAttacking;              // 공격중을 알리는 연산자
         //public bool skillAttack;                 // 스킬공격을 할지 알리는 연산자
         public bool isTurn = false;              // 본인 턴인지 알려주는 연산자
-        //public Transform currentTarget;        // 플레이어 참조
+        //public Transform attackAnchorTarget;        // 플레이어 참조
         public Slider hpBarSlider;               // HP바
         //public string unitName;                  // 캐릭터 이름
         //public Sprite unitIcon;                  // 캐릭터 아이콘
@@ -69,7 +69,7 @@ namespace Project1
             if (isTurn)
             {
                 HandleState();
-                currentTarget = TurnSystem.instance.playerTargetPosition;
+                attackAnchorTarget = TurnSystem.instance.playerTargetPosition;
                 if (currentState == EnemyState.Idle)
                 {
                     if (isTurn)
@@ -79,6 +79,11 @@ namespace Project1
                     }
                 }
             }
+        }
+
+        public override Transform GetAttackAnchorTarget()
+        {
+            return null;
         }
 
         public override List<BaseUnit> GetAttackTargets(int range)
@@ -109,7 +114,7 @@ namespace Project1
 
         private int GetMyIndexInPlayerList()
         {
-            return TurnSystem.instance.playerCharacters.IndexOf(currentTarget.GetComponent<BaseCharacterControl>());
+            return TurnSystem.instance.playerCharacters.IndexOf(attackAnchorTarget.GetComponent<BaseCharacterControl>());
         }
 
         protected void HandleState()
@@ -122,9 +127,9 @@ namespace Project1
                     MoveToAttack();
                     break;
                 case EnemyState.Attacking:
-                    if (currentTarget != null)
+                    if (attackAnchorTarget != null)
                     {
-                        PerformAttack(currentTarget.gameObject);
+                        PerformAttack(attackAnchorTarget.gameObject);
                     }
                     else
                     {
@@ -146,7 +151,7 @@ namespace Project1
 
         private void StartMove()
         {
-            if (currentTarget != null)
+            if (attackAnchorTarget != null)
             {
                 currentState = EnemyState.MovingToAttack;
             }
@@ -155,17 +160,17 @@ namespace Project1
         protected virtual void MoveToAttack()
         {
             // 플레이어를 향해 움직이기
-            if (currentTarget != null)
+            if (attackAnchorTarget != null)
             {
                 
-                transform.position = Vector3.MoveTowards(transform.position, currentTarget.position, moveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, attackAnchorTarget.position, moveSpeed * Time.deltaTime);
                 animator.SetFloat("Speed", 1);
 
                 int range = skillAttack ? skillAttackRange : normalAttackRange;
 
                 // 현재 적의 인덱스를 턴시스템에서 찾기
                 var turnSystem = FindObjectOfType<TurnSystem>();
-                int playerIndex = turnSystem.playerCharacters.IndexOf(currentTarget.GetComponent<BaseCharacterControl>());
+                int playerIndex = turnSystem.playerCharacters.IndexOf(attackAnchorTarget.GetComponent<BaseCharacterControl>());
                 // 인덱스 기반으로 AOE 범위 계산
                 var targets = PlayerSelection.instance.GetAOETargetsFromEnemy(range, playerIndex);
                 TargetIndicatorManager.Instance.ShowTargetIndicators(targets);
@@ -173,7 +178,7 @@ namespace Project1
                 // 외곽선 표시
                 //EnemyAOEHighlighter.Instance.ShowAOETargets(targets);
                 
-                float distanceToTarget = Vector3.Distance(transform.position, currentTarget.position);               
+                float distanceToTarget = Vector3.Distance(transform.position, attackAnchorTarget.position);               
                 Debug.Log($"[Enemy] 이동 전 AOE 표시됨, 대상 수: {targets.Count}");
                 if (!skillAttack)
                 {

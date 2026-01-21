@@ -28,22 +28,7 @@ namespace ProJect1
         public float SkillAttackPower;  // 플레이어 스킬공격력
         public bool skillAttack;        // 스킬공격을 할지 알리는 연산자
 
-        public Transform currentTarget;
-
-        /*[System.Serializable]
-        public class AttackEffectData
-        {
-            [Header("Effect Type")]
-            public EffectType effectType;
-
-            [Header("Usage")]
-            public bool useForNormal;
-            public bool useForSkill;
-
-            [Header("Usage")]
-            [Tooltip("(True = 직접 타겟한 적 중심, False = 타겟마다)")]
-            public bool isAOECenter;   // true = 중심 1개 / false = 타겟마다
-        }*/
+        public Transform attackAnchorTarget;
 
         [Header("일반 공격 범위 설정")]
         [Tooltip("기본 공격 범위 (0 = 단일, 1 = 양옆 1칸 포함)")]
@@ -71,6 +56,7 @@ namespace ProJect1
 
         public abstract List<BaseUnit> GetAttackTargets(int range);
         public abstract List<BaseUnit> GetHealTargets(int range);
+        public abstract Transform GetAttackAnchorTarget();
 
         public virtual List<EffectAsset> GetAllEffects()
         {
