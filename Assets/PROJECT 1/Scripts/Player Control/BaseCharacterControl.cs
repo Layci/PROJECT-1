@@ -108,7 +108,7 @@ namespace Project1
             if (players == null || players.Count == 0)
                 return result;
 
-            int centerIndex = TurnSystem.instance.playerCharacters.IndexOf(this);
+            int centerIndex = AllySelection.instance.selectedIndex;
 
             int left = Mathf.Max(0, centerIndex - range);
             int right = Mathf.Min(players.Count - 1, centerIndex + range);
@@ -118,6 +118,24 @@ namespace Project1
 
             return result;
         }
+        /*public override List<BaseUnit> GetHealTargets(int range)
+        {
+            var result = new List<BaseUnit>();
+
+            var players = TurnSystem.instance.playerCharacters;
+            if (players == null || players.Count == 0)
+                return result;
+
+            int centerIndex = TurnSystem.instance.playerCharacters.IndexOf(this);
+
+            int left = Mathf.Max(0, centerIndex - range);
+            int right = Mathf.Min(players.Count - 1, centerIndex + range);
+
+            for (int i = left; i <= right; i++)
+                result.Add(players[i]);
+
+            return result;
+        }*/
 
         protected virtual void HandleAttackInput()
         {
@@ -252,7 +270,7 @@ namespace Project1
         {
             prepareState = AttackPrepareState.None;
             currentState = PlayerState.Healing;
-
+            skillAttack = true;
             var targets = AllySelection.instance.GetTargets(skillAttackRange);
             //HealSystem.Instance.ApplyHeal(this, targets);
 

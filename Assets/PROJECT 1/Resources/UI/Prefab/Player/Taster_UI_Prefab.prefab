@@ -712,9 +712,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buffIcons:
-  - {fileID: 4244147355540896105}
-  - {fileID: 5140689949176459530}
-  - {fileID: 1681488721064988356}
+  - {fileID: 7040275946149873272}
+  - {fileID: 4173526482085450148}
+  - {fileID: 910486572562967078}
 --- !u!1 &6369793301730260162
 GameObject:
   m_ObjectHideFlags: 0

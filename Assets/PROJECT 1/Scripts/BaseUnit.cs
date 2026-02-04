@@ -74,7 +74,7 @@ namespace ProJect1
         public void Heal(int amount)
         {
             curHealth = Mathf.Min(curHealth + amount, maxHealth);
-
+            Debug.Log(amount);
             CheckHP();
         }
 

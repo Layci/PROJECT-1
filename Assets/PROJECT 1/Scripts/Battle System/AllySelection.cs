@@ -9,7 +9,6 @@ namespace ProJect1
     public class AllySelection : MonoBehaviour
     {
         public static AllySelection instance;
-
         public int selectedIndex = 0;
 
         private void Awake()
@@ -30,22 +29,34 @@ namespace ProJect1
             if (!cur.isHealSkill)
                 return;
 
-            bool moved = false;
+            //bool moved = true;
 
             if (Input.GetKeyDown(KeyCode.A))
             {
                 selectedIndex++;
-                moved = true;
+                //moved = true;
             }
             else if (Input.GetKeyDown(KeyCode.D))
             {
                 selectedIndex--;
-                moved = true;
+                //moved = true;
             }
 
-            if (moved)
+            var players = TurnSystem.instance.playerCharacters;
+
+            if (players.Count == 0) return;
+
+            if (selectedIndex < 0)
+                selectedIndex = players.Count - 1;
+            if (selectedIndex >= players.Count)
+                selectedIndex = 0;
+
+            UpdateSelectedAlly();
+            /*if (moved)
             {
                 var players = TurnSystem.instance.playerCharacters;
+
+                if (players.Count == 0) return;
 
                 if (selectedIndex < 0)
                     selectedIndex = players.Count - 1;
@@ -53,7 +64,7 @@ namespace ProJect1
                     selectedIndex = 0;
 
                 UpdateSelectedAlly();
-            }
+            }*/
         }
 
         public void UpdateSelectedAlly()
@@ -81,6 +92,20 @@ namespace ProJect1
 
         public List<BaseUnit> GetTargets(int range)
         {
+            var players = TurnSystem.instance.playerCharacters;
+            List<BaseUnit> targets = new();
+
+            int start = Mathf.Max(0, selectedIndex - range);
+            int end = Mathf.Min(players.Count - 1, selectedIndex + range);
+
+            for (int i = start; i <= end; i++)
+                targets.Add(players[i]);
+
+            return targets;
+        }
+
+        /*public List<BaseUnit> GetTargets(int range)
+        {
             var targets = new List<BaseUnit>();
             var players = TurnSystem.instance.playerCharacters;
 
@@ -91,7 +116,7 @@ namespace ProJect1
                 targets.Add(players[i]);
 
             return targets;
-        }
+        }*/
 
         public BaseUnit GetAnchorTarget()
         {

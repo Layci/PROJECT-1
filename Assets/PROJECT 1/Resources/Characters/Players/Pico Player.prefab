@@ -352,9 +352,9 @@ MonoBehaviour:
   isDead: 0
   isHealSkill: 1
   AttackPower: 22
-  SkillAttackPower: 0
+  SkillAttackPower: 55
   skillAttack: 0
-  currentTarget: {fileID: 0}
+  attackAnchorTarget: {fileID: 0}
   normalAttackRange: 0
   normalAttackEffect: {fileID: 0}
   skillAttackRange: 0

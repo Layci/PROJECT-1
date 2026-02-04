@@ -3524,12 +3524,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectorUI: {fileID: 6101003728584238812}
   mainCamera: {fileID: 1029456351}
-  isTurn: 0
-  yOffset: 75
-  allEnemies: []
-  selectedEnemy: {fileID: 0}
-  multiSelectorUIs: []
   canvas: {fileID: 1902975642}
+  yOffset: 75
+  isTurn: 0
+  multiSelectorUIs: []
 --- !u!114 &353701281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3669,9 +3667,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0369503bc10bab84a989b242bde09f88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singleSelector: {fileID: 0}
   mainCamera: {fileID: 1029456351}
-  yOffset: 170
+  canvas: {fileID: 1902975642}
+  selectorUIPrefab: {fileID: 6101003728584238812}
+  yOffset: 1
 --- !u!114 &353701290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28744,7 +28743,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8500869003409927420}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 10.253582}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -28752,7 +28751,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -290.66296, y: 9.953125}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!198 &6211125795630296522
