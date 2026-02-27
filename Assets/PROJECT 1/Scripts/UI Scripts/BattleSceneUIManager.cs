@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ProJect1
 {
@@ -9,8 +10,11 @@ namespace ProJect1
         public static BattleSceneUIManager Instance;
 
         public GameObject settingUI;
+        public GameObject defeatUIPanel;
 
         private Stack<GameObject> uiStack = new Stack<GameObject>();
+
+        public bool forcePause = false;
 
         private void Awake()
         {
@@ -23,17 +27,16 @@ namespace ProJect1
             {
                 if(uiStack.Count > 0)
                 {
+                    if (uiStack.Peek() == defeatUIPanel)
+                        return; // 패배 UI는 닫지 않음
+
                     CloseTopUI();
                     return;
                 }
                 else if (uiStack.Count == 0) OpenUI(settingUI);
-                /*else
-                {
-                    if (Input.GetKeyDown(KeyCode.Escape) && uiStack.Peek() == settingUI) CloseTopUI();
-                }*/
             }
 
-            if (uiStack.Count > 0) 
+            if (uiStack.Count > 0 || forcePause) 
             {
                 Time.timeScale = 0;
             }
@@ -62,7 +65,21 @@ namespace ProJect1
             uiStack.Push(popup);
         }
 
+        public void OpenDefeatUI()
+        {
+            CloseAllUI();          // 다른 UI 다 닫고
+            OpenPopup(defeatUIPanel); // 패배 UI는 팝업 성격
+        }
+
         public void CloseTopUI()
+        {
+            if (uiStack.Count == 0) return;
+
+            GameObject topUI = uiStack.Pop();
+            topUI.SetActive(false);
+        }
+
+        public void CloseDefeatUI()
         {
             if (uiStack.Count == 0) return;
 
@@ -82,5 +99,19 @@ namespace ProJect1
         public void OnClickExitSetting() => CloseTopUI();
 
         public void OnClickSetting() => OpenUI(settingUI);
+
+        public void OnClickRetry()
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene("BattleScene");
+        }
+
+        public void OnClickExitToMain()
+        {
+            forcePause = true;
+            CloseDefeatUI();
+            BattleTransitionManager.Instance.EndBattle();
+            //Time.timeScale = 1f;
+        }
     }
 }

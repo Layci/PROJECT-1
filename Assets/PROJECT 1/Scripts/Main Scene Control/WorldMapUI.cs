@@ -33,6 +33,7 @@ namespace ProJect1
                 Debug.LogError($"Teleporter ID '{teleporterId}' not found!");
                 return;
             }
+            UIManager.Instance.uiBlock = true;
 
             Teleporter t = teleporterDict[teleporterId];
             UIManager.Instance.CloseTopUI();
@@ -58,6 +59,7 @@ namespace ProJect1
 
             // 6. 입력 복구
             MainPlayerControl.instance.inputBlocked = false;
+            UIManager.Instance.uiBlock = false;
         }
     }
 }

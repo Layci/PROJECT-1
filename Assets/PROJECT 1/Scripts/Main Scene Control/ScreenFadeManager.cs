@@ -41,7 +41,8 @@ namespace ProJect1
 
             while (t < fadeDuration)
             {
-                t += Time.deltaTime;
+                //t += Time.deltaTime;
+                t += Time.unscaledDeltaTime;
                 c.a = Mathf.Lerp(from, to, t / fadeDuration);
                 fadeImage.color = c;
                 yield return null;

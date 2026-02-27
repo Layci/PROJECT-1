@@ -147,6 +147,7 @@ namespace ProJect1
         {
             isDead = true;
             Debug.Log($"{unitName} 사망");
+            BattleManager.instance.CheckDefeat();
         }
 
         // -------------------------------- 버프관련

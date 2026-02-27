@@ -210,5 +210,30 @@ namespace ProJect1
         {
             BattleTransitionManager.Instance.EndBattle();
         }
+
+        private bool isBattleEnded = false;
+
+        private void OnBattleDefeat()
+        {
+            if (isBattleEnded) return;
+            isBattleEnded = true;
+
+            TurnSystem.instance.enabled = false; // ÅÏ Á¤Áö
+            BattleSceneUIManager.Instance.OpenDefeatUI();
+        }
+
+        public void CheckDefeat()
+        {
+            var players = TurnSystem.instance.playerCharacters;
+            if (players == null || players.Count == 0)
+                return;
+
+            bool allDead = players.All(p => p.isDead);
+
+            if (allDead)
+            {
+                OnBattleDefeat();
+            }
+        }
     }
 }

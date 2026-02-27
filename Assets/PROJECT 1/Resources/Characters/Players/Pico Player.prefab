@@ -358,7 +358,7 @@ MonoBehaviour:
   normalAttackRange: 0
   normalAttackEffect: {fileID: 0}
   skillAttackRange: 0
-  skillAttackEffect: {fileID: 0}
+  skillAttackEffect: {fileID: 11400000, guid: f92838ed73fccbd40943fd4895c255c4, type: 2}
   centerPoint: {fileID: 5964259540610688613}
   headPoint: {fileID: 3564797512086028972}
   projectileSpawnPoint: {fileID: 5964259540610688613}

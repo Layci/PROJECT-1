@@ -7,7 +7,7 @@ namespace ProJect1
 {
     public class TeleporterIconUI : MonoBehaviour
     {
-        public string teleporterId;      // Teleporter와 연결될 ID
+        public string teleporterId;
         private Button btn;
 
         private void Awake()
@@ -18,8 +18,7 @@ namespace ProJect1
 
         public void OnIconClicked()
         {
-            
-            WorldMapUI.Instance.TeleportTo(teleporterId);
+            UIManager.Instance.OpenTeleportPopup(teleporterId);
         }
     }
 }

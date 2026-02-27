@@ -55,12 +55,14 @@ namespace ProJect1
             yield return ScreenFadeManager.Instance.FadeOut();
 
             // 2. 씬 로드
-            AsyncOperation op =
-                SceneManager.LoadSceneAsync("MainScene");
+            AsyncOperation op = SceneManager.LoadSceneAsync("MainScene");
             op.allowSceneActivation = false;
             Debug.Log("불러오기");
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSecondsRealtime(0.5f);
+            //yield return new WaitForSeconds(0.5f);
+            Time.timeScale = 1f;
             op.allowSceneActivation = true;
+            Debug.Log(Time.timeScale);
         }
     }
 }
