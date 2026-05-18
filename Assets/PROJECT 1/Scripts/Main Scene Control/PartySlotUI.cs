@@ -45,7 +45,7 @@ namespace ProJect1
 
         public bool IsEmpty() => currentData == null;
 
-        // ½½·Ô Å¬¸¯ ½Ã Á¦°Å
+        // ìŠ¬ë¡¯ í´ë¦­ ì‹œ í•´ì œ
         public void OnPointerClick(PointerEventData eventData)
         {
             if (currentData != null)
@@ -58,7 +58,7 @@ namespace ProJect1
         {
             if (currentData == null) return;
 
-            // µå·¡±× ¾ÆÀÌÄÜ »ı¼º
+            // ë“œë˜ê·¸ ì•„ì´ì½˜ ìƒì„±
             dragIcon = new GameObject("DragIcon");
             dragIcon.transform.SetParent(canvas.transform);
 
@@ -67,7 +67,7 @@ namespace ProJect1
 
             Image img = dragIcon.AddComponent<Image>();
             img.sprite = icon.sprite;
-            img.raycastTarget = false; // µå·¡±× ¾ÆÀÌÄÜÀº ·¹ÀÌÄ³½ºÆ® ¹æÇØÇÏÁö ¾ÊÀ½
+            img.raycastTarget = false; // ë“œë˜ê·¸ ì•„ì´ì½˜ì´ ë ˆì´ìºìŠ¤íŠ¸ë¥¼ ë°©í•´í•˜ì§€ ì•Šë„ë¡ ì„¤ì •
         }
 
         public void OnDrag(PointerEventData eventData)

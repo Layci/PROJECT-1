@@ -7,22 +7,22 @@ namespace ProJect1
 {
     public class MainPlayerControl : MonoBehaviour
     {
-        [Header("ÀÌµ¿ ¼³Á¤")]
+        [Header("ì´ë™ ì„¤ì •")]
         public float moveSpeed = 3f;
         public float runSpeed = 6f;
         public float rotateSpeed = 10f;
         public float gravity = -10f;
         public float stopMoveTime = 0;
 
-        [Header("Ä³¸¯ÅÍ »óÅÂ")]
+        [Header("ìºë¦­í„° ìƒíƒœ")]
         public bool run = false;
         public bool holdRun = true;
         public bool isAttack = false;
         public bool isAttacking = false;
         public bool inputBlocked = false;
 
-        [Header("Ä«¸Ş¶ó ÂüÁ¶")]
-        public Transform cameraTransform; // 3ÀÎÄª Ä«¸Ş¶óÀÇ Transform
+        [Header("ì¹´ë©”ë¼ ì„¤ì •")]
+        public Transform cameraTransform; // 3ì¸ì¹­ ì¹´ë©”ë¼ì˜ Transform
         public Animator anim;
 
         CharacterController cr;
@@ -38,6 +38,12 @@ namespace ProJect1
         {
             anim = GetComponentInChildren<Animator>();
             cr = GetComponentInChildren<CharacterController>();
+
+            // ì•ˆì „ì¥ì¹˜: ì „íˆ¬ í›„ ë©”ì¸ì”¬ ë³µê·€ ì‹œ ê³µê²©/ì…ë ¥ ì œí•œ ìƒíƒœ ê°•ì œ ì´ˆê¸°í™”
+            isAttacking = false;
+            inputBlocked = false;
+            if (cr != null) cr.enabled = true;
+
             //transform.position = PartyFormationManager.Instance.lastFieldPosition;
             Debug.Log(PartyFormationManager.Instance.lastFieldPosition);
         }
@@ -57,7 +63,7 @@ namespace ProJect1
             float v = Input.GetAxisRaw("Vertical");
             Vector3 input = new Vector3(h, 0, v).normalized;
 
-            // Ä«¸Ş¶ó ±âÁØ ¹æÇâ
+            
             Vector3 camForward = cameraTransform.forward;
             Vector3 camRight = cameraTransform.right;
             camForward.y = 0;
@@ -65,7 +71,7 @@ namespace ProJect1
 
             Vector3 moveDir = (camForward * input.z + camRight * input.x).normalized;
 
-            // Ä³¸¯ÅÍ ´Ş¸®´Â ¹æ½Ä ÀüÈ¯
+            // ë‹¬ë¦¬ê¸° ë°©ì‹ ë³€í™˜
             if (Input.GetKeyDown(KeyCode.CapsLock))
             {
                 holdRun = !holdRun;
@@ -73,13 +79,13 @@ namespace ProJect1
 
             if (holdRun)
             {
-                // Åä±ÛÇü
+                // ëˆ„ë¥´ëŠ” ë™ì•ˆ
                 if (Input.GetKeyDown(KeyCode.LeftShift))
                     run = !run;
             }
             else
             {
-                // À¯ÁöÇü
+                // í† ê¸€ ë°©ì‹
                 run = Input.GetKey(KeyCode.LeftShift);
             }
             
@@ -87,7 +93,6 @@ namespace ProJect1
 
             Vector3 move = moveDir * speed;
 
-            // === Áß·Â Ã³¸® ===
             if (cr.isGrounded)
             {
                 if (verticalVelocity < -2f)
@@ -101,18 +106,15 @@ namespace ProJect1
             Vector3 finalMove = move + new Vector3(0, verticalVelocity, 0);
             cr.Move(finalMove * Time.deltaTime);
 
-            // === È¸Àü ===
             if (moveDir.magnitude > 0.1f)
             {
                 Quaternion targetRot = Quaternion.LookRotation(moveDir);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotateSpeed * Time.deltaTime);
             }
 
-            // === ¾Ö´Ï¸ŞÀÌ¼Ç ===
             float animSpeed = move.magnitude / runSpeed;   // 0 ~ 1
             anim.SetFloat("Speed", animSpeed);
 
-            // ÇÃ·¹ÀÌ¾î°¡ ¿òÁ÷ÀÌÁö ¾ÊÀ¸¸é
             if (moveDir.magnitude < 0.1f)
             {
                 stopMoveTime += Time.deltaTime;
@@ -144,21 +146,20 @@ namespace ProJect1
         IEnumerator DashAndAttack(MainSenceEnemy enemy)
         {
             PartyFormationManager.Instance.lastFieldPosition = transform.position;
-            //isAttacking = true;
             anim.SetTrigger("Attack");
 
-            // ÀûÀÇ Transform
+            // íƒ€ê²Ÿ ì„¤ì •
             Transform target = enemy.transform;
 
             float dashSpeed = 12f;
             float stopDistance = 1.2f;
 
-            // Àû ¹æÇâ ¹Ù¶óº¸±â
+            // ì  ë°©í–¥ ë°”ë¼ë³´ê¸°
             Vector3 targetDir = (target.position - transform.position).normalized;
             targetDir.y = 0;
             Quaternion targetRot = Quaternion.LookRotation(targetDir);
             transform.rotation = targetRot;
-            cr.enabled = false; // ÀÌµ¿Ãæµ¹ ¹æÁö (µ¹Áø ½Ã ÇÊ¼ö)
+            cr.enabled = false; // ì´ë™ ì¶©ëŒ ì¼ì‹œ ì •ì§€ (ëŒ€ì‰¬ ì¤‘ ë²½ ëš«ê¸° ë°©ì§€ ë° ë¶€ë“œëŸ¬ìš´ ì´ë™)
 
             while (true)
             {
@@ -167,21 +168,20 @@ namespace ProJect1
                 Vector3 dir = (target.position - transform.position).normalized;
                 float dist = Vector3.Distance(transform.position, target.position);
 
-                // µµÂøÇÏ¸é °ø°İ ÆÇÁ¤
+                // ëª©í‘œ ê±°ë¦¬ì— ë„ì°©í•˜ë©´ ì¤‘ë‹¨
                 if (dist <= stopDistance)
                     break;
 
-                // XZ Æò¸é ÀÌµ¿
+                // XZ í‰ë©´ ì´ë™
                 Vector3 move = new Vector3(dir.x, 0, dir.z);
                 transform.position += move * dashSpeed * Time.deltaTime;
 
                 yield return null;
             }
 
-            // TODO: Àû¿¡°Ô ½ÇÁ¦ µ¥¹ÌÁö Àû¿ë
+            // ë°ë¯¸ì§€ ì „ë‹¬ ë“±ì˜ ë¡œì§ ì²˜ë¦¬ ì§€ì 
             Debug.Log("Hit enemy: " + enemy.name);
 
-            //isAttacking = false;
             cr.enabled = true;
         }
 

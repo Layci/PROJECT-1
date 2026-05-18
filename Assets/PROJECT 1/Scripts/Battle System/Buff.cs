@@ -1,98 +1,87 @@
 using System;
 using UnityEngine;
-using Project1;
 using ProJect1;
 
 namespace Project1
 {
+    public enum EffectType
+    {
+        Buff,
+        Debuff
+    }
+
     public class Buff
     {
-        public string buffName;        // ¹öÇÁ ÀÌ¸§
-        public int remainingTurns;     // ¹öÇÁ Áö¼Ó ÅÏ
-        public float attackBoost;      // °ø°İ·Â Áõ°¡·®
-        public float defenseBoost;     // ¹æ¾î·Â Áõ°¡·®
-        public Type exclusiveCharacter;  // Æ¯Á¤ Ä³¸¯ÅÍ Àü¿ë (¾øÀ¸¸é null)
+        public string buffName;        // íš¨ê³¼ ì´ë¦„
+        public EffectType effectType;  // ë²„í”„/ë””ë²„í”„ êµ¬ë¶„
+        public int remainingTurns;     // ë‚¨ì€ ì§€ì† í„´
+        public int originalDuration;   // ì´ˆê¸° ì§€ì† í„´ (ë¦¬ì…‹ìš©)
+        
+        [Header("ìŠ¤íƒ¯ ë³€ë™")]
+        public float attackBoost;      // ê³µê²©ë ¥ ì¦ê°€ì¹˜ (0.2 = +20%)
+        public float defenseBoost;     // ë°©ì–´ë ¥ ì¦ê°€ì¹˜ (0.2 = +20%)
+        
+        [Header("ì§€ì† íš¨ê³¼ (DoT/HoT)")]
+        public float tickValue;        // í„´ ì‹œì‘/ì¢…ë£Œ ì‹œ ë³€ë™ë  ìˆ˜ì¹˜ (ì–‘ìˆ˜: í, ìŒìˆ˜: ë°ë¯¸ì§€)
+        public bool isTickAtStart = true; // true: í„´ ì‹œì‘ ì‹œ, false: í„´ ì¢…ë£Œ ì‹œ íš¨ê³¼ ë°œìƒ
 
-        public bool resetPowerOnExpire; // 
+        public Type exclusiveCharacter;  // íŠ¹ì • ìºë¦­í„° ì „ìš© (í•„ìš”í•œ ê²½ìš°)
+        public bool resetPowerOnExpire;  // ë§Œë£Œ ì‹œ ë²„í”„ íŒŒì›Œ ì´ˆê¸°í™” ì—¬ë¶€
 
-        public Buff(string name, int duration, float atkBoost, float defBoost, Type exclusiveCharacter = null, bool resetPowerOnExpire = true)
+        public Buff(string name, int duration, float atkBoost, float defBoost, 
+                    EffectType type = EffectType.Buff, float tick = 0, bool tickAtStart = true,
+                    Type exclusiveCharacter = null, bool resetPowerOnExpire = true)
         {
             buffName = name;
             remainingTurns = duration;
+            originalDuration = duration; // ì´ˆê¸° ì§€ì†ì‹œê°„ ì €ì¥
             attackBoost = atkBoost;
             defenseBoost = defBoost;
+            effectType = type;
+            tickValue = tick;
+            isTickAtStart = tickAtStart;
             this.exclusiveCharacter = exclusiveCharacter;
+            this.resetPowerOnExpire = resetPowerOnExpire;
         }
 
-        // ¹öÇÁ È¿°ú Àû¿ë
+        // ìƒˆë¡œìš´ íƒ€ê²Ÿì—ê²Œ ì ìš©í•˜ê¸° ìœ„í•´ ë²„í”„ ê°ì²´ ë³µì‚¬
+        public Buff Clone()
+        {
+            return new Buff(buffName, originalDuration, attackBoost, defenseBoost, 
+                            effectType, tickValue, isTickAtStart, exclusiveCharacter, resetPowerOnExpire);
+        }
+
+        // ìŠ¤íƒ¯ íš¨ê³¼ ì ìš© (ìµœì´ˆ 1íšŒ)
         public void ApplyEffect(BaseUnit unit)
         {
-            unit.damageIncreased += attackBoost;  // °ø°İ·Â Áõ°¡
-            unit.damageReduction -= defenseBoost; // ¹Ş´Â ÇÇÇØ °¨¼Ò
-            Debug.Log(unit.name + "¿¡°Ô " + buffName + " ¹öÇÁ Àû¿ë! (ÅÏ ¼ö: " + remainingTurns + ")");
+            unit.damageIncreased += attackBoost;
+            unit.damageReduction -= defenseBoost;
+            Debug.Log($"{unit.unitName}ì—ê²Œ {buffName} ({effectType}) ì ìš©! (ATK +{attackBoost * 100}%, DEF +{defenseBoost * 100}%)");
         }
 
-        // ¹öÇÁ Á¦°Å ½Ã È¿°ú ¿ø»óº¹±¸
+        // í„´ë§ˆë‹¤ ë°œìƒí•˜ëŠ” íš¨ê³¼ (DoT/HoT)
+        public void TickEffect(BaseUnit unit)
+        {
+            if (tickValue == 0) return;
+
+            if (tickValue > 0)
+            {
+                unit.Heal((int)tickValue);
+                Debug.Log($"{unit.unitName}ì´ {buffName} íš¨ê³¼ë¡œ {tickValue}ë§Œí¼ íšŒë³µ!");
+            }
+            else
+            {
+                unit.TakeDamage(Mathf.Abs(tickValue));
+                Debug.Log($"{unit.unitName}ì´ {buffName} íš¨ê³¼ë¡œ {Mathf.Abs(tickValue)}ë§Œí¼ í”¼í•´!");
+            }
+        }
+
+        // íš¨ê³¼ ì œê±° (ë§Œë£Œ ì‹œ)
         public void RemoveEffect(BaseUnit unit)
         {
-            BaseCharacterControl player = unit as BaseCharacterControl;
-
-            unit.damageIncreased -= attackBoost;  // °ø°İ·Â º¹±¸
-            unit.damageReduction += defenseBoost; // ¹Ş´Â ÇÇÇØ º¹±¸
-            Debug.Log(unit.name + "ÀÇ " + buffName + " ¹öÇÁ°¡ ÇØÁ¦µÊ!");
-
-            // Àü¿ë Ä³¸¯ÅÍ¿¡°Ô¸¸ Àû¿ë (ex: Faye Àü¿ë ¹öÇÁ)
-            if (exclusiveCharacter != null && unit.GetType() == exclusiveCharacter)
-            {
-                if (player != null && player.ui != null)
-                {
-                    BuffIconUI iconUI = player.ui.buffIconUI;  // ¡Ú UI ¾È¿¡ ÀÖ´Â BuffIconUI °¡Á®¿À±â
-
-                    if (iconUI != null)
-                    {
-                        player.ui.UpdateBuffPower(player.buffPower);
-                    }
-                }
-            }
-
-            // ¾Æ±ºÀÌ¸é BaseCharacterControl·Î Ä³½ºÆÃ
-            
-            if (player != null && player.ui != null)
-            {
-                // ¹öÇÁ ÅÏ 0À¸·Î °¨¼Ò
-                player.buffTrun = 0;
-
-                // UI ¾÷µ¥ÀÌÆ®
-                player.ui.UpdateBuff();
-            }
-
-            /*if (exclusiveCharacter != null && unit.GetType() == exclusiveCharacter)
-            {
-                if (unit is FayePlayerControl)
-                {
-                    player.ui.UpdateBuffPower();
-                    Debug.Log("FAYE¹öÇÁ ÇØÁ¦");
-                }
-            }*/
-
-            // Àû UI´Â ¾ÆÁ÷ ¾ø´Ù¸é °Çµå¸± ÇÊ¿ä ¾øÀ½
-            // ÇÊ¿ä ½Ã enemy UI »ı¼ºµÇ¸é ¾Æ·¡Ã³·³ Ãß°¡ÇÏ¸é µÊ:
-            /*
-            BaseEnemyControl enemy = unit as BaseEnemyControl;
-            if (enemy != null && enemy.ui != null)
-                enemy.ui.UpdateBuff();
-            */
-
-
-
-
-            /*// BuffUI ¾÷µ¥ÀÌÆ®
-            BuffTurnUI buffUI = unit.GetComponent<BuffTurnUI>();
-            if (buffUI != null)
-            {
-                buffUI.UpdateBuffTurn(0); // ¹öÇÁ°¡ ¾ø¾îÁö¸é 0À¸·Î ÃÊ±âÈ­
-            }*/
+            unit.damageIncreased -= attackBoost;
+            unit.damageReduction += defenseBoost;
+            Debug.Log($"{unit.unitName}ì˜ {buffName} íš¨ê³¼ ë§Œë£Œ.");
         }
     }
 }
-

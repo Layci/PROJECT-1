@@ -7,49 +7,60 @@ using UnityEngine;
 
 namespace ProJect1
 {
+    // [ë°©ë²• ì„ íƒ] 
+    // AttackTriggerType.All    : ëª¨ë“  ê³µê²© ì‹œ 30% í™•ë¥ 
+    // AttackTriggerType.Normal : ì¼ë°˜ ê³µê²© ì‹œì—ë§Œ 30% í™•ë¥ 
+    // AttackTriggerType.Skill  : ìŠ¤í‚¬ ê³µê²© ì‹œì—ë§Œ 30% í™•ë¥ 
+    public enum AttackTriggerType
+    {
+        Normal, // ì¼ë°˜ ê³µê²©ë§Œ
+        Skill,  // ìŠ¤í‚¬ ê³µê²©ë§Œ
+        All     // ëª¨ë“  ê³µê²©
+    }
+
     public abstract class BaseUnit : MonoBehaviour
     {
-        [Header("À¯´Ö Á¤º¸")]
-        public string unitName;               // À¯´Ö ÀÌ¸§
-        public Sprite unitIcon;               // À¯´Ö ¾ÆÀÌÄÜ
-        public float maxHealth;               // ÃÖ´ë Ã¼·Â
-        public float curHealth;               // ÇöÀç Ã¼·Â
-        public float moveSpeed = 3;           // ÀÌµ¿ ¼Óµµ
-        public float unitSpeed;               // À¯´Ö ¼Óµµ(ÅÏ ¼ø¼­ °ü·Ã)
-        public float attackRange;             // °ø°İ °Å¸®
-        public float skillRange;              // ½ºÅ³ °Å¸®
-        public float damageReduction = 1f;    // ÇÇÇØ °¨¼Ò
-        public float damageIncreased = 1;     // ÇÇÇØ Áõ°¡
-        public float unitSpacing = 2f;        // °¢ À¯´Ö¸¶´Ù °£°İ Á¶Àı °Å¸®
-        public float animationSpeed = 1f;     // ¾Ö´Ï¸ŞÀÌ¼Ç ½ºÇÇµå
-        public bool isDead = false;           // »ç¸Á ÆÇÁ¤
+        [Header("ê¸°ë³¸ ì •ë³´")]
+        public string unitName;               // ìœ ë‹› ì´ë¦„
+        public Sprite unitIcon;               // ìœ ë‹› ì•„ì´ì½˜
+        public float maxHealth;               // ìµœëŒ€ ì²´ë ¥
+        public float curHealth;               // í˜„ì¬ ì²´ë ¥
+        public float moveSpeed = 3;           // ì´ë™ ì†ë„
+        public float unitSpeed;               // ìœ ë‹› ì†ë„(í„´ ìˆœì„œ ê²°ì •)
+        public float attackRange;             // ê³µê²© ì‚¬ê±°ë¦¬
+        public float skillRange;              // ìŠ¤í‚¬ ì‚¬ê±°ë¦¬
+        public float damageReduction = 1f;    // ë°ë¯¸ì§€ ê°ì†Œ
+        public float damageIncreased = 1;     // ë°ë¯¸ì§€ ì¦ê°€
+        public float unitSpacing = 2f;        // ìœ ë‹› ë°°ì¹˜ ê°„ê²©
+        public float animationSpeed = 1f;     // ì• ë‹ˆë©”ì´ì…˜ ë°°ì†
+        public bool isDead = false;           // ì‚¬ë§ ìƒíƒœ
         public bool isHealSkill;
-        public float AttackPower;       // ÇÃ·¹ÀÌ¾î ±âº»°ø°İ·Â
-        public float SkillAttackPower;  // ÇÃ·¹ÀÌ¾î ½ºÅ³°ø°İ·Â
-        public bool skillAttack;        // ½ºÅ³°ø°İÀ» ÇÒÁö ¾Ë¸®´Â ¿¬»êÀÚ
+        public float AttackPower;       // ê¸°ë³¸ ê³µê²©ë ¥
+        public float SkillAttackPower;  // ìŠ¤í‚¬ ê³µê²©ë ¥
+        public bool skillAttack;        // ìŠ¤í‚¬ ê³µê²© ì—¬ë¶€
 
         public Transform attackAnchorTarget;
 
-        [Header("ÀÏ¹İ °ø°İ ¹üÀ§ ¼³Á¤")]
-        [Tooltip("±âº» °ø°İ ¹üÀ§ (0 = ´ÜÀÏ, 1 = ¾ç¿· 1Ä­ Æ÷ÇÔ)")]
+        [Header("ê¸°ë³¸ ê³µê²© ì„¤ì •")]
+        [Tooltip("0 = ë‹¨ì¼, 1 ì´ìƒ = ë²”ìœ„")]
         public int normalAttackRange = 0;
         public EffectAsset normalAttackEffect;
 
-        [Header("½ºÅ³ ¹üÀ§ °ø°İ")]
-        [Tooltip("0ÀÌ¸é ´ÜÀÏ ´ë»ó, 1 ÀÌ»óÀÌ¸é ¹üÀ§ °ø°İ")]
+        [Header("ìŠ¤í‚¬ ê³µê²© ì„¤ì •")]
+        [Tooltip("0 = ë‹¨ì¼, 1 ì´ìƒ = ë²”ìœ„")]
         public int skillAttackRange = 0;
         public EffectAsset skillAttackEffect;
 
-        [Header("ÀÌÆåÆ® ÇÇ¹ş")]
-        public Transform centerPoint;   // ¸öÅë
-        public Transform headPoint;     // ¸Ó¸® (¼±ÅÃ)
+        [Header("ì´í™íŠ¸ ìœ„ì¹˜")]
+        public Transform centerPoint;   
+        public Transform headPoint;     
         public Transform projectileSpawnPoint;
 
-        [Header("¹öÇÁ Á¤º¸")]
-        public int buffTrun;                  // ³²Àº ¹öÇÁ ÅÏ
-        public int buffPower;                 // ¹öÇÁ ÆÄ¿ö
-        public int maxBuffPower = 3;          // ÃÖ´ë·Î Áõ°¡ÇÒ ÆÄ¿ö
-        public bool buff = false;             // ¹öÇÁ Àû¿ë È®ÀÎ ¿¬»êÀÚ
+        [Header("ë²„í”„ ì‹œìŠ¤í…œ ì •ë³´")]
+        public int buffTrun;                  // ë‚¨ì€ ë²„í”„ í„´ (í•˜ìœ„ í˜¸í™˜ìš©)
+        public int buffPower;                 // í˜„ì¬ ë²„í”„ íŒŒì›Œ
+        public int maxBuffPower = 3;          // ìµœëŒ€ ë²„í”„ íŒŒì›Œ
+        public bool buff = false;             
 
         public List<Buff> activeBuffs = new List<Buff>();
         protected Animator animator;
@@ -61,20 +72,15 @@ namespace ProJect1
         public virtual List<EffectAsset> GetAllEffects()
         {
             List<EffectAsset> list = new List<EffectAsset>();
-
-            if (normalAttackEffect != null)
-                list.Add(normalAttackEffect);
-
-            if (skillAttackEffect != null)
-                list.Add(skillAttackEffect);
-
+            if (normalAttackEffect != null) list.Add(normalAttackEffect);
+            if (skillAttackEffect != null) list.Add(skillAttackEffect);
             return list;
         }
 
         public void Heal(int amount)
         {
             curHealth = Mathf.Min(curHealth + amount, maxHealth);
-            Debug.Log(amount);
+            Debug.Log($"{unitName} {amount}ë§Œí¼ íšŒë³µ");
             CheckHP();
         }
 
@@ -85,7 +91,6 @@ namespace ProJect1
             if (projectileSpawnPoint != null)
                 return projectileSpawnPoint.position + asset.offset;
 
-            // fallback
             return centerPoint != null
                 ? centerPoint.position + asset.offset
                 : transform.position + Vector3.up * 1.2f + asset.offset;
@@ -96,13 +101,9 @@ namespace ProJect1
             switch (targetType)
             {
                 case EffectSpawnType.Head:
-                    return headPoint != null
-                        ? headPoint
-                        : centerPoint != null ? centerPoint : transform;
-
+                    return headPoint != null ? headPoint : (centerPoint != null ? centerPoint : transform);
                 case EffectSpawnType.Center:
                     return centerPoint != null ? centerPoint : transform;
-
                 default:
                     return transform;
             }
@@ -111,12 +112,11 @@ namespace ProJect1
         protected virtual void Awake()
         {
             animator = GetComponent<Animator>();
-            //curHealth = maxHealth;
         }
 
         public void AnimationSpeedCheck()
         {
-            animator.speed = animationSpeed;
+            if(animator != null) animator.speed = animationSpeed;
         }
 
         public virtual void TakeDamage(float damage)
@@ -125,11 +125,9 @@ namespace ProJect1
 
             curHealth -= damage;
 
-            // Hit ¾Ö´Ï¸ŞÀÌ¼Ç Ã³¸® - ÇÃ·¹ÀÌ¾î¿¡¼­¸¸ isBlock °í·Á
             if (this is BaseCharacterControl player)
             {
-                if (!player.isBlock)
-                    animator?.SetTrigger("Trigger Hit");
+                if (!player.isBlock) animator?.SetTrigger("Trigger Hit");
             }
             else
             {
@@ -146,99 +144,144 @@ namespace ProJect1
         public virtual void Die()
         {
             isDead = true;
-            Debug.Log($"{unitName} »ç¸Á");
+            Debug.Log($"{unitName} ì‚¬ë§");
             BattleManager.instance.CheckDefeat();
         }
 
-        // -------------------------------- ¹öÇÁ°ü·Ã
+        // -------------------------------- ë²„í”„/ë””ë²„í”„ ì‹œìŠ¤í…œ
+        
+        public virtual void OnBuffsUpdated() { }
+        public virtual void OnBuffPowerUpdated(int currentPower) { }
+
+        // ê³µê²© ì ì¤‘ ì‹œ ì‹¤í–‰ë˜ëŠ” í›… (í•˜ìœ„ í´ë˜ìŠ¤ì—ì„œ ì˜¤ë²„ë¼ì´ë“œ)
+        public virtual void OnHitTarget(BaseUnit target, bool isSkill) { }
+
+        // í™•ë¥ ì ìœ¼ë¡œ ë²„í”„ë¥¼ ì‹œë„í•˜ëŠ” í—¬í¼ ë©”ì†Œë“œ
+        public void TryApplyBuff(Buff buff, BaseUnit target, float chance = 1.0f)
+        {
+            if (target == null || buff == null) return;
+
+            if (UnityEngine.Random.value <= chance)
+            {
+                target.AddBuff(buff.Clone());
+            }
+        }
+
+        // íŠ¹ì • ê³µê²© íƒ€ì…(ì¼ë°˜, ìŠ¤í‚¬, ì „ì²´)ì— ë§ì¶° ë²„í”„ ì‹œë„
+        public void TryApplyBuffOnHit(Buff buff, BaseUnit target, bool isSkill, AttackTriggerType triggerType, float chance = 1.0f)
+        {
+            bool canTrigger = false;
+            switch (triggerType)
+            {
+                case AttackTriggerType.Normal: canTrigger = !isSkill; break;
+                case AttackTriggerType.Skill:  canTrigger = isSkill;  break;
+                case AttackTriggerType.All:    canTrigger = true;     break;
+            }
+
+            if (canTrigger)
+            {
+                TryApplyBuff(buff, target, chance);
+            }
+        }
+
         public void AddBuff(Buff newBuff)
         {
-            // ±âÁ¸ ¹öÇÁ Áß ÀÌ¸§ÀÌ °°Àº °Í Ã£±â
-            Buff existingBuff = activeBuffs.Find(buff => buff.buffName == newBuff.buffName);
+            Buff existingBuff = activeBuffs.Find(b => b.buffName == newBuff.buffName);
 
-            // ±âÁ¸ ¹öÇÁ°¡ ÀÖÀ» °æ¿ì
             if (existingBuff != null)
             {
-                // »õ ¹öÇÁ°¡ ±âÁ¸ ¹öÇÁº¸´Ù ¾àÇÏ¸é Àû¿ëÇÏÁö ¾ÊÀ½
-                if (newBuff.attackBoost <= existingBuff.attackBoost &&
-                    newBuff.defenseBoost <= existingBuff.defenseBoost)
+                // 1. ì§€ì† ì‹œê°„ ê°±ì‹  (ë¦¬ì…‹)
+                existingBuff.remainingTurns = newBuff.originalDuration;
+
+                // 2. ìˆ˜ì¹˜ ê°±ì‹  (ìƒˆë¡œìš´ ë²„í”„ê°€ ë” ê°•ë ¥í•œ ê²½ìš°ì—ë§Œ êµì²´)
+                // ë²„í”„(ì–‘ìˆ˜)ì¼ ë•ŒëŠ” í´ìˆ˜ë¡, ë””ë²„í”„(ìŒìˆ˜)ì¼ ë•ŒëŠ” ì ˆëŒ€ê°’ì´ í´ìˆ˜ë¡ ê°•ë ¥í•œ ê²ƒìœ¼ë¡œ ê°„ì£¼
+                bool isStronger = (Mathf.Abs(newBuff.attackBoost) > Mathf.Abs(existingBuff.attackBoost)) ||
+                                 (Mathf.Abs(newBuff.defenseBoost) > Mathf.Abs(existingBuff.defenseBoost)) ||
+                                 (Mathf.Abs(newBuff.tickValue) > Mathf.Abs(existingBuff.tickValue));
+
+                if (isStronger)
                 {
-                    Debug.Log($"{newBuff.buffName} ´Â ±âÁ¸ ¹öÇÁº¸´Ù ¾àÇØ Àû¿ëµÇÁö ¾ÊÀ½.");
-                    return;
+                    existingBuff.RemoveEffect(this);
+                    existingBuff.attackBoost = newBuff.attackBoost;
+                    existingBuff.defenseBoost = newBuff.defenseBoost;
+                    existingBuff.tickValue = newBuff.tickValue;
+                    existingBuff.ApplyEffect(this);
+                    Debug.Log($"{unitName}ì˜ {newBuff.buffName} íš¨ê³¼ê°€ ë” ê°•ë ¥í•œ ìˆ˜ì¹˜ë¡œ ê°±ì‹ ë˜ì—ˆìŠµë‹ˆë‹¤.");
                 }
-
-                // »õ ¹öÇÁ°¡ ´õ °­ÇÏ¸é ±âÁ¸ ¹öÇÁ Á¦°Å ÈÄ °»½Å
-                existingBuff.RemoveEffect(this);
-                activeBuffs.Remove(existingBuff);
-            }
-
-            // ¹öÇÁ ÅÏ ¼ö Àû¿ë
-            buffTrun = newBuff.remainingTurns;
-
-            // UI ¾÷µ¥ÀÌÆ® (¾Æ±º¸¸)
-            BaseCharacterControl player = this as BaseCharacterControl;
-            if (player != null && player.ui != null)
-            {
-                player.ui.UpdateBuff();
-            }
-
-            // Àû UI´Â ³ªÁß¿¡ ÇÊ¿äÇÏ¸é µ¿ÀÏÇÏ°Ô Àû¿ë °¡´É
-            // ÀûÀº UI°¡ ³ªÁß¿¡ ÇÊ¿äÇÏ¸é ¿©±â¼­
-            // BaseEnemyControl enemy = this as BaseEnemyControl;
-
-            // »õ ¹öÇÁ Ãß°¡ ¹× Àû¿ë
-            activeBuffs.Add(newBuff);
-            newBuff.ApplyEffect(this);
-
-            Debug.Log($"{newBuff.buffName} ¹öÇÁ Àû¿ëµÊ! (ATK {newBuff.attackBoost}, DEF {newBuff.defenseBoost})");
-        }
-
-        public void RemoveExpiredBuffs()
-        {
-            activeBuffs.RemoveAll(buff => buff.remainingTurns <= 0);
-        }
-
-        public void OnTurnStart()
-        {
-            foreach (var buff in activeBuffs)
-            {
-                buff.remainingTurns--;
-                buffTrun = buff.remainingTurns;
-
-                Debug.Log($"{buff.remainingTurns} ³²Àº¹öÇÁÅÏ");
-
-                if (buff.remainingTurns <= 0)
+                else
                 {
-                    // BuffÀÇ ¼³Á¤¿¡ µû¶ó BuffPower ÃÊ±âÈ­
-                    BaseCharacterControl player = this as BaseCharacterControl;
-
-                    if (player != null && player.ui != null)
-                    {
-                        BuffIconUI iconUI = player.ui.buffIconUI;
-
-                        // resetPowerOnExpire ¿É¼ÇÀÌ ÀÖÀ» ¶§¸¸ ÃÊ±âÈ­
-                        if (iconUI != null && buff.resetPowerOnExpire)
-                        {
-                            buffPower = 0;
-                            player.ui.UpdateBuffPower(0);
-                        }
-                    }
-
-                    buff.RemoveEffect(this);
+                    Debug.Log($"{unitName}ì˜ {newBuff.buffName} ì§€ì† ì‹œê°„ì´ ë¦¬ì…‹ë˜ì—ˆìŠµë‹ˆë‹¤.");
                 }
             }
-
-            RemoveExpiredBuffs();
+            else
+            {
+                activeBuffs.Add(newBuff);
+                newBuff.ApplyEffect(this);
+            }
+            
+            OnBuffsUpdated();
         }
+
+        public virtual void OnTurnStart()
+        {
+            for (int i = activeBuffs.Count - 1; i >= 0; i--)
+            {
+                var buffItem = activeBuffs[i];
+                // ì‹œì‘í˜• ë²„í”„/ë””ë²„í”„ë§Œ ì²˜ë¦¬ (Tick ì‹¤í–‰ + ì§€ì†ì‹œê°„ ê°ì†Œ)
+                if (buffItem.isTickAtStart)
+                {
+                    buffItem.TickEffect(this);
+                    UpdateBuffDuration(i);
+                }
+            }
+            OnBuffsUpdated();
+        }
+
+        public virtual void OnTurnEnd()
+        {
+            for (int i = activeBuffs.Count - 1; i >= 0; i--)
+            {
+                var buffItem = activeBuffs[i];
+                // ì¢…ë£Œí˜• ë²„í”„/ë””ë²„í”„ë§Œ ì²˜ë¦¬ (Tick ì‹¤í–‰ + ì§€ì†ì‹œê°„ ê°ì†Œ)
+                if (!buffItem.isTickAtStart)
+                {
+                    buffItem.TickEffect(this);
+                    UpdateBuffDuration(i);
+                }
+            }
+            OnBuffsUpdated();
+        }
+
+        // ë²„í”„ ì§€ì†ì‹œê°„ ê°ì†Œ ë° ë§Œë£Œ ì²˜ë¦¬ë¥¼ ìœ„í•œ ê³µìš© ë©”ì†Œë“œ
+        protected void UpdateBuffDuration(int index)
+        {
+            if (index < 0 || index >= activeBuffs.Count) return;
+
+            var buffItem = activeBuffs[index];
+            buffItem.remainingTurns--;
+            buffTrun = buffItem.remainingTurns;
+
+            if (buffItem.remainingTurns <= 0)
+            {
+                if (buffItem.resetPowerOnExpire) ResetBuffPower();
+                buffItem.RemoveEffect(this);
+                activeBuffs.RemoveAt(index);
+            }
+        }
+
         public virtual void IncreaseBuffPower()
         {
             if (buffPower < maxBuffPower)
+            {
                 buffPower++;
+                OnBuffPowerUpdated(buffPower);
+            }
         }
 
         public virtual void ResetBuffPower()
         {
             buffPower = 0;
+            OnBuffPowerUpdated(0);
         }
     }
 }

@@ -22,25 +22,25 @@ namespace ProJect1
 
         public void StartBattle(MainSenceEnemy enemy)
         {
-            // 1. ¿şÀÌºê µ¥ÀÌÅÍ ÁØºñ
+            // 1. ì›¨ì´ë¸Œ ë°ì´í„° ì¤€ë¹„
             BattleSceneLoader.PrepareBattle(enemy);
 
-            // 2. ¿¬Ãâ + ¾À ÀüÈ¯
+            // 2. ì—°ì¶œ + ì”¬ ì „í™˜
             StartCoroutine(BattleEnterRoutine());
         }
 
         public void EndBattle()
         {
-            // 1. ¿¬Ãâ + ¾À ÀüÈ¯
+            // 1. ì—°ì¶œ + ì”¬ ì „í™˜
             StartCoroutine(MainEnterRoutine());
         }
 
         private IEnumerator BattleEnterRoutine()
         {
-            // 1. ÆäÀÌµå ¾Æ¿ô
+            // 1. í˜ì´ë“œ ì•„ì›ƒ
             yield return ScreenFadeManager.Instance.FadeOut();
 
-            // 2. ¾À ·Îµå
+            // 2. ì”¬ ë¡œë“œ
             AsyncOperation op =
                 SceneManager.LoadSceneAsync("BattleScene");
             op.allowSceneActivation = false;
@@ -51,17 +51,30 @@ namespace ProJect1
         
         private IEnumerator MainEnterRoutine()
         {
-            // 1. ÆäÀÌµå ¾Æ¿ô
+            // 1. í˜ì´ë“œ ì•„ì›ƒ
             yield return ScreenFadeManager.Instance.FadeOut();
 
-            // 2. ¾À ·Îµå
+            // 2. ì”¬ ë¡œë“œ
             AsyncOperation op = SceneManager.LoadSceneAsync("MainScene");
             op.allowSceneActivation = false;
-            Debug.Log("ºÒ·¯¿À±â");
+            Debug.Log("ë¶ˆëŸ¬ì˜¤ê¸°");
             yield return new WaitForSecondsRealtime(0.5f);
             //yield return new WaitForSeconds(0.5f);
             Time.timeScale = 1f;
             op.allowSceneActivation = true;
+
+            while (!op.isDone) yield return null;
+
+            if (MainPlayerControl.instance != null)
+            {
+                MainPlayerControl.instance.isAttacking = false;
+                MainPlayerControl.instance.inputBlocked = false;
+                var cr = MainPlayerControl.instance.GetComponent<CharacterController>();
+                if (cr != null) cr.enabled = true;
+                Debug.Log("Player State Reset After Battle");
+            }
+
+            Time.timeScale = 1f;
             Debug.Log(Time.timeScale);
         }
     }

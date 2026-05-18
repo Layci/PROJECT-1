@@ -162,6 +162,7 @@ namespace ProJect1
         public void OnClickMap() => OpenUI(worldMapUI);
         public void OnClickParty() => OpenUI(partyFormationUI);
         public void OnClickSetting() => OpenUI(settingUI);
+
         // 텔레포트 확인 버튼 클릭 시
         public void OnClickConfirmTeleport()
         {

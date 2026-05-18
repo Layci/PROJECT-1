@@ -1,5 +1,4 @@
 using Project1;
-using ProJect1;
 using System;
 using UnityEngine;
 
@@ -17,33 +16,33 @@ namespace Project1
                 Destroy(this.gameObject);
                 return;
             }
-            instance = this;  // �ν��Ͻ� ����
+            instance = this;  
         }
 
-        protected override void Update()
+        public override void OnBuffPowerUpdated(int currentPower)
         {
-            base.Update();
+            // 부모 클래스의 UI 업데이트 호출
+            base.OnBuffPowerUpdated(currentPower);
 
+            // 버프 파워가 변경될 때만 새로운 버프 적용
             Buff FayeAttackBuff = null;
-            switch (buffPower)
+            switch (currentPower)
             {
                 case 1:
-                    FayeAttackBuff = new Buff("Faye���ݷ� ����", 2, 0.2f, 0, typeof(FayePlayerControl), resetPowerOnExpire : true);
+                    // isTickAtStart를 false로 설정하여 턴 종료 시 지속시간이 줄어들게 함
+                    FayeAttackBuff = new Buff("Faye공격력 증가", 2, 0.2f, 0, EffectType.Buff, 0, false, typeof(FayePlayerControl), true);
                     break;
                 case 2:
-                    FayeAttackBuff = new Buff("Faye���ݷ� ����", 2, 0.4f, 0, typeof(FayePlayerControl), resetPowerOnExpire : true);
+                    FayeAttackBuff = new Buff("Faye공격력 증가", 2, 0.4f, 0, EffectType.Buff, 0, false, typeof(FayePlayerControl), true);
                     break;
                 case 3:
-                    FayeAttackBuff = new Buff("Faye���ݷ� ����", 2, 0.6f, 0, typeof(FayePlayerControl), resetPowerOnExpire : true);
+                    FayeAttackBuff = new Buff("Faye공격력 증가", 2, 0.6f, 0, EffectType.Buff, 0, false, typeof(FayePlayerControl), true);
                     break;
             }
 
             if (FayeAttackBuff != null)
             {
                 AddBuff(FayeAttackBuff);
-
-                if (ui != null)
-                    ui.UpdateBuff();
             }
         }
 
@@ -51,31 +50,5 @@ namespace Project1
         {
             base.HandleAttackInput();
         }
-
-        /*protected override void HandleAttackInput()
-        {
-            if (currentState == PlayerState.Idle)
-            {
-                
-
-                if (Input.GetKeyDown(KeyCode.Q))
-                {
-                    skillAttack = false;
-                    StartMove();
-                    SkillPointManager.instance.SkillPointUp();
-                }
-                else if (SkillPointManager.instance.curSkillPoint > 0 && Input.GetKeyDown(KeyCode.E))
-                {
-                    skillAttack = true;
-                    StartMove();
-                    SkillPointManager.instance.UseSkillPoint();
-                }
-            }
-        }*/
-
-        /*private void StartMove()
-        {
-            currentState = PlayerState.MovingToAttack;
-        }*/
     }
 }

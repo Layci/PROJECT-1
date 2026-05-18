@@ -17,6 +17,7 @@ namespace Project1
         Idle,
         MovingToAttack,
         Attacking,
+        RangedAttacking,
         Blocking,
         Returning,
         Buffing,
@@ -26,9 +27,9 @@ namespace Project1
     public enum AttackPrepareState
     {
         None,
-        Basic,   // ÀÏ¹İ°ø°İ
-        Skill,   // ¹üÀ§°ø°İ
-        Buff     // ÀÚ±â°­È­ or ¼±ÅÃ¹öÇÁ
+        Basic,   // ì¼ë°˜ê³µê²©
+        Skill,   // ìŠ¤í‚¬ê³µê²©
+        Buff     // ìê¸°ê°•í™” or ì•„êµ°ë³´ì¡°
     }
 
     public abstract class BaseCharacterControl : BaseUnit
@@ -39,26 +40,26 @@ namespace Project1
         protected Quaternion initialRotation;
 
         [Header("UI Prefab")]
-        public GameObject uiPrefab;   // Ä³¸¯ÅÍ UI ÇÁ¸®ÆÕ
+        public GameObject uiPrefab;   // ìºë¦­í„° UI í”„ë¦¬ì…‰
 
-        [HideInInspector] public CharacterUI ui; // ·±Å¸ÀÓ »ı¼ºµÇ´Â UI
+        [HideInInspector] public CharacterUI ui; // ë‚˜íƒ€ë‚˜ê²Œ ë  UI
 
-        [Header("Ä³¸¯ÅÍ Á¤º¸")]
-        public bool startAttacking;           // °ø°İÁßÀ» ¾Ë¸®´Â ¿¬»êÀÚ
-        public bool startBlocking;            // ¹æ¾îÁßÀ» ¾Ë¸®´Â ¿¬»êÀÚ
-        public bool isTurn = false;           // º»ÀÎ ÅÏÀÎÁö ¾Ë·ÁÁÖ´Â ¿¬»êÀÚ
-        public bool isBlock = false;          // º»ÀÎÀÌ ¹æ¾î »óÅÂÀÎÁö ¾Ë·ÁÁÖ´Â ¿¬»êÀÚ
+        [Header("ìºë¦­í„° ìƒíƒœ")]
+        public bool startAttacking;           // ê³µê²©ì‹œì‘ì„ ì•Œë¦¬ëŠ” ë³€ìˆ˜
+        public bool startBlocking;            // ë°©ì–´ì‹œì‘ì„ ì•Œë¦¬ëŠ” ë³€ìˆ˜
+        public bool isTurn = false;           // ìì‹ ì˜ í„´ì„ì„ ì•Œë ¤ì£¼ëŠ” ë³€ìˆ˜
+        public bool isBlock = false;          // ë°©ì–´ì¤‘ì¸ ìƒíƒœì„ì„ ì•Œë ¤ì£¼ëŠ” ë³€ìˆ˜
         public bool isPreparingAOEAttack = false;
         
 
         public AttackPrepareState prepareState = AttackPrepareState.None;
 
-        public Slider hpBarSlider;            // HP¹Ù
-        public Text hpText;                   // HP ÅØ½ºÆ®
-        public EnemySelection enemySelection; // ¼±ÅÃµÈ Àû °ü¸®
+        public Slider hpBarSlider;            // HPë°”
+        public Text hpText;                   // HP í…ìŠ¤íŠ¸
+        public EnemySelection enemySelection; // ì„ íƒëœ ì  ì •ë³´
 
-        [Header("Ä³¸¯ÅÍ ¿òÁ÷ÀÓ")]
-        public PlayerState currentState = PlayerState.Idle; // ÇöÀç »óÅÂ Ãß°¡
+        [Header("ìºë¦­í„° í˜„ì¬ìƒíƒœ")]
+        public PlayerState currentState = PlayerState.Idle; // í˜„ì¬ ìƒíƒœ ì¶”ê°€
         protected bool isAttackExecuted = false;
 
         protected override void Awake()
@@ -72,7 +73,7 @@ namespace Project1
 
         protected virtual void Update()
         {
-            // Ä³¸¯ÅÍ°¡ ÀÚ½ÅÀÇ ÅÏÀÏ °æ¿ì¿¡ ÀÔ·Â Ã³¸®
+            // ìºë¦­í„°ê°€ ìì‹ ì˜ í„´ì¼ ê²½ìš°ì—ë§Œ ì…ë ¥ ì²˜ë¦¬
             if (isTurn)
             {
                 HandleState();
@@ -85,12 +86,12 @@ namespace Project1
         {
             if (prepareState == AttackPrepareState.Skill && isHealSkill)
             {
-                // Èú ¡æ ¾Æ±º ±âÁØ
+                // íŒ€ ë‚´ ì•„êµ° ëŒ€ìƒ
                 return AllySelection.instance.GetAnchorTarget()?.transform;
             }
             else
             {
-                // °ø°İ ¡æ Àû ±âÁØ
+                // ì êµ° íŒ€ ë‚´ ëŒ€ìƒ
                 return EnemySelection.instance.GetAnchorTarget()?.transform;
             }
         }
@@ -118,34 +119,16 @@ namespace Project1
 
             return result;
         }
-        /*public override List<BaseUnit> GetHealTargets(int range)
-        {
-            var result = new List<BaseUnit>();
-
-            var players = TurnSystem.instance.playerCharacters;
-            if (players == null || players.Count == 0)
-                return result;
-
-            int centerIndex = TurnSystem.instance.playerCharacters.IndexOf(this);
-
-            int left = Mathf.Max(0, centerIndex - range);
-            int right = Mathf.Min(players.Count - 1, centerIndex + range);
-
-            for (int i = left; i <= right; i++)
-                result.Add(players[i]);
-
-            return result;
-        }*/
 
         protected virtual void HandleAttackInput()
         {
             if (!CanAttack())
                 return;
 
-            // Q ¡æ ±âº» °ø°İ
+            // Q í‚¤ ê¸°ë³¸ ê³µê²©
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                Debug.Log("ÇöÀç prepareState: " + prepareState);
+                Debug.Log("í˜„ì¬ prepareState: " + prepareState);
 
                 if (prepareState != AttackPrepareState.Basic)
                 {
@@ -165,7 +148,7 @@ namespace Project1
                 }
             }
 
-            // E ¡æ ½ºÅ³ °ø°İ
+            // E í‚¤ ìŠ¤í‚¬ ê³µê²©
             if (Input.GetKeyDown(KeyCode.E) && SkillPointManager.instance.curSkillPoint > 0)
             {
                 if (prepareState == AttackPrepareState.Skill)
@@ -197,72 +180,36 @@ namespace Project1
                     ButtonManager.instance.HighlightBtn();
                 }
             }
-
-            /*if (Input.GetKeyDown(KeyCode.E) && SkillPointManager.instance.curSkillPoint > 0)
-            {
-                if (prepareState == AttackPrepareState.Skill)
-                {
-                    // ÀÌ¹Ì ÁØºñ »óÅÂ ¡æ È®Á¤ ½ÇÇà
-                    ExecuteSkillAttack();
-                    SkillPointManager.instance.UseSkillPoint();
-                }
-                else
-                {
-                    Debug.Log(skillAttackRange);
-                    // ÁØºñ »óÅÂ ÁøÀÔ
-                    TurnSystem.instance.SetAllPlayersPrepareState(AttackPrepareState.Skill);
-                    var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
-                    int range = cur != null ? cur.skillAttackRange : 0;
-
-                    // ÀÎµ¦½º ±â¹İ AOE ´ë»ó °¡Á®¿À±â
-                    var targets = EnemySelection.instance.GetAOETargets(range);
-                    Debug.Log("AOE ´ë»ó ¼ö: " + targets.Count);
-                    // UI ¹İ¿µ
-                    EnemySelectorUI.instance.ShowAOETargets(targets.Select(e => e.transform).ToList());
-                    EnemySelectorUI.instance.HideSingleTargetUI();
-
-                    ButtonManager.instance.HighlightBtn();
-                }
-            }*/
-
-            // R ¡æ ¹öÇÁ
-            /*if (Input.GetKeyDown(KeyCode.R))
-            {
-                if (prepareState == AttackPrepareState.Buff)
-                {
-                    // ÀÌ¹Ì ÁØºñ »óÅÂ ¡æ È®Á¤ ½ÇÇà
-                    ExecuteBuff();
-                }
-                else
-                {
-                    // ÁØºñ »óÅÂ ÁøÀÔ
-                    prepareState = AttackPrepareState.Buff;
-                    EnemySelectorUI.instance.HideSingleTargetUI();
-                    EnemySelectorUI.instance.HideAOEUI();
-                }
-            }*/
         }
 
         private void ExecuteBasicAttack()
         {
             prepareState = AttackPrepareState.None;
-            currentState = PlayerState.MovingToAttack;
             skillAttack = false;
             EnemySelectorUI.instance.HideAOEUI();
+
+            if (attackRange >= 100f)
+                currentState = PlayerState.RangedAttacking;
+            else
+                currentState = PlayerState.MovingToAttack;
         }
 
         private void ExecuteSkillAttack()
         {
-            prepareState = AttackPrepareState.None;
-            currentState = PlayerState.MovingToAttack;
+            prepareState = AttackPrepareState.None; 
             skillAttack = true;
             EnemySelectorUI.instance.HideAOEUI();
+
+            if (skillRange >= 100f)
+                currentState = PlayerState.RangedAttacking;
+            else
+                currentState = PlayerState.MovingToAttack;
         }
 
         private void ExecuteBuff()
         {
             prepareState = AttackPrepareState.None;
-            currentState = PlayerState.Buffing; // ÇÊ¿ä½Ã Idle·Îµµ °¡´É
+            currentState = PlayerState.Buffing; // í•„ìš”í•œ ê²½ìš° Idleì´ì–´ë„ ìƒê´€ì—†ìŒ
             ApplySelfBuff();
         }
 
@@ -279,23 +226,23 @@ namespace Project1
 
         private void ApplySelfBuff()
         {
-            // ¿¹½Ã: °ø°İ·Â +20%, 2ÅÏ À¯Áö
+            // ì˜ˆì‹œ: ê³µê²©ë ¥ +20%, 2í„´ ì§€ì†
             Buff selfBuff = null;
-            selfBuff = new Buff("º»ÀÎ °­È­", 2, 0.2f, 0, typeof(This));
-            Debug.Log($"{unitName} ¹öÇÁ ¹ßµ¿!");
+            selfBuff = new Buff("ê³µê²© ê°•í™”", 2, 0.2f, 0);
+            Debug.Log($"{unitName} ë²„í”„ ë°œë™!");
         }
 
         protected bool CanAttack()
         {
-            // ±âº» Á¶°ÇÀº ÅÏ ÁßÀÌ¾î¾ß ÇÏ°í, Àû ¼±ÅÃ Áß ÀÌµ¿ ÁßÀÌ ¾Æ´Ï¾î¾ß ÇÔ
+            // ê¸°ë³¸ ê³µê²©ì¤‘ì¼ ë•Œ ì›€ì§ì—¬ì•¼ í•˜ê³ , í„´ ì§„í–‰ ì¤‘ ì´ë™ ì¤‘ì´ ì•„ë‹ˆì–´ì•¼ í•¨
             if (EnemySelection.instance.isMove)
                 return false;
 
-            // IdleÀÏ ¶§´Â ÁØºñ »óÅÂ ÁøÀÔ °¡´É
+            // Idleì¸ ìƒíƒœ ë˜ëŠ” ì¤€ë¹„ ìƒíƒœê°€ ì—†ì„ ê²½ìš° ê°€ëŠ¥
             if (currentState == PlayerState.Idle && prepareState == AttackPrepareState.None)
                 return true;
 
-            // ÀÌ¹Ì ÁØºñ »óÅÂÀÏ ¶§µµ ÀÔ·Â Çã¿ë (È®Á¤ ½ÇÇà À§ÇØ)
+            // ì´ë¯¸ ì¤€ë¹„ ìƒíƒœë¼ë©´ ë‹¤ì‹œ ì…ë ¥ ê°€ëŠ¥ (í™•ì • ë° ë³€ê²½)
             if (prepareState != AttackPrepareState.None)
                 return true;
 
@@ -306,11 +253,6 @@ namespace Project1
         {
             attackAnchorTarget = GetAttackAnchorTarget();
         }
-        /*public void TargetUpdate()
-        {
-            Transform targetposition = EnemySelectorUI.instance.selectedEnemy;
-            attackAnchorTarget = targetposition;
-        }*/
 
         protected void HandleState()
         {
@@ -322,6 +264,7 @@ namespace Project1
                     MoveToAttack();
                     break;
                 case PlayerState.Attacking:
+                case PlayerState.RangedAttacking:
                     PerformAttack();
                     break;
                 case PlayerState.Blocking:
@@ -361,44 +304,18 @@ namespace Project1
             }
         }
 
-        /*protected virtual void MoveToAttack()
-        {
-            if (attackAnchorTarget != null)
-            {
-                EnemySelection.instance.isMove = true;
-                transform.position = Vector3.MoveTowards(transform.position, EnemySelectorUI.instance.selectedEnemy.position, moveSpeed * Time.deltaTime);
-                animator.SetFloat("Speed", 1);
-
-                float distanceToTarget = Vector3.Distance(transform.position, EnemySelectorUI.instance.selectedEnemy.position);
-                if (!skillAttack)
-                {
-                    if (distanceToTarget <= attackRange && !isBlock)
-                    {
-                        currentState = PlayerState.Attacking;
-                    }
-                }
-                else if (skillAttack)
-                {
-                    if (distanceToTarget <= skillRange)
-                    {
-                        currentState = PlayerState.Attacking;
-                    }
-                }
-            }
-        }*/
-
         protected virtual void PerformAttack()
         {
             if (!isAttackExecuted && !skillAttack)
             {
-                // °ø°İ ·ÎÁ÷
+                // ê¸°ë³¸ ê³µê²© ì‹¤í–‰
                 animator.SetFloat("Speed", 0);
                 animator.SetTrigger("Trigger Attack");
                 isAttackExecuted = true;
             }
             else if (!isAttackExecuted && skillAttack)
             {
-                // ½ºÅ³ °ø°İ ·ÎÁ÷
+                // ìŠ¤í‚¬ ê³µê²© ì‹¤í–‰
                 animator.SetFloat("Speed", 0);
                 animator.SetTrigger("Trigger SkillAttack");
                 isAttackExecuted = true;
@@ -428,39 +345,51 @@ namespace Project1
         {
             if (isBlock)
             {
-                isTurn = false;
-                // ´ÙÀ½ Ä³¸¯ÅÍ·Î ÅÏÀ» ³Ñ±è
-                TurnSystem.instance.EndTurn();
+                EndTurnManually();
             }
         }
 
         public void HealEnd()
         {
-            isTurn = false;
-            // ´ÙÀ½ Ä³¸¯ÅÍ·Î ÅÏÀ» ³Ñ±è
-            TurnSystem.instance.EndTurn();
+            EndTurnManually();
         }
 
         protected virtual void ReturnToInitialPosition()
         {
             transform.position = Vector3.MoveTowards(transform.position, initialPosition, moveSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Euler(0f, -180f, 0f);  // Ä³¸¯ÅÍ°¡ ¿ø·¡ ¹æÇâÀ» ¹Ù¶óº¸µµ·Ï È¸Àü
+            transform.rotation = Quaternion.Euler(0f, -180f, 0f);  // ìºë¦­í„°ê°€ ì •ë©´ ë°©í–¥ì„ ë°”ë¼ë³´ë„ë¡ íšŒì „
             animator.SetFloat("Speed", 1);
 
             if (Vector3.Distance(transform.position, initialPosition) <= 0.1f)
             {
-                transform.position = initialPosition;  // À§Ä¡ º¸Á¤
-                transform.rotation = initialRotation;  // È¸Àü º¸Á¤
-                animator.SetFloat("Speed", 0);
-
-                currentState = PlayerState.Idle;
-                isAttackExecuted = false;
-
-                EnemySelection.instance.isMove = false;
-                isTurn = false;
-                // ´ÙÀ½ Ä³¸¯ÅÍ·Î ÅÏÀ» ³Ñ±è
-                TurnSystem.instance.EndTurn();
+                EndTurnManually();
             }
+        }
+
+        public void EndTurnManually()
+        {
+            transform.position = initialPosition;  // ìœ„ì¹˜ ë³´ì •
+            transform.rotation = initialRotation;  // íšŒì „ ë³´ì •
+            animator.SetFloat("Speed", 0);
+
+            // ë°©ì–´ ì¤‘ì´ë¼ë©´ ìƒíƒœ ìœ ì§€, ì•„ë‹ˆë©´ Idleë¡œ ë³€ê²½
+            if (!isBlock)
+            {
+                currentState = PlayerState.Idle;
+            }
+            else
+            {
+                currentState = PlayerState.Blocking;
+            }
+
+            isAttackExecuted = false;
+
+            if (EnemySelection.instance != null)
+                EnemySelection.instance.isMove = false;
+
+            isTurn = false;
+            // ë‹¤ìŒ ìºë¦­í„°ë¡œ í„´ ë„˜ê¸°ê¸°
+            TurnSystem.instance.EndTurn();
         }
 
         public override void CheckHP()
@@ -490,27 +419,23 @@ namespace Project1
             Debug.Log("hit");
         }
 
-        // ¾Æ±º »ç¸Á½Ã È£Ãâ
+        public override void OnBuffsUpdated()
+        {
+            if (ui != null)
+                ui.UpdateBuff();
+        }
+
+        public override void OnBuffPowerUpdated(int currentPower)
+        {
+            if (ui != null)
+                ui.UpdateBuffPower(currentPower);
+        }
+
+        // ì•„êµ° ì‚¬ë§ì‹œ í˜¸ì¶œ
         public override void Die()
         {
             base.Die();
             TurnSystem.instance.RemoveCharacterFromTurnOrder(this);            
-        }
-
-        public override void IncreaseBuffPower()
-        {
-            base.IncreaseBuffPower();
-
-            if (ui != null)
-                ui.UpdateBuffPower(buffPower);
-        }
-
-        public override void ResetBuffPower()
-        {
-            base.ResetBuffPower();
-
-            if (ui != null)
-                ui.UpdateBuffPower(0);
         }
     }
 }

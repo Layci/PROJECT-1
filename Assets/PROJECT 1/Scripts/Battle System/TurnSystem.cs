@@ -93,27 +93,27 @@ namespace Project1
                 currentTurn++;        // 진행중인 턴 상승
                 UpdateTurnUI();
             }
+
+            // 모든 캐릭터의 준비 상태 초기화 (이전 캐릭터의 상태가 남아있는 문제 해결)
+            SetAllPlayersPrepareState(AttackPrepareState.None);
+
             ButtonManager.instance.HighlightBtn();
 
             Debug.Log($"[StartTurn] 현재 턴 인덱스: {currentTurnIndex}");
 
-            if (allCharacters[currentTurnIndex] is BaseCharacterControl playerCharacter)
+            // 현재 턴 유닛의 버프 처리 (턴 시작 시점)
+            BaseUnit currentUnit = allCharacters[currentTurnIndex];
+            if (currentUnit != null)
+            {
+                Debug.Log($"[OnTurnStart] {currentUnit.unitName}의 버프/디버프 확인");
+                currentUnit.OnTurnStart(); 
+            }
+
+            if (currentUnit is BaseCharacterControl playerCharacter)
             {
                 playerCharacter.isTurn = true;
                 EnemySelectorUI.instance.isTurn = true;
                 EnemySelection.instance.UpdateSelectedEnemy();
-                BaseUnit currentUnit = allCharacters[currentTurnIndex] as BaseUnit;
-                if (currentUnit != null)
-                {
-                    Debug.Log($"[OnTurnStart] {currentUnit.name}의 버프 확인 시작");
-                    currentUnit.OnTurnStart(); // 현재 턴 유닛의 버프 지속 턴만 감소
-                }
-
-                if (playerCharacter.ui != null)
-                {
-                    playerCharacter.ui.UpdateBuff();   // UI 갱신
-                    Debug.Log($"{playerCharacter.name}의 캐릭터 UI에서 Buff 표시 갱신됨!");
-                }
 
                 if (playerCharacter.isBlock)
                 {
@@ -122,7 +122,7 @@ namespace Project1
                     playerCharacter.DoneBlock();
                 }
             }
-            else if (allCharacters[currentTurnIndex] is BaseEnemyControl enemyCharacter)
+            else if (currentUnit is BaseEnemyControl enemyCharacter)
             {
                 if(enemyCharacter.enemySkillPoint >= 2)
                 {
@@ -201,6 +201,12 @@ namespace Project1
                 enemyCharacter.isTurn = false;
                 randomPoint = Random.Range(1, 3);
                 enemyCharacter.enemySkillPoint += randomPoint;
+            }
+
+            // 턴 종료 효과 발동 (HoT 등)
+            if (currentTurnIndex < allCharacters.Count)
+            {
+                allCharacters[currentTurnIndex].OnTurnEnd();
             }
 
             // 다음 캐릭터로 넘어감

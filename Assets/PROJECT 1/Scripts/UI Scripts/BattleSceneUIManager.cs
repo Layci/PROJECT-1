@@ -11,6 +11,7 @@ namespace ProJect1
 
         public GameObject settingUI;
         public GameObject defeatUIPanel;
+        public GameObject ExitBattleScenePopup;
 
         private Stack<GameObject> uiStack = new Stack<GameObject>();
 
@@ -99,6 +100,8 @@ namespace ProJect1
         public void OnClickExitSetting() => CloseTopUI();
 
         public void OnClickSetting() => OpenUI(settingUI);
+
+        public void OnClickExitScene() => OpenPopup(ExitBattleScenePopup);
 
         public void OnClickRetry()
         {

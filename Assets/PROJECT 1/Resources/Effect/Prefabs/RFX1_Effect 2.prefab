@@ -4590,6 +4590,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   GraphTimeMultiplier: 0.3
   IsLoop: 0
+  sfxGroup: {fileID: -6655638346048455796, guid: 85c5410c900ba734eb02747e43d1a0ab, type: 2}
 --- !u!82 &82595134148013386
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9555,6 +9556,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   GraphTimeMultiplier: 1
   IsLoop: 0
+  sfxGroup: {fileID: -6655638346048455796, guid: 85c5410c900ba734eb02747e43d1a0ab, type: 2}
 --- !u!114 &114625615982271486
 MonoBehaviour:
   m_ObjectHideFlags: 0

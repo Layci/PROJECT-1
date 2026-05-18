@@ -9,7 +9,7 @@ namespace Project1
         protected override void HandleAttackInput()
         {
             base.HandleAttackInput();
-            Buff attackBuff = new Buff("공격력 증가", 3, 0.2f, 0, typeof(InugamiPlayerControl));
+            Buff attackBuff = new Buff("공격력 증가", 3, 0.2f, 0, EffectType.Buff, 0, true, typeof(InugamiPlayerControl), false);
             AddBuff(attackBuff);
         }
     }

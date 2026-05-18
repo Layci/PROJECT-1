@@ -5,27 +5,35 @@ namespace Project1
 {
     public class PlayerAttackBehaviour : StateMachineBehaviour
     {
-        // ¾Ö´Ï¸ŞÀÌÅÍ »óÅÂ ÁøÀÔ ½Ã È£ÃâµË´Ï´Ù.
+        // ì• ë‹ˆë©”ì´ì…˜ì´ ì‹œì‘ë  ë•Œ í˜¸ì¶œë©ë‹ˆë‹¤.
         /*public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            // Animator°¡ ¼ÓÇÑ ºÎ¸ğ °´Ã¼¿¡¼­ BaseCharacterControl ÄÄÆ÷³ÍÆ®¸¦ °¡Á®¿É´Ï´Ù.
+            // Animatorê°€ ìˆëŠ” ë¶€ëª¨ ê°ì²´ì—ì„œ BaseCharacterControl ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì ¸ì˜µë‹ˆë‹¤.
             BaseCharacterControl characterControl = animator.GetComponentInParent<BaseCharacterControl>();
             if (characterControl != null)
             {
-                // °ø°İÀÌ ½ÃÀÛµÊÀ» ¾Ë¸³´Ï´Ù.
+                // ê³µê²©ì´ ì‹œì‘ë¨ì„ ì•Œë¦½ë‹ˆë‹¤.
                 characterControl.startAttacking = true;
             }
         }*/
 
-        // ¾Ö´Ï¸ŞÀÌÅÍ »óÅÂ Á¾·á ½Ã È£ÃâµË´Ï´Ù.
+        // ì• ë‹ˆë©”ì´ì…˜ì´ ì¢…ë£Œë  ë•Œ í˜¸ì¶œë©ë‹ˆë‹¤.
         public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            // Animator°¡ ¼ÓÇÑ ºÎ¸ğ °´Ã¼¿¡¼­ BaseCharacterControl ÄÄÆ÷³ÍÆ®¸¦ °¡Á®¿É´Ï´Ù.
+            // Animatorê°€ ìˆëŠ” ë¶€ëª¨ ê°ì²´ì—ì„œ BaseCharacterControl ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì ¸ì˜µë‹ˆë‹¤.
             BaseCharacterControl characterControl = animator.GetComponentInParent<BaseCharacterControl>();
             if (characterControl != null)
             {
-                // °ø°İÀÌ ³¡³µÀ½À» ¾Ë¸³´Ï´Ù.
-                characterControl.currentState = PlayerState.Returning;
+                // ì›ê±°ë¦¬ ê³µê²© ìƒíƒœì˜€ë‹¤ë©´ ì¦‰ì‹œ í„´ ì¢…ë£Œ, ì•„ë‹ˆë¼ë©´ ë³µê·€ ìƒíƒœë¡œ ì „í™˜
+                if (characterControl.currentState == PlayerState.RangedAttacking)
+                {
+                    characterControl.EndTurnManually();
+                }
+                else
+                {
+                    characterControl.currentState = PlayerState.Returning;
+                }
+                
                 characterControl.startAttacking = false;
             }
         }

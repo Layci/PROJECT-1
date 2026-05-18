@@ -26,21 +26,21 @@ namespace Project1
 
         private void Update()
         {
-            // ÇÃ·¹ÀÌ¾î°¡ ÂüÁ¶ÇÏ´Â °æ¿ì
+            // Ã·Ì¾î°¡ Ï´ 
             if (player != null)
             {
-                // ÇÃ·¹ÀÌ¾îÀÇ currentTargetÀ» Å¸°ÙÀ¸·Î ¼³Á¤
+                // Ã·Ì¾ currentTarget Å¸ 
                 target = player.attackAnchorTarget;
             }
-            // ÀûÀÌ ÂüÁ¶ÇÏ´Â °æ¿ì
+            //  Ï´ 
             else if (enemy != null)
             {
-                // ÀûÀÇ currentTargetÀ» Å¸°ÙÀ¸·Î ¼³Á¤
+                //  currentTarget Å¸ 
                 target = enemy.attackAnchorTarget;
             }
         }
 
-        // ¾Ö´Ï¸ŞÀÌ¼Ç ÀÌº¥Æ®¿¡¼­ È£Ãâ
+        // Ö´Ï¸Ì¼ ÌºÆ® È£
         public void OnActionEvent()
         {
             var cur = TurnSystem.instance
@@ -61,7 +61,7 @@ namespace Project1
                 ? cur.GetHealTargets(range)
                 : cur.GetAttackTargets(range);
 
-            // ÀÌÆåÆ®
+            // Æ®
             EffectManager.Instance.PlayAttackEffect(
                 attacker: cur,
                 targets: targets,
@@ -70,7 +70,7 @@ namespace Project1
                 damage: value
             );
 
-            // ¼öÄ¡ Àû¿ë
+            // Ä¡ 
             foreach (var target in targets)
             {
                 if (target == null) continue;
@@ -84,6 +84,9 @@ namespace Project1
                     float finalDamage = value * target.damageReduction;
                     target.TakeDamage(finalDamage);
 
+                    // ì ì¤‘ í›… í˜¸ì¶œ (ë””ë²„í”„ ë“± ì²˜ë¦¬ìš©)
+                    cur.OnHitTarget(target, isSkill);
+
                     DamageTextSpawner.Instance?.SpawnDamageText(
                         target.transform.position + Vector3.up * 1.5f,
                         (int)finalDamage
@@ -92,29 +95,29 @@ namespace Project1
             }
         }
 
-        // ¾Ö´Ï¸ŞÀÌ¼Ç ÀÌº¥Æ®¿¡¼­ È£Ãâ
+        // Ö´Ï¸Ì¼ ÌºÆ® È£
         public void OnAttackEvent()
         {
-            // ÇöÀç ÅÏÀÎ À¯´Ö °¡Á®¿À±â
-            var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex] as BaseUnit;
+            //    
+            var cur = TurnSystem.instance.allCharacters[TurnSystem.instance.currentTurnIndex];
             if (cur == null) return;
 
-            // ½ºÅ³ °ø°İÀÎÁö È®ÀÎ
+            // Å³  È®
             bool isSkill = cur.skillAttack;
 
-            // ½ºÅ³ °ø°İÀÎÁö ¾Æ´ÑÁö¿¡ µû¶ó °ø°İ »ç°Å¸®°ª °¡Á®¿À±â
+            // Å³  Æ´   Å¸ 
             int range = isSkill ? cur.skillAttackRange : cur.normalAttackRange;
-            // °ø°İ ¹æ½Ä¿¡ µû¸¥ µ¥¹ÌÁö °¡Á®¿À±â
+            //  Ä¿   
             float damage = isSkill ? cur.SkillAttackPower : cur.AttackPower;
-            // µ¥¹ÌÁö * ÇÇÇØ Áõ°¡·®
+            //  *  
             damage *= cur.damageIncreased;
-            // °ø°İ ¹æ½Ä¿¡ µû¸¥ ÀÌÆåÆ® ¿¡¼Â °¡Á®¿À±â
+            //  Ä¿  Æ®  
             EffectAsset effectAsset = isSkill ? cur.skillAttackEffect : cur.normalAttackEffect;
 
             //var targets = EnemySelection.instance.GetAOETargets(range);
             var targets = cur.GetAttackTargets(range);
 
-            // ÀÌÆåÆ® È£Ãâ
+            // Æ® È£
             EffectManager.Instance.PlayAttackEffect(
                 attacker: cur,
                 targets: targets,
@@ -123,7 +126,7 @@ namespace Project1
                 damage: damage
             );
 
-            // µ¥¹ÌÁö Ã³¸®
+            //  Ã³
             if (!effectAsset.isProjectile)
             {
                 foreach (var enemy in targets)
@@ -131,6 +134,9 @@ namespace Project1
                     float finalDamage = damage * enemy.damageReduction;
                     enemy.TakeDamage(finalDamage);
                     
+                    // ì ì¤‘ í›… í˜¸ì¶œ (ë””ë²„í”„ ë“± ì²˜ë¦¬ìš©)
+                    cur.OnHitTarget(enemy, isSkill);
+
                     DamageTextSpawner.Instance?.SpawnDamageText(
                         enemy.transform.position + Vector3.up * 1.5f,
                         (int)finalDamage
@@ -139,7 +145,7 @@ namespace Project1
             }
         }
 
-        // Taster Ä³¸¯ÅÍ°¡ ÇÇ°İ ½Ã ¹öÇÁ ÆÄ¿ö»ó½Â ((((¾È¾¸
+        // Taster Ä³Í° Ç°   Ä¿ ((((È¾
         public void TasterTakeDamaged()
         {
             //BuffIconUI.instance.IncreaseBuffPower();
@@ -147,7 +153,7 @@ namespace Project1
 
         public void EndAttack()
         {
-            // ÃÑ ÇÇÇØ·® ÃÊ±âÈ­
+            //  Ø· Ê±È­
             totalDamage = 0;
         }
 

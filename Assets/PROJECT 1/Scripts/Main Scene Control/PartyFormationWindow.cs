@@ -14,17 +14,33 @@ namespace ProJect1
         private void Awake()
         {
             Instance = this;
-            RefreshUI();
         }
 
-        // Ä³¸¯ÅÍ ¾ÆÀÌÄÜ ´©¸£¸é °¡Àå ¸ÕÀú ºñ¾îÀÖ´Â ½½·Ô¿¡ ÀÚµ¿ ¹èÄ¡
+        private void OnEnable()
+        {
+            if (PartyFormationManager.Instance != null)
+            {
+                PartyFormationManager.Instance.OnPartyCompositionChanged += RefreshUI;
+                RefreshUI(); // ì°½ì´ ì—´ë¦´ ë•Œ ì´ˆê¸° ë°ì´í„° ë¡œë“œ
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (PartyFormationManager.Instance != null)
+            {
+                PartyFormationManager.Instance.OnPartyCompositionChanged -= RefreshUI;
+            }
+        }
+
+        // ìºë¦­í„° ì•„ì´ì½˜ì„ í´ë¦­í–ˆì„ ë•Œ ë¹ˆ ìŠ¬ë¡¯ì— ìë™ ë°°ì¹˜
         public void AddToFirstEmptySlot(PartyMemberData data)
         {
-            // Áßº¹ Ã¼Å© È°¼ºÈ­ + ÀÌ¹Ì ¼±ÅÃµÈ Ä³¸¯ÅÍ¶ó¸é Ãß°¡ÇÏÁö ¾ÊÀ½
+            // ì¤‘ë³µ ì²´í¬ í™œì„±í™” + ì´ë¯¸ ì„ íƒëœ ìºë¦­í„°ë¼ë©´ ì¶”ê°€í•˜ì§€ ì•ŠìŒ
             if (PartyFormationManager.Instance.preventDuplicate &&
                 PartyFormationManager.Instance.IsCharacterAlreadySelected(data))
             {
-                Debug.Log($"Áßº¹ Ä³¸¯ÅÍ {data.characterName} ¼±ÅÃ ¹æÁöµÊ.");
+                Debug.Log($"ì¤‘ë³µ ìºë¦­í„° {data.characterName} í¸ì„± ì‹œë„ë¨.");
                 return;
             }
 
@@ -32,33 +48,34 @@ namespace ProJect1
             {
                 if (slots[i].IsEmpty())
                 {
-                    slots[i].SetData(data);
+                    // SetSlotì—ì„œ ì´ë²¤íŠ¸ë¥¼ ë°œìƒì‹œí‚¤ë¯€ë¡œ RefreshUIë¥¼ ì§ì ‘ í˜¸ì¶œí•  í•„ìš” ì—†ìŒ
                     PartyFormationManager.Instance.SetSlot(i, data);
                     return;
                 }
             }
         }
 
-        // ½½·Ô Á¦°Å
+        // ìŠ¬ë¡¯ ì œê±°
         public void RemoveSlot(int index)
         {
-            slots[index].SetData(null);
+            // RemoveSlotì—ì„œ ì´ë²¤íŠ¸ë¥¼ ë°œìƒì‹œí‚¤ë¯€ë¡œ RefreshUIë¥¼ ì§ì ‘ í˜¸ì¶œí•  í•„ìš” ì—†ìŒ
             PartyFormationManager.Instance.RemoveSlot(index);
-            RefreshUI();
         }
 
-        // µå·¡±×¾Øµå·Ó ½½·Ô ±³È¯
+        // ë“œë˜ê·¸ì•¤ë“œë¡­ìœ¼ë¡œ ìŠ¬ë¡¯ êµí™˜
         public void SwapSlots(PartySlotUI a, PartySlotUI b)
         {
             var temp = a.currentData;
-            a.SetData(b.currentData);
-            b.SetData(temp);
 
-            PartyFormationManager.Instance.SetSlot(a.slotIndex, a.currentData);
-            PartyFormationManager.Instance.SetSlot(b.slotIndex, b.currentData);
+            // SetSlotì´ ì´ë²¤íŠ¸ë¥¼ ë°œìƒì‹œí‚¤ì§€ë§Œ, ë‘ ë²ˆ ì—°ì† ë°œìƒí•˜ë¯€ë¡œ 
+            // íš¨ìœ¨ì„ ìœ„í•´ Manager ë‚´ë¶€ ë°ì´í„°ë¥¼ ì§ì ‘ ìˆ˜ì •í•˜ê³  ë§ˆì§€ë§‰ì— í•œë²ˆë§Œ í˜¸ì¶œí•˜ëŠ” ê²ƒë„ ë°©ë²•ì´ë‚˜
+            // ì¼ë‹¨ì€ ë‹¨ìˆœí•˜ê²Œ ìœ ì§€
+            PartyFormationManager.Instance.SetSlot(a.slotIndex, b.currentData);
+            PartyFormationManager.Instance.SetSlot(b.slotIndex, temp);
         }
 
-        // µå·ÓÇÒ ¶§ ¾î¶² ½½·Ô À§¿¡ ÀÖ´ÂÁö È®ÀÎ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½î¶² ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
+        // ë§ˆìš°ìŠ¤ í¬ì¸íŠ¸ê°€ ì–´ë–¤ ìŠ¬ë¡¯ ìœ„ì— ìˆëŠ”ì§€ í™•ì¸
         public PartySlotUI GetHoveredSlot(PointerEventData eventData)
         {
             foreach (var slot in slots)
@@ -73,7 +90,7 @@ namespace ProJect1
             return null;
         }
 
-        // UI ÀüÃ¼ °»½Å
+        // UI ì „ì²´ ê°±ì‹ 
         public void RefreshUI()
         {
             for (int i = 0; i < slots.Length; i++)

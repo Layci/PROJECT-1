@@ -22,24 +22,30 @@ namespace Project1
             instance = this;
         }
 
-        protected override void Update()
+        public override void OnBuffPowerUpdated(int currentPower)
         {
-            base.Update();
-            HealBuff();
+            base.OnBuffPowerUpdated(currentPower);
+
+            // ë²„í”„ íŒŒì›Œê°€ ìµœëŒ€ì¹˜ì— ë„ë‹¬í•˜ë©´ í ë°œë™
+            if (currentPower >= maxBuffPower)
+            {
+                ResetBuffPower();
+                HealManager.instance.PlayHealEffect();
+                Debug.Log("Taster: ë²„í”„ íŒŒì›Œ í’€ ì¶©ì „! íŒŒí‹° í ë°œë™!");
+            }
         }
 
         protected override void HandleAttackInput()
         {
-            // E ¡æ ½ºÅ³ °ø°İ
+            // E í‚¤ ìŠ¤í‚¬ ê³µê²©
             if (Input.GetKeyDown(KeyCode.E) && SkillPointManager.instance.curSkillPoint > 0)
             {
                 if (prepareState == AttackPrepareState.Skill)
                 {
-                    // ÀÌ¹Ì ÁØºñ »óÅÂ ¡æ È®Á¤ ½ÇÇà
                     StartBlock();
                 }
             }
-            // ¹æ¾î ÁßÀÏ¶§ »óÅÂ ¸Ó½Å ½ºÅ×ÀÌÆ®°¡ skill·Î ¹Ù±Í´Â°É ¹æÁö 
+            
             if (currentState != PlayerState.Blocking)
             {
                 base.HandleAttackInput();
@@ -51,18 +57,9 @@ namespace Project1
             isBlock = true;
             startBlocking = true;
             currentState = PlayerState.Blocking;
-            Buff defance = new Buff("¹æ¾î·ÂÁõ°¡ + µµ¹ß", 1, 0, 0.3f, typeof(TasterPlayerControl), resetPowerOnExpire: false);
-            AddBuff(defance);
-        }
-
-        void HealBuff()
-        {
-            if (buffPower >= maxBuffPower)
-            {
-                buffPower = 0;
-                ui.UpdateBuff();
-                HealManager.instance.PlayHealEffect();
-            }
+            // ë°©ì–´ ì¤‘ ë°©ì–´ë ¥ ì¦ê°€ ë²„í”„ (DoT/HoTëŠ” ì—†ìŒ)
+            Buff defense = new Buff("ë°©ì–´íƒœì„¸ + ê°•í™”", 1, 0, 0.3f, EffectType.Buff, 0, true, typeof(TasterPlayerControl), false);
+            AddBuff(defense);
         }
     }
 }

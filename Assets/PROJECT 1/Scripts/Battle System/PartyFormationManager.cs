@@ -7,43 +7,28 @@ using UnityEngine.SceneManagement;
 
 namespace ProJect1
 {
-    /*[System.Serializable]
-    public class PartyMemberState
-    {
-        public string characterName;
-        public int currentHP;
-        public int maxHP;
-
-        public PartyMemberState(string name, int hp, int max)
-        {
-            characterName = name;
-            currentHP = hp;
-            maxHP = max;
-        }
-    }*/
     [System.Serializable]
     public class PartyMemberData
     {
-        public GameObject prefab;     // ÀüÅõ¾À¿¡¼­ InstantiateÇÒ ÇÁ¸®ÆÕ
-        public string characterName;  // Ä³¸¯ÅÍ ÀÌ¸§(¼±ÅÃÀûÀ¸·Î UI¿ë)
-        public GameObject battleInstance; // ÀüÅõ¿¡¼­ InstantiateµÈ ¿ÀºêÁ§Æ®
-        public Sprite icon;           // Ä³¸¯ÅÍ ¾ÆÀÌÄÜ
-        public int currentHP;
-        public int maxHP;
+        public GameObject prefab;         // ìºë¦­í„° í”„ë¦¬íŒ¹ (ìƒì„±ìš©)
+        public string characterName;      // ìºë¦­í„° ì´ë¦„
+        public GameObject battleInstance; // ì „íˆ¬ ì¤‘ ìƒì„±ëœ ìºë¦­í„° ì˜¤ë¸Œì íŠ¸ ì¸ìŠ¤í„´ìŠ¤
+        public Sprite icon;               // ìºë¦­í„° UI ì•„ì´ì½˜
+        public int currentHP;             // ì €ì¥ëœ í˜„ì¬ ì²´ë ¥
+        public int maxHP;                 // ìºë¦­í„°ì˜ ìµœëŒ€ ì²´ë ¥
     }
 
     public class PartyFormationManager : MonoBehaviour
     {
         public static PartyFormationManager Instance;
 
-        public List<PartyMemberData> currentParty = new(); // ÇöÀç ÆÄÆ¼ ÀúÀå ¸ñ·Ï
-        // 111111111111111111
-        //public List<PartyMemberState> partyStates = new(); // ÀüÅõ °á°ú ÀúÀå ¸ñ·Ï
-        //public Dictionary<string, PartyMemberState> allStates = new Dictionary<string, PartyMemberState>();
-        public Vector3 lastFieldPosition; // ÀüÅõ Àü ÇÃ·¹ÀÌ¾î ÇÊµå À§Ä¡
-        public int maxPartySize = 4;
+        // 1. ì´ë²¤íŠ¸ ì„ ì–¸ (ëˆ„êµ¬ë“  êµ¬ë…í•  ìˆ˜ ìˆëŠ” ì•Œë¦¼íŒ)
+        public event Action OnPartyCompositionChanged;
+        public List<PartyMemberData> currentParty = new(); // í˜„ì¬ íŒŒí‹°ì— í¸ì„±ëœ ë©¤ë²„ ë¦¬ìŠ¤íŠ¸
+        public Vector3 lastFieldPosition; // ì „íˆ¬ ì§„ì… ì „ ë©”ì¸ ì”¬ì—ì„œì˜ ë§ˆì§€ë§‰ í”Œë ˆì´ì–´ ìœ„ì¹˜
+        public int maxPartySize = 4;      // ìµœëŒ€ íŒŒí‹° ì¸ì›ìˆ˜
 
-        // Áßº¹ ¼±ÅÃ ¹æÁö ±â´É ON/OFF
+        // íŒŒí‹°ì› ì¤‘ë³µ ì„ íƒ ë°©ì§€ í”Œë˜ê·¸
         public bool preventDuplicate = true;
 
         void Awake()
@@ -51,9 +36,9 @@ namespace ProJect1
             if (Instance == null)
             {
                 Instance = this;
-                DontDestroyOnLoad(gameObject);
-                SceneManager.sceneLoaded += OnSceneLoaded;
-                BuildPartyStates();
+                DontDestroyOnLoad(gameObject); // ì”¬ ì „í™˜ ì‹œì—ë„ íŒŒê´´ë˜ì§€ ì•Šë„ë¡ ì„¤ì •
+                SceneManager.sceneLoaded += OnSceneLoaded; // ì”¬ ë¡œë”© ì™„ë£Œ ì´ë²¤íŠ¸ ë“±ë¡
+                BuildPartyStates(); // ì´ˆê¸° íŒŒí‹° ìƒíƒœ êµ¬ì¶•
             }
             else
             {
@@ -61,39 +46,34 @@ namespace ProJect1
             }
         }
 
-        private void Start()
-        {
-            //BuildPartyStates();
-        }
-
-        /*public void SetParty(List<PartyMemberData> newParty)
-        {
-            currentParty = newParty;
-        }*/
-
-        // ½½·Ô¿¡ Ä³¸¯ÅÍ ¹èÁ¤
+        // íŒŒí‹° ìŠ¬ë¡¯ì— ë©¤ë²„ ë°ì´í„° ì„¤ì •
         public void SetSlot(int index, PartyMemberData data)
         {
             if (index >= currentParty.Count)
                 currentParty.Add(data);
             else
                 currentParty[index] = data;
+
+            OnPartyCompositionChanged?.Invoke();
         }
 
-        // ½½·Ô ºñ¿ì±â
+        // íŒŒí‹° ìŠ¬ë¡¯ì—ì„œ ë©¤ë²„ ì œê±°
         public void RemoveSlot(int index)
         {
             if (index < currentParty.Count)
                 currentParty.RemoveAt(index);
+
+            OnPartyCompositionChanged?.Invoke();
         }
 
+        // íŒŒí‹° ì „ì²´ ì´ˆê¸°í™”
         public void ResetParty()
         {
-            for (int i = 0; i < currentParty.Count; i++)
-                currentParty[i] = null;
+            currentParty.Clear();
+            OnPartyCompositionChanged?.Invoke();
         }
 
-        // ÆÄÆ¼ Áßº¹ ¿©ºÎ È®ÀÎ
+        // íŠ¹ì • ìºë¦­í„°ê°€ ì´ë¯¸ íŒŒí‹°ì— í¬í•¨ë˜ì–´ ìˆëŠ”ì§€ í™•ì¸
         public bool IsCharacterAlreadySelected(PartyMemberData data)
         {
             foreach (var member in currentParty)
@@ -103,121 +83,40 @@ namespace ProJect1
             return false;
         }
 
+        // íŒŒí‹° ë©¤ë²„ë“¤ì˜ í”„ë¦¬íŒ¹ ì •ë³´ë¥¼ ë°”íƒ•ìœ¼ë¡œ ì´ˆê¸° ì²´ë ¥ ë° ìƒíƒœ êµ¬ì¶•
         public void BuildPartyStates()
         {
             foreach (var member in currentParty)
             {
+                if (member.prefab == null) continue;
                 BaseCharacterControl baseStats = member.prefab.GetComponent<BaseCharacterControl>();
 
-                // ÃÖ´ë Ã¼·Â ¼¼ÆÃ
                 member.maxHP = (int)baseStats.maxHealth;
-
-                // ÇöÀç Ã¼·ÂÀ» Ç®ÇÇ·Î ÃÊ±âÈ­
-                member.currentHP = member.maxHP;
+                member.currentHP = member.maxHP; // ì²˜ìŒì—ëŠ” í’€í”¼ë¡œ ì‹œì‘
             }
         }
 
-        // 111111111111111
-        /*public void BuildPartyStates()
-        {
-            partyStates.Clear();
-
-            foreach (var member in currentParty)
-            {
-                // 1) ÇÁ¸®ÆÕ¿¡¼­ BaseCharacterControl °¡Á®¿À±â (ÇÁ¸®ÆÕÀÌ´Ï±î Instantiate ÇÊ¿ä ¾øÀ½)
-                BaseCharacterControl baseStats = member.prefab.GetComponent<BaseCharacterControl>();
-
-                PartyMemberState state = new PartyMemberState(baseStats.unitName,(int)baseStats.maxHealth, (int)baseStats.maxHealth);
-
-                partyStates.Add(state);
-            }
-        }*/
-
-        // Ã¼·Â ÀúÀå ¹æ½Ä
-        /*public PartyMemberState GetOrCreateState(PartyMemberData member)
-        {
-            if (allStates.TryGetValue(member.characterName, out var state))
-                return state;  // ±âÁ¸ Ã¼·Â À¯Áö
-
-            BaseCharacterControl stats = member.prefab.GetComponent<BaseCharacterControl>();
-
-            state = new PartyMemberState(stats.unitName, (int)stats.maxHealth, (int)stats.maxHealth);
-
-            allStates.Add(member.characterName, state);
-
-            return state;
-        }
-
-        public void ReBuildPartyStates()
-        {
-            partyStates.Clear();
-
-            foreach (var member in currentParty)
-            {
-                var state = GetOrCreateState(member);
-                partyStates.Add(state);
-            }
-        }*/
-
+        // íŒŒí‹° ë°ì´í„° ì¬êµ¬ì¶• ë° ë¹„ì •ìƒ ìˆ˜ì¹˜(ì²´ë ¥ 0 ë“±) ë³´ì •
         public void RebuildPartyData()
         {
             foreach (var member in currentParty)
             {
-                // Base stats °¡Á®¿À±â
+                if (member.prefab == null) continue;
                 var baseStats = member.prefab.GetComponent<BaseCharacterControl>();
                 int prefabMax = (int)baseStats.maxHealth;
 
-                // maxHP°¡ 0ÀÌ¸é ÇÁ¸®ÆÕ ±âÁØÀ¸·Î ¼¼ÆÃ(ÃÊ±âÈ­ ¾È µÈ °æ¿ì)
                 if (member.maxHP == 0)
                     member.maxHP = prefabMax;
 
-                // currentHP°¡ 0ÀÌ¸é "¾ÆÁ÷ °ªÀÌ ¾øÀ½"À¸·Î º¸°í Ç®ÇÇ·Î ¼¼ÆÃ
-                // (ÁÖÀÇ: 0À» '»ç¸Á'À¸·Î ¾²°í ÀÖ´Ù¸é ÀÌ ·ÎÁ÷À» ¹Ù²ã¾ß ÇÔ)
                 if (member.currentHP == 0)
-                    member.currentHP = 1;
+                    member.currentHP = 1; // ì‚¬ë§ ìƒíƒœê°€ ì•„ë‹ˆë¼ë©´ ìµœì†Œ 1ë¡œ ë³´ì •
             }
 
-            Debug.Log("Party data rebuilt (currentHP/maxHP º¸Á¤ ¿Ï·á)");
+            Debug.Log("Party data rebuilt (ì²´ë ¥ ë° ìµœëŒ€ì¹˜ ìˆ˜ì¹˜ ë³´ì • ì™„ë£Œ)");
+            OnPartyCompositionChanged?.Invoke();
         }
-        // 11111111111111111111111
-        /*public void ReBuildPartyStates()
-        {
-            List<PartyMemberState> newStates = new List<PartyMemberState>();
 
-            foreach (var member in currentParty)
-            {
-                // ±âÁ¸¿¡ ÀúÀåµÈ Ã¼·Â/»óÅÂ Ã£±â
-                PartyMemberState existing = partyStates.Find(s => s.characterName == member.characterName);
-
-                if (existing != null)
-                {
-                    // ±âÁ¸ Ã¼·Â À¯Áö
-                    newStates.Add(new PartyMemberState(
-                        existing.characterName,
-                        existing.currentHP,
-                        existing.maxHP
-                    ));
-                }
-                else
-                {
-                    // »õ·Î Ãß°¡µÈ Ä³¸¯ÅÍ: full hp·Î »ı¼º
-                    BaseCharacterControl baseStats = member.prefab.GetComponent<BaseCharacterControl>();
-
-                    newStates.Add(new PartyMemberState(
-                        baseStats.unitName,
-                        (int)baseStats.maxHealth,
-                        (int)baseStats.maxHealth
-                    ));
-                }
-            }
-
-            // ¿ÏÀüÈ÷ µ¤¾î¾²±â
-            partyStates = newStates;
-
-            Debug.Log("PartyState ÀçÁ¤·Ä ¿Ï·á (Ã¼·Â À¯ÁöµÊ)");
-        }*/
-
-        // 111111111111111111
+        // íŒŒí‹°ì› ì „ì²´ ì²´ë ¥ íšŒë³µ
         public void PartyHeal()
         {
             foreach (var state in currentParty)
@@ -225,43 +124,18 @@ namespace ProJect1
                 state.currentHP = state.maxHP;
             }
 
-            Debug.Log("ÆÄÆ¼ ÀüÃ¼ È¸º¹ ¿Ï·á!");
+            Debug.Log("íŒŒí‹° ì „ì²´ íšŒë³µ ì™„ë£Œ!");
         }
 
-        /*public void SavePartyState()
-        {
-            var manager = PartyFormationManager.Instance;
-
-            foreach (var member in currentParty)
-            {
-                string key = member.prefab.GetComponent<BaseCharacterControl>().unitName;
-
-                if (manager.allStates.TryGetValue(key, out var state))
-                {
-                    // ÇÁ¸®ÆÕ¿¡ curHealth Àû¿ë
-                    var unit = member.prefab.GetComponent<BaseCharacterControl>();
-                    unit.curHealth = state.currentHP;
-
-                    Debug.Log($"ÆÄÆ¼ »óÅÂ ·Îµå: {key}, Ã¼·Â = {state.currentHP}");
-
-                    ReBuildPartyStates();
-                }
-            }
-        }*/
-
+        // ì „íˆ¬ ì¢…ë£Œ í›„ ë˜ëŠ” í•„ìš” ì‹œ í˜„ì¬ íŒŒí‹°ì˜ ì²´ë ¥ ìƒíƒœë¥¼ í”„ë¦¬íŒ¹/ë°ì´í„°ì— ì €ì¥
         public void SavePartyState()
         {
-            // currentParty°¡ ºñ¾îÀÖÀ¸¸é ÀúÀåÇÒ °ÍÀÌ ¾øÀ½
             if (currentParty == null || currentParty.Count == 0)
                 return;
 
             for (int i = 0; i < currentParty.Count; i++)
             {
-                // ÀüÅõ¿¡¼­ »ı¼ºµÈ ÀÎ½ºÅÏ½º(Á×¾úÀ» ¼öµµ ÀÖÀ½)
                 var instance = currentParty[i].battleInstance;
-
-                // battleInstance°¡ nullÀÌ¸é (ÀüÅõ Áß Á¦¿ÜµÈ °æ¿ì)
-                // prefabÀÇ BaseCharacterControl·Î Á¢±Ù
                 BaseCharacterControl unit;
 
                 if (instance != null)
@@ -269,122 +143,54 @@ namespace ProJect1
                 else
                     unit = currentParty[i].prefab.GetComponent<BaseCharacterControl>();
 
-                // ÀÌ¹Ì SaveBattleResult()¿¡¼­ curHealth°¡ µ¤¾îÁ® ÀÖÀ¸¹Ç·Î
-                // ¿©±â¼± µû·Î HP¸¦ ¼öÁ¤ÇÒ ÇÊ¿ä ¾øÀ½.
-                // prefab¿¡ curHealth¸¦ ¹İ¿µ.
-
+                // í”„ë¦¬íŒ¹ ë°ì´í„°ì—ë„ í˜„ì¬ ì²´ë ¥ì„ ë™ê¸°í™”
                 var prefabStats = currentParty[i].prefab.GetComponent<BaseCharacterControl>();
                 prefabStats.curHealth = unit.curHealth;
             }
         }
-        // 11111111111111111111111
-        /*public void SavePartyState()
-        {
-            var states = partyStates;
 
-            if (states == null || states.Count == 0)
-                return;
-
-            for (int i = 0; i < currentParty.Count; i++)
-            {
-                var state = states[i];
-                var unit = currentParty[i].prefab.GetComponent<BaseCharacterControl>();
-
-                unit.curHealth = state.currentHP;
-            }
-        }*/
-
-        // BattleManager start ÇÔ¼ö¿¡ À§Ä¡ ¹èÆ²¾À ÁøÀÔ½Ã Æí¼ºÁ¤º¸¿¡ ÀÖ´Â Ä³¸¯ÅÍÀÇ Ã¼·ÂÀ» ·Îµå
+        // ì „íˆ¬ ì‹œì‘ ì‹œ ì €ì¥ëœ ì²´ë ¥ ë°ì´í„°ë¥¼ ìƒì„±ëœ ì „íˆ¬ ìœ ë‹›ë“¤ì— ë¡œë“œ
         public void LoadPartyState(List<BaseCharacterControl> players)
         {
-            var party = PartyFormationManager.Instance.currentParty;
+            var party = currentParty;
 
             if (party == null || party.Count == 0)
                 return;
 
             for (int i = 0; i < players.Count; i++)
             {
-                var saved = party[i];      // PartyMemberData (ÀúÀåµÈ µ¥ÀÌÅÍ)
-                var unit = players[i];     // ÀüÅõ ÀÎ½ºÅÏ½º BaseCharacterControl
+                if (i >= party.Count) break;
+                
+                var saved = party[i];
+                var unit = players[i];
 
-                // ÇÁ¸®ÆÕÀÇ ÃÊ±â°ªÀÌ ¾Æ´Ï¶ó PartyMemberData °ª ±×´ë·Î °­Á¦ Àû¿ë
                 unit.curHealth = saved.currentHP;
 
-                // maxHealth´Â Ä³¸¯ÅÍ ÀÚÃ¼ ½ºÅÈÀÌ¹Ç·Î ÀÏ¹İÀûÀ¸·Î µ¤¾î¾²¸é ¾È µÊ
-                // unit.maxHealth = saved.maxHP;  // À¢¸¸ÇÏ¸é ÁÖ¼®!
+                Debug.Log($"[ì²´ë ¥ ë¡œë“œ] {saved.characterName} HP = {unit.curHealth}");
 
-                Debug.Log($"[LoadHP] {saved.characterName} HP = {unit.curHealth}");
-
+                // ì²´ë ¥ì´ 0 ì´í•˜ì¸ ê²½ìš° ìµœì†Œ 1ë¡œ ë³´ì •í•˜ì—¬ ìƒì„±
                 if (unit.curHealth <= 0)
                     unit.curHealth = 1;
             }
         }
-        /*public void LoadPartyState(List<BaseCharacterControl> players)
-        {
-            var party = PartyFormationManager.Instance.currentParty;
 
-            if (party == null || party.Count == 0)
-                return;
-
-            for (int i = 0; i < players.Count; i++)
-            {
-                var member = party[i];
-                var unit = players[i];
-
-                // currentParty ¡æ ÀüÅõ ÀÎ½ºÅÏ½º BaseCharacterControl Ã¼·Â º¹±¸
-                unit.curHealth = member.currentHP;
-                unit.maxHealth = member.maxHP;
-                Debug.Log($"[LoadHP] {member.characterName} cur={member.currentHP} / max={member.maxHP}");
-                // Ã¼·ÂÀÌ 0 ÀÌÇÏ¶ó¸é Á×Àº »óÅÂ¿´´ø °ÍÀÌ¹Ç·Î ¹Ù·Î 1·Î È¸º¹
-                if (unit.curHealth <= 0)
-                    unit.curHealth = 1;
-            }
-        }*/
-        // 111111111111111111111
-        /*public void LoadPartyState(List<BaseCharacterControl> players)
-        {
-            if (partyStates == null || partyStates.Count == 0)
-                return;
-
-            for (int i = 0; i < players.Count; i++)
-            {
-                var state = partyStates[i];
-                var unit = players[i];
-
-                unit.curHealth = state.currentHP;
-                unit.maxHealth = state.maxHP;
-                //unit.UpdateHPUI();
-            }
-        }*/
-
+        // ì”¬ ë¡œë”© ì™„ë£Œ ì‹œ í˜¸ì¶œë˜ëŠ” ì½œë°± í•¨ìˆ˜
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             if (scene.name == "MainScene")
             {
                 var player = GameObject.FindWithTag("Player");
-                var cc = player.GetComponent<CharacterController>();
-                
                 if (player != null)
                 {
+                    // ìì‹ ì˜¤ë¸Œì íŠ¸ì— CharacterControllerê°€ ìˆëŠ” ê²½ìš°ë¥¼ ìœ„í•´ GetInChildren ì‚¬ìš©
+                    var cc = player.GetComponentInChildren<CharacterController>();
+                    
+                    // transform.position ë³€ê²½ ì‹œ ì¶©ëŒ ì—°ì‚° ê°„ì„­ì„ ë§‰ê¸° ìœ„í•´ ì ì‹œ ë”
                     if (cc != null) cc.enabled = false;
                     player.transform.position = lastFieldPosition;
                     if (cc != null) cc.enabled = true;
                 }
             }
         }
-        /*public void LoadPartyState(List<GameObject> spawnedParty)
-        {
-            var states = PartyFormationManager.Instance.partyStates;
-
-            for (int i = 0; i < spawnedParty.Count; i++)
-            {
-                var unit = spawnedParty[i].GetComponent<BaseCharacterControl>();
-                var state = states[i];
-
-                unit.curHealth = state.currentHP;
-                unit.maxHealth = state.maxHP;
-                //unit.UpdateHPUI();
-            }
-        }*/
     }
 }
